@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">AutoML</string>
+    <string name="open">open</string>
+    <string name="close">close</string>
+
+    <!-- Classification ML Models   -->
+    <string name="decision_tree_classifier">Decision Tree Classifier</string>
+    <string name="random_forest_classifier">Random Forest Classifier</string>
+    <string name="k_nearest_neighbors_classifier">K Nearest Neighbors Classifier</string>
+    <string name="svc">SVC</string>
+    <string name="naive_bayes">Naive Bayes</string>
+
+</resources>

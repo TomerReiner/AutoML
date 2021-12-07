@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/itemTutorial"
+        android:icon="@drawable/ic_tutorial"
+        android:title="Tutorial"/>
+
+    <item
+        android:id="@+id/itemCreateMlModel"
+        android:icon="@drawable/ic_tutorial"
+        android:title="Create ML Model"/>
+
+    <item
+        android:id="@+id/itemMyModels"
+        android:icon="@drawable/ic_computer"
+        android:title="My Models"/>
+</menu>
