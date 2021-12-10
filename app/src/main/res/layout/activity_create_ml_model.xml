@@ -16,26 +16,25 @@
             android:id="@+id/fabAddDataAnalysisBlock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
             android:clickable="true"
+            android:contentDescription="Add DA"
+            android:text="Add Da"
+            android:layout_marginRight="10dp"
             android:visibility="invisible"
-            app:layout_constraintBottom_toTopOf="@+id/fabAddMLModelBlock"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0"
-            app:srcCompat="@drawable/ic_add_ml_action"
-            android:text="Add Da"
-            android:contentDescription="Add DA" />
+            app:layout_constraintVertical_bias="0.79"
+            app:srcCompat="@drawable/ic_add_ml_action" />
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/fabAddMLModelBlock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
             android:clickable="true"
             android:contentDescription="Add ML"
             android:text="Add ML"
@@ -44,6 +43,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fabAddDataAnalysisBlock"
+            app:layout_constraintVertical_bias="0.357"
             app:srcCompat="@drawable/ic_add_ml_action" />
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -53,14 +54,15 @@
             android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp"
             android:clickable="true"
+            android:contentDescription="Add Item"
             android:text="Add Block"
+            android:layout_marginTop="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1"
             app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/ic_add_ml_action"
-            android:contentDescription="Add Item" />
-        
+            app:srcCompat="@drawable/ic_add_ml_action" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

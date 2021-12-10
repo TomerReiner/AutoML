@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, CreateMLModelActivity.class));
                 return true;
             }
+
             return false;
         });
     }
@@ -54,8 +56,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.itemMyAccount)
+            Toast.makeText(MainActivity.this, "Account", Toast.LENGTH_SHORT).show();
+
         if (drawerToggle.onOptionsItemSelected(item))
             return true;
+
         return super.onOptionsItemSelected(item);
     }
 }

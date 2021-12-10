@@ -35,6 +35,8 @@ public class CreateMLModelActivity extends AppCompatActivity {
     private ExtendedFloatingActionButton fabAddMLModelBlock;
     private ExtendedFloatingActionButton fabAddDataAnalysisBlock;
 
+    private SelectMLModelDialog selectMLModelDialog; // This class manages the ML Model selection.
+
     private boolean clickedFabAddItem = false;
 
     @Override
@@ -57,7 +59,7 @@ public class CreateMLModelActivity extends AppCompatActivity {
         rotateOpenAnim = AnimationUtils.loadAnimation(CreateMLModelActivity.this, R.anim.rotate_open_anim);
         toButtonAnim = AnimationUtils.loadAnimation(CreateMLModelActivity.this, R.anim.to_bottom_anim);
 
-
+        selectMLModelDialog = new SelectMLModelDialog(CreateMLModelActivity.this);
 
         fabAddBlock = findViewById(R.id.fabAddBlock);
         fabAddMLModelBlock = findViewById(R.id.fabAddMLModelBlock);
@@ -66,6 +68,10 @@ public class CreateMLModelActivity extends AppCompatActivity {
         fabAddBlock.setOnClickListener(view -> {
             onAddItemClicked();
         });
+
+        fabAddMLModelBlock.setOnClickListener(view ->
+                selectMLModelDialog.createSelectMlModelDialog()
+        );
 
     }
 

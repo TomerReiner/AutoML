@@ -10,4 +10,11 @@
     <string name="svc">SVC</string>
     <string name="naive_bayes">Naive Bayes</string>
 
+    <!--    Regression ML Models-->
+    <string name="decision_tree_regressor">Decision Tree Regressor</string>
+    <string name="random_forest_regressor">Random Forest Regressor</string>
+    <string name="linear_regression">Linear Regression</string>
+    <string name="svr">SVR</string>
+    <string name="elastic_net_cv">Elastic Net CV</string>
+
 </resources>

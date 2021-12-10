@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <Button
-        android:id="@+id/btnDecisionTreeClassifier"
+        android:id="@+id/btnDecisionTreeRegressor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -15,46 +15,31 @@
         android:shadowDx="0"
         android:shadowDy="0"
         android:shadowRadius="5"
-        android:text="@string/decision_tree_classifier"
+        android:text="@string/decision_tree_regressor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.104" />
+        app:layout_constraintVertical_bias="0.086" />
 
     <Button
-        android:id="@+id/btnRandomForestClassifier"
+        android:id="@+id/btnRandomForestRegressor"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="@string/random_forest_classifier"
-        app:layout_constraintEnd_toEndOf="parent"
         android:background="@drawable/button_shape"
         android:shadowColor="#2F1DA8"
         android:shadowDx="0"
         android:shadowDy="0"
         android:shadowRadius="5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnDecisionTreeClassifier" />
-
-    <Button
-        android:id="@+id/btnKNearestNeighborsClassifier"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/button_shape"
-        android:shadowColor="#2F1DA8"
-        android:shadowDx="0"
-        android:shadowDy="0"
-        android:shadowRadius="5"
         android:layout_marginTop="10dp"
-        android:text="@string/k_nearest_neighbors_classifier"
+        android:text="@string/random_forest_regressor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnRandomForestClassifier" />
+        app:layout_constraintTop_toBottomOf="@+id/btnDecisionTreeRegressor" />
 
     <Button
-        android:id="@+id/btnSVC"
+        android:id="@+id/btnLinearRegression"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/button_shape"
@@ -63,24 +48,40 @@
         android:shadowDy="0"
         android:shadowRadius="5"
         android:layout_marginTop="10dp"
-        android:text="@string/svc"
+        android:text="@string/linear_regression"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnKNearestNeighborsClassifier" />
+        app:layout_constraintTop_toBottomOf="@+id/btnRandomForestRegressor" />
 
     <Button
-        android:id="@+id/btnNaiveBayes"
+        android:id="@+id/btnSVR"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:background="@drawable/button_shape"
         android:shadowColor="#2F1DA8"
         android:shadowDx="0"
         android:shadowDy="0"
         android:shadowRadius="5"
-        android:text="@string/naive_bayes"
+        android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:text="@string/svr"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnSVC" />
+        app:layout_constraintTop_toBottomOf="@+id/btnLinearRegression" />
+
+    <Button
+        android:id="@+id/btnElasticNetCV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/button_shape"
+        android:shadowColor="#2F1DA8"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="5"
+        android:text="@string/elastic_net_cv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnSVR" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
