@@ -6,6 +6,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,12 +19,14 @@ import com.google.android.material.navigation.NavigationView;
 
 public class CreateMLModelActivity extends AppCompatActivity {
 
-    public static final String TAG = "CreateMLModel";
+    public static final String TAG = CreateMLModelActivity.class.getSimpleName();
 
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private ActionBarDrawerToggle drawerToggle;
     private ActionBar actionBar;
+
+    private MenuManager menuManager;
 
     // Animation resources to make the opening of the floating action buttons nicer.
     private Animation fromButtonAnim;
@@ -53,6 +56,9 @@ public class CreateMLModelActivity extends AppCompatActivity {
         drawerToggle.syncState();
 
         actionBar.setDisplayHomeAsUpEnabled(true); // Display the navigation view.
+
+        menuManager = new MenuManager(CreateMLModelActivity.this, TAG, navigationView);
+        menuManager.switchActivity();
 
         fromButtonAnim = AnimationUtils.loadAnimation(CreateMLModelActivity.this, R.anim.from_bottom_anim);
         rotateCloseAnim = AnimationUtils.loadAnimation(CreateMLModelActivity.this, R.anim.rotate_close_anim);

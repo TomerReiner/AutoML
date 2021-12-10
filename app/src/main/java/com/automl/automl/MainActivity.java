@@ -16,12 +16,14 @@ import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String TAG = "MainActivity";
+    public static final String TAG = MainActivity.class.getSimpleName();
 
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private ActionBarDrawerToggle drawerToggle;
     private ActionBar actionBar;
+
+    private MenuManager menuManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,14 +40,8 @@ public class MainActivity extends AppCompatActivity {
 
         actionBar.setDisplayHomeAsUpEnabled(true); // Display the navigation view.
 
-        navigationView.setNavigationItemSelectedListener(item -> {
-            if (item.getItemId() == R.id.itemCreateMlModel) {
-                startActivity(new Intent(MainActivity.this, CreateMLModelActivity.class));
-                return true;
-            }
-
-            return false;
-        });
+        menuManager = new MenuManager(MainActivity.this, TAG, navigationView);
+        menuManager.switchActivity();
     }
 
     @Override
@@ -63,5 +59,10 @@ public class MainActivity extends AppCompatActivity {
             return true;
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 }
