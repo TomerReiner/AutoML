@@ -4,12 +4,17 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/kids/AndroidStudioSchoolProjects/AutoML/app/src/main/res/drawable/button_shape.xml" value="0.5661458333333333" />
+        <entry key="..\:/Users/kids/AndroidStudioSchoolProjects/AutoML/app/src/main/res/layout/account_manager_dialog.xml" value="0.55" />
         <entry key="..\:/Users/kids/AndroidStudioSchoolProjects/AutoML/app/src/main/res/layout/activity_create_ml_model.xml" value="0.33" />
         <entry key="..\:/Users/kids/AndroidStudioSchoolProjects/AutoML/app/src/main/res/layout/activity_main.xml" value="0.13703703703703704" />
+        <entry key="..\:/Users/kids/AndroidStudioSchoolProjects/AutoML/app/src/main/res/layout/activity_my_account.xml" value="0.5359375" />
         <entry key="..\:/Users/kids/AndroidStudioSchoolProjects/AutoML/app/src/main/res/layout/nav_header.xml" value="0.55" />
         <entry key="..\:/Users/kids/AndroidStudioSchoolProjects/AutoML/app/src/main/res/layout/select_classification_model_dialog.xml" value="0.55" />
+        <entry key="..\:/Users/kids/AndroidStudioSchoolProjects/AutoML/app/src/main/res/layout/select_da_dialog.xml" value="0.67" />
         <entry key="..\:/Users/kids/AndroidStudioSchoolProjects/AutoML/app/src/main/res/layout/select_ml_model_type_dialog.xml" value="0.55" />
         <entry key="..\:/Users/kids/AndroidStudioSchoolProjects/AutoML/app/src/main/res/layout/select_regression_model_dialog.xml" value="0.55" />
+        <entry key="..\:/Users/kids/AndroidStudioSchoolProjects/AutoML/app/src/main/res/layout/sign_in_dialog.xml" value="0.5" />
+        <entry key="..\:/Users/kids/AndroidStudioSchoolProjects/AutoML/app/src/main/res/layout/sign_up_dialog.xml" value="0.46603260869565216" />
       </map>
     </option>
   </component>

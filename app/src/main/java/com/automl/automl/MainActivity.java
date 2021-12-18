@@ -13,7 +13,17 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
-
+/**
+ * TODO - tasks
+ * 1) Make signup work - partially done.
+ * 2) DA blocks - partially done.
+ * 3) Add MyModels for each user - partially done.
+ * 4) Account Settings - change password, delete data, delete specific data, delete user, block notifications.
+ * 5) Download file.
+ * 6) Add blocks animation.
+ * 7) Add python connection
+ * 8) My models activity.
+ */
 public class MainActivity extends AppCompatActivity {
 
     public static final String TAG = MainActivity.class.getSimpleName();
@@ -24,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private ActionBar actionBar;
 
     private MenuManager menuManager;
+    private AccountManager accountManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
 
         menuManager = new MenuManager(MainActivity.this, TAG, navigationView);
         menuManager.switchActivity();
+
+        accountManager = new AccountManager(MainActivity.this);
     }
 
     @Override
@@ -53,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.itemMyAccount)
-            Toast.makeText(MainActivity.this, "Account", Toast.LENGTH_SHORT).show();
+            accountManager.openAccountManagerDialog();
 
         if (drawerToggle.onOptionsItemSelected(item))
             return true;

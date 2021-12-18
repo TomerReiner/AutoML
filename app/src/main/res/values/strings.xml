@@ -16,5 +16,7 @@
     <string name="linear_regression">Linear Regression</string>
     <string name="svr">SVR</string>
     <string name="elastic_net_cv">Elastic Net CV</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="sign_in">Sign In</string>
 
 </resources>
