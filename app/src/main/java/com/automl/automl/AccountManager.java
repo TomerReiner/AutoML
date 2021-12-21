@@ -2,7 +2,7 @@ package com.automl.automl;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.util.Log;
+import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -52,12 +52,19 @@ public class AccountManager {
         else // If there isn't a user logged in the app we would like to enable users to log in.
             btnSignInSignOut.setText(R.string.sign_in);
 
+        btnAccountSettings.setOnClickListener(view -> {
+            Intent intent = new Intent(context, MyAccountActivity.class);
+            context.startActivity(intent);
+        });
+
         btnSignInSignOut.setOnClickListener(view -> {
             if (btnSignInSignOut.getText().toString().equals(context.getString(R.string.sign_in))) {
                 createSignInDialog();
                 this.user = this.manager.getUser();
-                if (this.user != null) // If the user is not null, then there is a user logged in. Therefore, the option of signing in will be blocked until the user logs out.
+                if (this.user != null) { // If the user is not null, then there is a user logged in. Therefore, the option of signing in will be blocked until the user logs out.
                     btnSignInSignOut.setText(context.getString(R.string.sign_out));
+                    dialog.dismiss();
+                }
                 else // If there isn't a user logged in the access to the account management activity is blocked.
                     btnAccountSettings.setVisibility(View.INVISIBLE);
             }
@@ -66,6 +73,7 @@ public class AccountManager {
                 btnSignInSignOut.setText(R.string.sign_in);
                 this.user = this.manager.getUser();
                 btnAccountSettings.setVisibility(View.INVISIBLE);
+                dialog.dismiss();
             }
         });
 

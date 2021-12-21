@@ -16,6 +16,7 @@
         android:shadowDy="0"
         android:shadowRadius="5"
         android:text="@string/decision_tree_classifier"
+        android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.503"
@@ -34,6 +35,7 @@
         android:shadowDy="0"
         android:shadowRadius="5"
         android:text="@string/random_forest_classifier"
+        android:textAllCaps="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnDecisionTreeClassifier" />
@@ -49,6 +51,7 @@
         android:shadowDy="0"
         android:shadowRadius="5"
         android:text="@string/k_nearest_neighbors_classifier"
+        android:textAllCaps="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnRandomForestClassifier" />
@@ -64,6 +67,7 @@
         android:shadowDy="0"
         android:shadowRadius="5"
         android:text="@string/svc"
+        android:textAllCaps="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnKNearestNeighborsClassifier" />
@@ -79,6 +83,7 @@
         android:shadowDy="0"
         android:shadowRadius="5"
         android:text="@string/naive_bayes"
+        android:textAllCaps="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnSVC" />

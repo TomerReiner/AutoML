@@ -6,11 +6,9 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 /**
@@ -18,7 +16,7 @@ import com.google.android.material.navigation.NavigationView;
  * 1) Make signup work - partially done.
  * 2) DA blocks - partially done.
  * 3) Add MyModels for each user - partially done.
- * 4) Account Settings - change password, delete data, delete specific data, delete user, block notifications.
+ * 4) Account Settings - change password, delete data, delete user, block notifications.
  * 5) Download file.
  * 6) Add blocks animation.
  * 7) Add python connection

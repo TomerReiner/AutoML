@@ -2,7 +2,6 @@ package com.automl.automl;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.res.Resources;
 import android.widget.Button;
 
 public class SelectMLModelDialog {

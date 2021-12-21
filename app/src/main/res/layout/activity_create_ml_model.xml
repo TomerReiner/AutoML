@@ -28,6 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Load File"
+            android:textAllCaps="false"
             app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
@@ -60,13 +61,14 @@
                 android:clickable="true"
                 android:contentDescription="Add DA"
                 android:text="Add Da"
+                android:textAllCaps="false"
                 android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.79"
+                app:layout_constraintVertical_bias="0.8"
                 app:srcCompat="@drawable/ic_add_ml_action" />
 
             <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -79,13 +81,14 @@
                 android:clickable="true"
                 android:contentDescription="Add ML"
                 android:text="Add ML"
+                android:textAllCaps="false"
                 android:visibility="invisible"
                 app:layout_constraintBottom_toTopOf="@+id/fabAddBlock"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/fabAddDataAnalysisBlock"
-                app:layout_constraintVertical_bias="0.79"
+                app:layout_constraintVertical_bias="0.8"
                 app:srcCompat="@drawable/ic_add_ml_action" />
 
             <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -97,11 +100,12 @@
                 android:clickable="true"
                 android:contentDescription="Add Item"
                 android:text="Add Block"
+                android:textAllCaps="false"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintVertical_bias="0.79"
+                app:layout_constraintVertical_bias="0.8"
                 app:srcCompat="@drawable/ic_add_ml_action" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

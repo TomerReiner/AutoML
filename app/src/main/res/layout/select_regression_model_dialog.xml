@@ -16,6 +16,7 @@
         android:shadowDy="0"
         android:shadowRadius="5"
         android:text="@string/decision_tree_regressor"
+        android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
@@ -34,6 +35,7 @@
         android:shadowDy="0"
         android:shadowRadius="5"
         android:text="@string/random_forest_regressor"
+        android:textAllCaps="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnDecisionTreeRegressor" />
@@ -49,6 +51,7 @@
         android:shadowDy="0"
         android:shadowRadius="5"
         android:text="@string/linear_regression"
+        android:textAllCaps="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnRandomForestRegressor" />
@@ -64,6 +67,7 @@
         android:shadowDy="0"
         android:shadowRadius="5"
         android:text="@string/svr"
+        android:textAllCaps="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnLinearRegression" />
@@ -79,6 +83,7 @@
         android:shadowDy="0"
         android:shadowRadius="5"
         android:text="@string/elastic_net_cv"
+        android:textAllCaps="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
