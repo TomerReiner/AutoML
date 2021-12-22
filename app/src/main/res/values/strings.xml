@@ -18,5 +18,10 @@
     <string name="elastic_net_cv">Elastic Net CV</string>
     <string name="sign_out">Sign Out</string>
     <string name="sign_in">Sign In</string>
+    <string name="remove_column">Remove Column</string>
+    <string name="normalize_column">Normalize Column</string>
+    <string name="encode_column">Encode Column</string>
+    <string name="drop_na">Drop NA</string>
+    <string name="fill_na">Fill NA</string>
 
 </resources>

@@ -4,11 +4,15 @@ import android.app.Dialog;
 import android.content.Context;
 import android.widget.Button;
 
+/**
+ * This class handles the creation of the select ML model dialog.
+ * @see R.layout#select_ml_model_type_dialog
+ * @see R.layout#select_classification_model_dialog
+ * @see R.layout#select_regression_model_dialog
+ */
 public class SelectMLModelDialog {
 
     private Context context;
-    private Button btnClassificationModel;
-    private Button btnRegressionModel;
 
     public SelectMLModelDialog(Context context) {
         this.context = context;
@@ -27,8 +31,8 @@ public class SelectMLModelDialog {
         Dialog dialog = new Dialog(this.context);
         dialog.setContentView(R.layout.select_ml_model_type_dialog);
 
-        btnClassificationModel = dialog.findViewById(R.id.btnClassificationModel);
-        btnRegressionModel = dialog.findViewById(R.id.btnRegressionModel);
+        Button btnClassificationModel = dialog.findViewById(R.id.btnClassificationModel);
+        Button btnRegressionModel = dialog.findViewById(R.id.btnRegressionModel);
 
         String[] selectedModel = {""};
 

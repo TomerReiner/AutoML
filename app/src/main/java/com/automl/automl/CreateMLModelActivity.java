@@ -36,7 +36,9 @@ public class CreateMLModelActivity extends AppCompatActivity {
 
     private DatabaseManager databaseManager;
 
-    private SelectMLModelDialog selectMLModelDialog; // This class manages the ML Model selection.
+    private SelectMLModelDialog selectMLModelDialog; // This object will manage the ML Model selection.
+
+    private SelectDADialog selectDADialog; // This object will manage the selection of a DA action.
 
     // Animation resources to make the opening of the floating action buttons nicer.
     private Animation fromButtonAnim;
@@ -82,6 +84,8 @@ public class CreateMLModelActivity extends AppCompatActivity {
 
         selectMLModelDialog = new SelectMLModelDialog(CreateMLModelActivity.this);
 
+        selectDADialog = new SelectDADialog(CreateMLModelActivity.this);
+
         fabAddBlock = findViewById(R.id.fabAddBlock);
         fabAddMLModelBlock = findViewById(R.id.fabAddMLModelBlock);
         fabAddDataAnalysisBlock = findViewById(R.id.fabAddDataAnalysisBlock);
@@ -96,6 +100,10 @@ public class CreateMLModelActivity extends AppCompatActivity {
 
         fabAddMLModelBlock.setOnClickListener(view ->
                 selectMLModelDialog.createSelectMlModelDialog()
+        );
+
+        fabAddDataAnalysisBlock.setOnClickListener(view ->
+            selectDADialog.createSelectDADialog()
         );
 
         btnLoadFile.setOnClickListener(view -> {
@@ -136,22 +144,6 @@ public class CreateMLModelActivity extends AppCompatActivity {
             return true;
         return super.onOptionsItemSelected(item);
     }
-
-//    private boolean isNetworkAvailable() {
-//        ConnectivityManager manager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-//
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-//            NetworkCapabilities capabilities = manager.getNetworkCapabilities(manager.getActiveNetwork());
-//            if (capabilities != null)
-//                return capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI);
-//
-//        }
-//        else {
-//            return manager.getActiveNetworkInfo() != null && manager.getActiveNetworkInfo().isConnected();
-//        }
-//        return false;
-//    }
-
 
     /**
      * This function handles the opening of <code>fabAddMLModelBlock</code> and <code>fabAddDataAnalysisBlock</code>.

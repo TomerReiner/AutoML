@@ -29,29 +29,22 @@
             android:layout_height="wrap_content"
             android:text="Load File"
             android:textAllCaps="false"
-            app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/etFilename"
             app:layout_constraintVertical_bias="0.0" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout"
+        <ScrollView
+            android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etFilename"
-            app:layout_constraintVertical_bias="1.0">
-
-            <ScrollView
-                android:id="@+id/scrollView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-<!--                TODO - create a block-->
-            </ScrollView>
+            app:layout_constraintTop_toBottomOf="@+id/btnLoadFile">
+            <!--                TODO - create a block-->
+        </ScrollView>
 
             <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                 android:id="@+id/fabAddDataAnalysisBlock"
@@ -107,8 +100,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintVertical_bias="0.8"
                 app:srcCompat="@drawable/ic_add_ml_action" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
