@@ -1,5 +1,6 @@
 package com.automl.automl;
 
+import com.automl.automl.blocks.Block;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -66,13 +67,13 @@ public class DatabaseManager {
     /**
      * This function adds a ML Model to the database. THe model will be added to the user's model.
      * @param email The email of the user.
-     * @param mlModel The ML Model to add.
+     * @param mlBlock The ML Model to add.
      */
-    public void AddMLModel(String email, MLModel mlModel) {
+    public void AddMLModel(String email, Block mlBlock) {
         FirebaseDatabase db = FirebaseDatabase.getInstance();
         DatabaseReference ref = db.getReference().child(email);
 
-        ref.push().setValue(mlModel);
+        ref.push().setValue(mlBlock);
     }
 
 }

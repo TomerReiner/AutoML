@@ -3,6 +3,11 @@
     <string name="open">open</string>
     <string name="close">close</string>
 
+    <string name="column">column</string>
+    <string name="da">DA</string>
+    <string name="ml">ML</string>
+    <string name="fill_na">Fill NA</string>
+
     <!-- Classification ML Models   -->
     <string name="decision_tree_classifier">Decision Tree Classifier</string>
     <string name="random_forest_classifier">Random Forest Classifier</string>
@@ -18,6 +23,7 @@
     <string name="elastic_net_cv">Elastic Net CV</string>
     <string name="sign_out">Sign Out</string>
     <string name="sign_in">Sign In</string>
+
     <string name="remove_column">Remove Column</string>
     <string name="normalize_column">Normalize Column</string>
     <string name="encode_column">Encode Column</string>

@@ -98,13 +98,15 @@ public class CreateMLModelActivity extends AppCompatActivity {
             onAddItemClicked();
         });
 
-        fabAddMLModelBlock.setOnClickListener(view ->
-                selectMLModelDialog.createSelectMlModelDialog()
-        );
+        fabAddMLModelBlock.setOnClickListener(view -> {
+            String mlModel = selectMLModelDialog.createSelectMlModelDialog();
 
-        fabAddDataAnalysisBlock.setOnClickListener(view ->
-            selectDADialog.createSelectDADialog()
-        );
+        });
+
+        fabAddDataAnalysisBlock.setOnClickListener(view -> {
+            String daAction = selectDADialog.createSelectDADialog();
+
+        });
 
         btnLoadFile.setOnClickListener(view -> {
             FirebaseUser user = databaseManager.getUser();
@@ -120,13 +122,10 @@ public class CreateMLModelActivity extends AppCompatActivity {
                 Toast.makeText(CreateMLModelActivity.this, "Please enter a filename.", Toast.LENGTH_SHORT).show();
                 return;
             }
-
             boolean isURL = URLUtil.isValidUrl(filename);
 
             Toast.makeText(CreateMLModelActivity.this, "" + isURL, Toast.LENGTH_SHORT).show();
-
         });
-
     }
 
     @Override

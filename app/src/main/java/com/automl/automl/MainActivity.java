@@ -13,14 +13,16 @@ import android.view.MenuItem;
 import com.google.android.material.navigation.NavigationView;
 /**
  * TODO - tasks
- * 1) Make signup work - partially done.
- * 2) DA blocks - partially done.
- * 3) Add MyModels for each user - partially done.
- * 4) Account Settings - change password, delete data, delete user, block notifications.
- * 5) Download file.
- * 6) Add blocks animation.
- * 7) Add python connection
- * 8) My models activity.
+ * 1) Make signup work - partially done. finish during this weekend
+ * 2) Account Settings - change password, delete data, delete user, block notifications. finish during this weekend
+ * 3) DA blocks - DONE
+ * 4) Download file and read it. finish until 15.1
+ * 5) ML Models configuration dialogs - finish by 20.1.
+ * 6) Add blocks animation. finish until 23.1
+ * 7) My models activity. finish by 30.1
+ * 8) Add MyModels for each user - partially done. finish by 10.2
+ * 9) Add python connection. finish until 10.3
+
  */
 public class MainActivity extends AppCompatActivity {
 
