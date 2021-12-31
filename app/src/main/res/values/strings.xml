@@ -6,7 +6,7 @@
     <string name="column">column</string>
     <string name="da">DA</string>
     <string name="ml">ML</string>
-    <string name="fill_na">Fill NA</string>
+    <string name="fill_na_block">Fill NA</string>
 
     <!-- Classification ML Models   -->
     <string name="decision_tree_classifier">Decision Tree Classifier</string>

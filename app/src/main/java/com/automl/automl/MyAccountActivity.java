@@ -7,6 +7,8 @@ import android.widget.Button;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseUser;
+
 public class MyAccountActivity extends AppCompatActivity {
 
     private TextView tvEmail;
@@ -30,6 +32,12 @@ public class MyAccountActivity extends AppCompatActivity {
 
         databaseManager = new DatabaseManager();
 
-        tvEmail.setText(tvEmail.getText().toString() + databaseManager.getUser().getEmail());
+        FirebaseUser user = databaseManager.getUser();
+
+        tvEmail.setText(tvEmail.getText().toString() + user.getEmail());
+
+        btnChangePassword.setOnClickListener(view -> {
+            databaseManager.changePassword(user.getEmail());
+        });
     }
 }

@@ -13,8 +13,8 @@ import android.view.MenuItem;
 import com.google.android.material.navigation.NavigationView;
 /**
  * TODO - tasks
- * 1) Make signup work - partially done. finish during this weekend
- * 2) Account Settings - change password, delete data, delete user, block notifications. finish during this weekend
+ * 1) Make signup work - DONE
+ * 2) Account Settings - change password, delete data, delete user, block notifications. finish change password and delete user during the weekend, finish the rest right after finishing task #8
  * 3) DA blocks - DONE
  * 4) Download file and read it. finish until 15.1
  * 5) ML Models configuration dialogs - finish by 20.1.

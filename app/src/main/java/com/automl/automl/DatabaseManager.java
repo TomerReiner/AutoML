@@ -1,6 +1,14 @@
 package com.automl.automl;
 
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
 import com.automl.automl.blocks.Block;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -31,14 +39,7 @@ public class DatabaseManager {
         if (email.length() == 0 || password.length() == 0)
             return false;
 
-        boolean[] b = {false};
-
-        this.auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
-            if (task.isSuccessful())
-                b[0] = true;
-            if (task.isComplete()) // TODO - try to remove.
-                b[0] = true;
-        });
+        this.auth.signInWithEmailAndPassword(email, password);
         return true;
     }
 
@@ -56,7 +57,11 @@ public class DatabaseManager {
         if (email.length() == 0 || password.length() == 0)
             return false;
 
-        this.auth.createUserWithEmailAndPassword(email, password);
+        boolean[] b = {false};
+
+        this.auth.createUserWithEmailAndPassword(email, password).addOnSuccessListener(task -> {
+            b[0] = true;
+        });
         return true;
     }
 
@@ -69,11 +74,19 @@ public class DatabaseManager {
      * @param email The email of the user.
      * @param mlBlock The ML Model to add.
      */
-    public void AddMLModel(String email, Block mlBlock) {
+    public void addMLModel(String email, Block mlBlock) {
         FirebaseDatabase db = FirebaseDatabase.getInstance();
         DatabaseReference ref = db.getReference().child(email);
 
         ref.push().setValue(mlBlock);
+    }
+
+    /**
+     * This function sends a change-password email to <code>email</code>.
+     * @param email The email of the user. A change password email will be sent to this address.
+     */
+    public void changePassword(String email) {
+        this.auth.sendPasswordResetEmail(email);
     }
 
 }

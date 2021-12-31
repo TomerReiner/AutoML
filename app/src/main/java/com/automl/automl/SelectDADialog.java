@@ -106,10 +106,10 @@ public class SelectDADialog {
         HashMap<String, Object> map = new HashMap<>();
         map.put(context.getString(R.string.column), selectedColumn);
 
-        if (daAction.equals(context.getString(R.string.fill_na))) {
+        if (daAction.equals(context.getString(R.string.fill_na_block))) {
             spinnerSelectFillNAOptions.setVisibility(View.VISIBLE);
             String selectedFillNAAction = (String) spinnerSelectFillNAOptions.getItemAtPosition(spinnerSelectFillNAOptions.getSelectedItemPosition());
-            map.put(context.getString(R.string.fill_na), selectedFillNAAction);
+            map.put(context.getString(R.string.fill_na_block), selectedFillNAAction);
         }
         return new Block(map, context.getString(R.string.da), daAction);
     }
