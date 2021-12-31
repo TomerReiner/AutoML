@@ -6,7 +6,10 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -100,13 +103,13 @@ public class CreateMLModelActivity extends AppCompatActivity {
 
         fabAddMLModelBlock.setOnClickListener(view -> {
             String mlModel = selectMLModelDialog.createSelectMlModelDialog();
-
         });
 
         fabAddDataAnalysisBlock.setOnClickListener(view -> {
             String daAction = selectDADialog.createSelectDADialog();
-
         });
+
+        Log.e("HERE", isNetworkAvailable() + "");
 
         btnLoadFile.setOnClickListener(view -> {
             FirebaseUser user = databaseManager.getUser();
@@ -124,7 +127,9 @@ public class CreateMLModelActivity extends AppCompatActivity {
             }
             boolean isURL = URLUtil.isValidUrl(filename);
 
-            Toast.makeText(CreateMLModelActivity.this, "" + isURL, Toast.LENGTH_SHORT).show();
+            if (isURL) {
+
+            }
         });
     }
 
@@ -171,5 +176,11 @@ public class CreateMLModelActivity extends AppCompatActivity {
         }
 
         clickedFabAddItem = !clickedFabAddItem;
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager manager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        NetworkInfo info = manager.getActiveNetworkInfo();
+        return info != null && info.isConnected();
     }
 }
