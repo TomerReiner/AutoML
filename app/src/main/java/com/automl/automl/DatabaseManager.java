@@ -89,4 +89,14 @@ public class DatabaseManager {
         this.auth.sendPasswordResetEmail(email);
     }
 
+    /**
+     * This function deletes the current user.
+     * @return <code>true</code> if the user was successfully deleted, <code>false</code> otherwise.
+     */
+    public boolean deleteUser() {
+        FirebaseUser currentUser = this.getUser();
+        currentUser.delete();
+        return true;
+    }
+
 }

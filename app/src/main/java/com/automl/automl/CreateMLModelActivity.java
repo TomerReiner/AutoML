@@ -8,6 +8,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -23,6 +24,9 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class CreateMLModelActivity extends AppCompatActivity {
 
@@ -57,6 +61,9 @@ public class CreateMLModelActivity extends AppCompatActivity {
     private Button btnLoadFile;
 
     private boolean clickedFabAddItem = false;
+
+    private FileManager fileManager;
+    private HashMap<String, ArrayList<String>> dataset = new HashMap<>(); // This hashmap will store the dataset.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,8 +104,11 @@ public class CreateMLModelActivity extends AppCompatActivity {
         btnLoadFile = findViewById(R.id.btnLoadFile);
         // TODO - load the file from the documents folder or from a url.
 
+        fileManager = new FileManager(dataset);
+
         fabAddBlock.setOnClickListener(view -> {
             onAddItemClicked();
+            System.out.println(fileManager.getDataset());
         });
 
         fabAddMLModelBlock.setOnClickListener(view -> {
@@ -127,10 +137,10 @@ public class CreateMLModelActivity extends AppCompatActivity {
             }
             boolean isURL = URLUtil.isValidUrl(filename);
 
-            if (isURL) {
-
-            }
+            if (isURL)
+                fileManager.execute(filename); // TODO - make hashmap work.
         });
+
     }
 
     @Override
