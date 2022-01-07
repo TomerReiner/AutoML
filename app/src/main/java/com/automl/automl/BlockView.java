@@ -8,8 +8,6 @@ import android.widget.TextView;
 
 import com.automl.automl.blocks.Block;
 
-import org.w3c.dom.Text;
-
 import java.util.HashMap;
 
 /**
@@ -21,9 +19,9 @@ import java.util.HashMap;
  * The attributes vary between each ML Model and DA.
  */
 public class BlockView {
-    private Context context;
+    private final Context context;
 
-    private ScrollView scrollView;
+    private final ScrollView scrollView;
 
     public BlockView(Context context, ScrollView scrollView) {
         this.context = context;
@@ -34,7 +32,7 @@ public class BlockView {
      * This function will create a block with <code>attributes.size()</code> text views. In addition,
      * the block will also have a title to indicate whether it's a DA block or ML block.
      * @param block A block with attributes.
-     * @return A {@link LinearLayout} with all the atrributes of the block displayed in {@link android.widget.TextView}.
+     * @return A {@link LinearLayout} with all the attributes of the block displayed in {@link android.widget.TextView}.
      * @see Block
      */
     private LinearLayout createBlock(Block block) {

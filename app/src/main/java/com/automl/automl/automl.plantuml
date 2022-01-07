@@ -1,0 +1,201 @@
+@startuml
+
+title __AUTOML's Class Diagram__\n
+
+  namespace com.automl.automl {
+    class com.automl.automl.AccountManager {
+        - context : Context
+        - user : FirebaseUser
+        + AccountManager()
+        + openAccountManagerDialog()
+        - createSignInAuthDialog()
+        - createSignInDialog()
+        - createSignUpDialog()
+    }
+  }
+  
+
+  namespace com.automl.automl {
+    class com.automl.automl.BlockView {
+        - context : Context
+        - scrollView : ScrollView
+        + BlockView()
+        + addBlock()
+        - createBlock()
+        - setAttributesForTextView()
+    }
+  }
+  
+
+  namespace com.automl.automl {
+    class com.automl.automl.CreateMLModelActivity {
+        {static} + TAG : String
+        - actionBar : ActionBar
+        - btnLoadFile : Button
+        - clickedFabAddItem : boolean
+        - dataset : HashMap<String, ArrayList<String>>
+        - drawerLayout : DrawerLayout
+        - drawerToggle : ActionBarDrawerToggle
+        - etFilename : EditText
+        - fabAddBlock : ExtendedFloatingActionButton
+        - fabAddDataAnalysisBlock : ExtendedFloatingActionButton
+        - fabAddMLModelBlock : ExtendedFloatingActionButton
+        - fromButtonAnim : Animation
+        - navigationView : NavigationView
+        - rotateCloseAnim : Animation
+        - rotateOpenAnim : Animation
+        - toButtonAnim : Animation
+        + onCreateOptionsMenu()
+        + onOptionsItemSelected()
+        # onCreate()
+        - isNetworkAvailable()
+        - onAddItemClicked()
+    }
+  }
+  
+
+  namespace com.automl.automl {
+    class com.automl.automl.DatabaseManager {
+        {static} + PHONE_NUM : String
+        - auth : FirebaseAuth
+        + DatabaseManager()
+        + addMLModel()
+        + changePassword()
+        + deleteUser()
+        + generateVerificationCode()
+        + getUser()
+        + sendVerificationCode()
+        + signIn()
+        + signOut()
+        + signUp()
+    }
+  }
+  
+
+  namespace com.automl.automl {
+    class com.automl.automl.FileManager {
+        {static} - SPLIT : String
+        - dataset : HashMap<String, ArrayList<String>>
+        + FileManager()
+        + getDataset()
+        # doInBackground()
+        - readFile()
+    }
+  }
+  
+
+  namespace com.automl.automl {
+    class com.automl.automl.MLModel {
+        - attributes : HashMap<String, Object>
+        + MLModel()
+        + getAttributes()
+        + getMlModelType()
+        + setAttributes()
+        + setMlModelType()
+    }
+  }
+  
+
+  namespace com.automl.automl {
+    enum MLModelType {
+      DECISION_TREE_CLASSIFIER
+      DECISION_TREE_REGRESSOR
+      ELASTIC_NET_CV
+      K_NEAREST_NEIGHBORS
+      LINEAR_REGRESSION
+      NAIVE_BAYES
+      RANDOM_FOREST_CLASSIFIER
+      RANDOM_FOREST_REGRESSOR
+      SCV
+      SVR
+    }
+  }
+  
+
+  namespace com.automl.automl {
+    class com.automl.automl.MainActivity {
+        {static} + TAG : String
+        - actionBar : ActionBar
+        - drawerLayout : DrawerLayout
+        - drawerToggle : ActionBarDrawerToggle
+        - navigationView : NavigationView
+        + onCreateOptionsMenu()
+        + onOptionsItemSelected()
+        # onCreate()
+    }
+  }
+  
+
+  namespace com.automl.automl {
+    class com.automl.automl.MenuManager {
+        - context : Context
+        - navigationView : NavigationView
+        - tag : String
+        + MenuManager()
+        + switchActivity()
+        - getActivityNameForItemId()
+    }
+  }
+  
+
+  namespace com.automl.automl {
+    class com.automl.automl.MyAccountActivity {
+        - btnChangePassword : Button
+        - btnDeleteAccount : Button
+        - btnDeleteData : Button
+        - originalActivity : Context
+        - switchBlockNotifications : Switch
+        - tvEmail : TextView
+        # onCreate()
+    }
+  }
+  
+
+  namespace com.automl.automl {
+    class com.automl.automl.SelectDADialog {
+        {static} + FILL_NA_ACTIONS : String[]
+        - context : Context
+        + SelectDADialog()
+        + createSelectDAConfigurationDialog()
+        + createSelectDADialog()
+        - setSpinnerItems()
+    }
+  }
+  
+
+  namespace com.automl.automl {
+    class com.automl.automl.SelectMLModelDialog {
+        - context : Context
+        + SelectMLModelDialog()
+        + createSelectMlModelDialog()
+        - createSelectClassificationModelDialog()
+        - createSelectRegressionModelDialog()
+    }
+  }
+  
+
+  com.automl.automl.AccountManager o-- com.automl.automl.DatabaseManager : manager
+  com.automl.automl.CreateMLModelActivity -up-|> androidx.appcompat.app.AppCompatActivity
+  com.automl.automl.CreateMLModelActivity o-- com.automl.automl.AccountManager : accountManager
+  com.automl.automl.CreateMLModelActivity o-- com.automl.automl.DatabaseManager : databaseManager
+  com.automl.automl.CreateMLModelActivity o-- com.automl.automl.FileManager : fileManager
+  com.automl.automl.CreateMLModelActivity o-- com.automl.automl.MenuManager : menuManager
+  com.automl.automl.CreateMLModelActivity o-- com.automl.automl.SelectDADialog : selectDADialog
+  com.automl.automl.CreateMLModelActivity o-- com.automl.automl.SelectMLModelDialog : selectMLModelDialog
+  com.automl.automl.FileManager -up-|> android.os.AsyncTask
+  com.automl.automl.MLModel o-- com.automl.automl.MLModelType : mlModelType
+  com.automl.automl.MainActivity -up-|> androidx.appcompat.app.AppCompatActivity
+  com.automl.automl.MainActivity o-- com.automl.automl.AccountManager : accountManager
+  com.automl.automl.MainActivity o-- com.automl.automl.MenuManager : menuManager
+  com.automl.automl.MyAccountActivity -up-|> androidx.appcompat.app.AppCompatActivity
+  com.automl.automl.MyAccountActivity o-- com.automl.automl.DatabaseManager : databaseManager
+
+
+right footer
+
+
+PlantUML diagram generated by SketchIt! (https://bitbucket.org/pmesmeur/sketch.it)
+For more information about this tool, please contact philippe.mesmeur@gmail.com
+endfooter
+
+@enduml

@@ -3,7 +3,6 @@ package com.automl.automl;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,19 +22,20 @@ import com.google.firebase.auth.FirebaseUser;
  */
 public class AccountManager {
 
-    private Context context;
-    private DatabaseManager manager;
-    private FirebaseUser user = null;
+    private final Context context;
+    private final DatabaseManager manager;
+    private FirebaseUser user;
 
     public AccountManager(Context context) {
         this.context = context;
         this.manager = new DatabaseManager();
+        this.user = manager.getUser();
     }
 
     /**
      * This function opens a dialog where the user will select account-related actions.
      */
-    public String openAccountManagerDialog() {
+    public void openAccountManagerDialog() {
         Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.account_manager_dialog);
         dialog.setCancelable(true);
@@ -80,7 +80,38 @@ public class AccountManager {
         });
 
         dialog.show();
-        return null;
+    }
+
+    /**
+     * This function creates the sign up dialog.
+     */
+    private void createSignUpDialog() {
+        Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.sign_up_dialog);
+        dialog.setCancelable(true);
+
+        EditText etEmail = dialog.findViewById(R.id.etSignUpEmail);
+        EditText etPhone = dialog.findViewById(R.id.etPhone);
+        EditText etPassword = dialog.findViewById(R.id.etSignUpPassword);
+        EditText etRetypePassword = dialog.findViewById(R.id.etSignUpRetypePassword);
+        Button btnSignUp = dialog.findViewById(R.id.btnSignUp);
+
+        btnSignUp.setOnClickListener(view -> {
+            String email = etEmail.getText().toString();
+            String phone = etPhone.getText().toString();
+            String password = etPassword.getText().toString();
+            String retypePassword = etRetypePassword.getText().toString();
+
+            boolean hasSuccessfullySignedUp = this.manager.signUp(email, phone, password, retypePassword);
+
+            if (hasSuccessfullySignedUp) { // If a new user was created.
+                Toast.makeText(context, "Welcome!", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            }
+            else
+                Toast.makeText(context, "Something went wrong.", Toast.LENGTH_SHORT).show();
+        });
+        dialog.show();
     }
 
     /**
@@ -96,56 +127,78 @@ public class AccountManager {
         EditText etPassword = dialog.findViewById(R.id.etSignInPassword);
         Button btnSignIn = dialog.findViewById(R.id.btnSignIn);
 
+        dialog.setOnCancelListener(dialogInterface -> this.manager.signOut()); // Prevent security breaches.
+
         btnSignIn.setOnClickListener(view -> {
             String email = etEmail.getText().toString();
             String password = etPassword.getText().toString();
 
-            boolean hasSuccessfullySignedIn;
+            boolean hasSuccessfullySignedIn = this.manager.signIn(email, password);
 
-            hasSuccessfullySignedIn = this.manager.signIn(email, password);
-// TODO - fix double click problem
-            if (hasSuccessfullySignedIn) { // Greet the user.
-                this.user = this.manager.getUser();
-                if (this.user != null) { // If the user is not null, then there is a user logged in. Therefore, the option of signing in will be blocked until the user logs out.
-                    btnSignInSignOut.setText(context.getString(R.string.sign_out));
-                    Toast.makeText(context, "Welcome Back!", Toast.LENGTH_SHORT).show();
-                    dialog.dismiss();
-                } else { // If there isn't a user logged in the access to the account management activity is blocked.
-                    btnAccountSettings.setVisibility(View.INVISIBLE);
-                    Toast.makeText(context, "Something went wrong. Please make sure the email and passwords are correct.", Toast.LENGTH_SHORT).show();
-                }
-            }
+            if (hasSuccessfullySignedIn)
+                createSignInAuthDialog(dialog, btnSignInSignOut, btnAccountSettings, email, password);
+            else
+                Toast.makeText(context, "Incorrect Email or Password", Toast.LENGTH_SHORT).show();
+
         });
         dialog.show();
     }
 
     /**
-     * This function creates the sign up dialog.
+     * This function creates a dialog where the user will type their verification code sent via SMS.
+     * The function will re-login the user once the verification process was completed.
+     * @param signInDialog The signIn dialog.
+     * @param btnSignInSignOut A button to change its text - sign in or sign out.
+     * @param  btnAccountSettings A button to change its visibility.
+     * @param email The email of the user.
+     * @param password The password of the user.
+     * @see DatabaseManager#sendVerificationCode(Context, String, String)
      */
-    private void createSignUpDialog() {
+    private void createSignInAuthDialog(Dialog signInDialog, Button btnSignInSignOut, Button btnAccountSettings, String email, String password) {
         Dialog dialog = new Dialog(context);
-        dialog.setContentView(R.layout.sign_up_dialog);
+        dialog.setContentView(R.layout.sign_in_verification_dialog);
         dialog.setCancelable(true);
 
-        EditText etEmail = dialog.findViewById(R.id.etSignUpEmail);
-        EditText etPassword = dialog.findViewById(R.id.etSignUpPassword);
-        EditText etRetypePassword = dialog.findViewById(R.id.etSignUpRetypePassword);
-        Button btnSignUp = dialog.findViewById(R.id.btnSignUp);
+        this.manager.signOut();
 
-        btnSignUp.setOnClickListener(view -> {
-            String email = etEmail.getText().toString();
-            String password = etPassword.getText().toString();
-            String retypePassword = etRetypePassword.getText().toString();
+        String verificationCode = this.manager.generateVerificationCode();
+        this.manager.sendVerificationCode(context, email, verificationCode);
 
-            boolean hasSuccessfullySignedUp = this.manager.signUp(email, password, retypePassword);
+        boolean[] b = {false}; // The result of this function.
 
-            if (hasSuccessfullySignedUp) { // If a new user was created.
-                Toast.makeText(context, "Welcome!", Toast.LENGTH_SHORT).show();
+        EditText etVerify = dialog.findViewById(R.id.etVerify);
+        Button btnVerify = dialog.findViewById(R.id.btnVerify);
+
+        btnVerify.setOnClickListener(view -> {
+            String insertedCode = etVerify.getText().toString(); // The code that the user has inserted.
+
+            if (insertedCode.equals(verificationCode)) { // If the code is correct then the user is signed in.
+                this.manager.signIn(email, password);
+                b[0] = true;
+
+                btnSignInSignOut.setText(context.getString(R.string.sign_out));
+                Toast.makeText(context, "Welcome Back!", Toast.LENGTH_SHORT).show();
+
                 dialog.dismiss();
+                signInDialog.dismiss();
             }
-            else
+            else {
+
+                this.manager.signOut(); // Prevent security breaches.
+                btnAccountSettings.setVisibility(View.INVISIBLE);
                 Toast.makeText(context, "Something went wrong.", Toast.LENGTH_SHORT).show();
+                btnSignInSignOut.setText(context.getString(R.string.sign_in));
+
+                dialog.dismiss();
+                signInDialog.dismiss();
+            }
         });
+
+        dialog.setOnCancelListener(dialogInterface -> {
+            this.manager.signOut();
+            signInDialog.dismiss();
+        }); // Prevent security breaches.
+
         dialog.show();
     }
 }

@@ -22,8 +22,9 @@ import com.google.android.material.navigation.NavigationView;
  * 7) My models activity. finish by 30.1
  * 8) Add MyModels for each user - partially done. finish by 10.2
  * 9) Add python connection. finish until 10.3
-
  */
+
+@SuppressWarnings("FieldCanBeLocal")
 public class MainActivity extends AppCompatActivity {
 
     public static final String TAG = MainActivity.class.getSimpleName();
@@ -74,8 +75,4 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
 }

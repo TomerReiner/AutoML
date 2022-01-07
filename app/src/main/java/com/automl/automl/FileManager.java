@@ -19,7 +19,7 @@ public class FileManager extends AsyncTask<String, Void, Void> {
 
     private static final String SPLIT = ",";
 
-    private HashMap<String, ArrayList<String>> dataset = new HashMap<>();
+    private HashMap<String, ArrayList<String>> dataset;
 
     public FileManager(HashMap<String, ArrayList<String>> dataset) {
         this.dataset = dataset;

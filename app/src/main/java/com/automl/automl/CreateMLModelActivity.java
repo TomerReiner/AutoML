@@ -8,7 +8,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -28,6 +27,7 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+@SuppressWarnings("FieldCanBeLocal")
 public class CreateMLModelActivity extends AppCompatActivity {
 
     public static final String TAG = CreateMLModelActivity.class.getSimpleName();

@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseUser;
 
+@SuppressWarnings("FieldCanBeLocal")
 public class MyAccountActivity extends AppCompatActivity {
 
     private TextView tvEmail;

@@ -1,23 +1,30 @@
 package com.automl.automl;
 
-import android.util.Log;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.telephony.SmsManager;
 
 import androidx.annotation.NonNull;
 
 import com.automl.automl.blocks.Block;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This class manages the database and all actions related to it.
  */
 public class DatabaseManager {
+
+    public static final String PHONE_NUM = "Phone Num";
 
     private FirebaseAuth auth;
 
@@ -39,29 +46,49 @@ public class DatabaseManager {
         if (email.length() == 0 || password.length() == 0)
             return false;
 
+        boolean[] b = {false}; // true - if the login was successful, false otherwise.
+
         this.auth.signInWithEmailAndPassword(email, password);
         return true;
     }
 
     /**
      * This function creates a new user.
+     * This function also inserts the phone number of the user into the database under a new username child.
+     * The phone number will be used to authenticate during sign in.
+     * Each user will be automatically assigned with a new username which will be the hash code of their email.
+     * For example:
+     * <pre>
+     * Email = sample.email@gmail.com
+     * Username = sample.email
+     * </pre>
      * @param email The email of the user.
+     * @param phone The phone number of the user.
      * @param password The password of the user.
      * @param retypePassword The password of the user.
      * @return <code>true</code> if the user was successfully created <code>false</code> otherwise.
      */
-    public boolean signUp(String email, String password, String retypePassword) {
+    public boolean signUp(String email, String phone, String password, String retypePassword) {
         if (!password.equals(retypePassword))
             return false;
 
         if (email.length() == 0 || password.length() == 0)
             return false;
 
-        boolean[] b = {false};
+        if (!phone.matches("\\d+") || phone.length() != 10)
+            return false;
 
-        this.auth.createUserWithEmailAndPassword(email, password).addOnSuccessListener(task -> {
-            b[0] = true;
-        });
+        this.auth.createUserWithEmailAndPassword(email, password);
+        signIn(email, password);
+
+        FirebaseDatabase db = FirebaseDatabase.getInstance("https://myml-4f150-default-rtdb.europe-west1.firebasedatabase.app");
+        DatabaseReference ref = db.getReference().child("users");
+
+        Map<Object, Object> map = new HashMap<>();
+        map.put(PHONE_NUM, phone);
+
+        ref.child("" + email.hashCode()).setValue(map); // Save the phone number in the database for further usage.
+
         return true;
     }
 
@@ -91,12 +118,65 @@ public class DatabaseManager {
 
     /**
      * This function deletes the current user.
-     * @return <code>true</code> if the user was successfully deleted, <code>false</code> otherwise.
      */
-    public boolean deleteUser() {
+    public void deleteUser() {
         FirebaseUser currentUser = this.getUser();
+
+        FirebaseDatabase db = FirebaseDatabase.getInstance("https://myml-4f150-default-rtdb.europe-west1.firebasedatabase.app");
+        DatabaseReference ref = db.getReference().child("users").child("" + currentUser.getEmail().hashCode());
+        ref.removeValue();
+
         currentUser.delete();
-        return true;
     }
 
+
+    /**
+     * This function sends a verification SMS to the user.
+     * @param email The email of the user from which we can get the username.
+     * The user's phone number is stored in the database.
+     * @param verificationCode 6 Digits long verification code.
+     * @see #signUp(String, String, String, String)
+     */
+    public void sendVerificationCode(Context context, String email, String verificationCode) {
+
+        boolean[] b = {false}; // If the massage was successfully sent.
+
+        String username = "" + email.hashCode();
+
+        FirebaseDatabase db = FirebaseDatabase.getInstance("https://myml-4f150-default-rtdb.europe-west1.firebasedatabase.app");
+        DatabaseReference ref = db.getReference().child("users");
+
+        ref.orderByKey().equalTo(username).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Map map = (Map) snapshot.getValue();
+
+                HashMap<String, String> m = (HashMap<String, String>) map.get(username);
+                String phone = m.get(PHONE_NUM);
+
+                try {
+                    SmsManager manager = SmsManager.getDefault();
+                    PendingIntent sentIntent = PendingIntent.getBroadcast(context, 0, new Intent("SMS_SENT"), 0);
+                    manager.sendTextMessage(phone, null, verificationCode + " is your verification code.", sentIntent, null);
+                    b[0] = true;
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+    }
+
+    /**
+     * This function generates a 6 digits long verification code.
+     * @return The verification code.
+     */
+    public String generateVerificationCode() {
+        int x = (int) (Math.random() * (999999 - 100000 + 1)) + 100000;
+        return "" + x;
+    }
 }
