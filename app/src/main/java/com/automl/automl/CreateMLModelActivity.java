@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.automl.automl.blocks.Block;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseUser;
@@ -116,7 +117,13 @@ public class CreateMLModelActivity extends AppCompatActivity {
         });
 
         fabAddDataAnalysisBlock.setOnClickListener(view -> {
-            String daAction = selectDADialog.createSelectDADialog();
+            if (dataset.equals(new HashMap<>())) {
+                Toast.makeText(CreateMLModelActivity.this, "Please make sure you have inserted a valid url.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            selectDADialog.createSelectDADialog(dataset.keySet());
+            Block block = selectDADialog.getBlock();
+            System.out.println(block);
         });
 
         Log.e("HERE", isNetworkAvailable() + "");

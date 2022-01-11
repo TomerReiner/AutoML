@@ -10,6 +10,7 @@ import android.widget.Spinner;
 import com.automl.automl.blocks.Block;
 
 import java.util.HashMap;
+import java.util.Set;
 
 /**
  * This class will handle the selection of the Data Analysis action.
@@ -18,18 +19,21 @@ import java.util.HashMap;
 public class SelectDADialog {
 
     private Context context;
+    private Block block; // This object will contain the generated block. If the block is empty, then it will be null.
+
 
     public static final String[] FILL_NA_ACTIONS = {"Max Value", "Min Value", "Average Value", "Default Value"};
 
     public SelectDADialog(Context context) {
         this.context = context;
+        this.block = null;
     }
 
     /**
      * This function creates a dialog where the user will select a data analysis action.
-     * @return The selected DA action.
+     * @param columns The columns in the dataset.
      */
-    public String createSelectDADialog() {
+    public void createSelectDADialog(Set<String> columns) {
         Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.select_da_dialog);
         dialog.setCancelable(true);
@@ -44,32 +48,29 @@ public class SelectDADialog {
 
         btnRemoveColumn.setOnClickListener(view -> {
             da[0] = context.getString(R.string.remove_column);
-            dialog.dismiss();
+            createSelectDAConfigurationDialog(dialog,da[0], columns);
         });
 
         btnNormalizeColumn.setOnClickListener(view -> {
             da[0] = context.getString(R.string.normalize_column);
-            dialog.dismiss();
+            createSelectDAConfigurationDialog(dialog,da[0], columns);
         });
 
         btnEncodeColumn.setOnClickListener(view -> {
             da[0] = context.getString(R.string.encode_column);
-            dialog.dismiss();
+            createSelectDAConfigurationDialog(dialog,da[0], columns);
         });
 
         btnDropNA.setOnClickListener(view -> {
             da[0] = context.getString(R.string.drop_na);
-            dialog.dismiss();
+            createSelectDAConfigurationDialog(dialog,da[0], columns);
         });
 
         btnFillNA.setOnClickListener(view -> {
             da[0] = context.getString(R.string.fill_na);
-            dialog.dismiss();
+            createSelectDAConfigurationDialog(dialog,da[0], columns);
         });
-
         dialog.show();
-
-        return da[0];
     }
 
     /**
@@ -78,40 +79,55 @@ public class SelectDADialog {
      * the user will only select the column for which they would like to apply the action on. For the action {@link R.id#btnDropNA},
      * The user will not select any further configuration because this action works on the entire dataset by default.
      * For the action {@link R.id#btnFillNA}, the user will select another configuration: How to fill the NA values(max value, min value, average value, most common value, default value).
+     * @param selectDADialog - The {@link Dialog} that was created in {@link #createSelectDADialog(Set)}. This function will only close it.
      * @param daAction The string name of the action.
-     * @param columns An array with the column names.
-     * @return A block with the configuration of the action.
+     * @param columns A set with the column names.
      * @see R.string
-     * @see #createSelectDADialog()
+     * @see #createSelectDADialog(Set)
      */
-    public Block createSelectDAConfigurationDialog(String daAction, String[] columns) {
+    private void createSelectDAConfigurationDialog(Dialog selectDADialog, String daAction, Set<String> columns) {
         Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.select_da_configuration_dialog);
         dialog.setCancelable(true);
 
-        if (daAction.equals(context.getString(R.string.drop_na))) {
-            HashMap<String, Object> map = new HashMap<>();
-            map.put(context.getString(R.string.column), "all");
-            return new Block(map, context.getString(R.string.da), daAction);
+        HashMap<String, Object> map = new HashMap<>(); // This map will store the configuration for the da block.
+
+        if (daAction.equals(context.getString(R.string.drop_na))) { // If the user would like to remove NA values.
+            map.put(context.getString(R.string.column), columns); // Add all the columns to the list.
+            this.block = new Block(map, context.getString(R.string.da), daAction);
+            dialog.dismiss();
+            selectDADialog.dismiss();
+            return;
         }
 
         Spinner spinnerSelectColumn = dialog.findViewById(R.id.spinnerSelectColumn);
         Spinner spinnerSelectFillNAOptions = dialog.findViewById(R.id.spinnerSelectFillNAOptions);
 
-        setSpinnerItems(spinnerSelectColumn, columns);
+        Button btnSelectDAConfig = dialog.findViewById(R.id.btnSelectDAConfig);
+
+        setSpinnerItems(spinnerSelectColumn, columns.toArray(new String[0]));
         setSpinnerItems(spinnerSelectFillNAOptions, FILL_NA_ACTIONS); // Set the items of the spinners.
 
         String selectedColumn = (String) spinnerSelectColumn.getItemAtPosition(spinnerSelectColumn.getSelectedItemPosition());
 
-        HashMap<String, Object> map = new HashMap<>();
         map.put(context.getString(R.string.column), selectedColumn);
 
-        if (daAction.equals(context.getString(R.string.fill_na_block))) {
-            spinnerSelectFillNAOptions.setVisibility(View.VISIBLE);
+        if (daAction.equals(context.getString(R.string.fill_na_block))) { // If the user wants to fill NA values.
+            spinnerSelectFillNAOptions.setVisibility(View.VISIBLE); // Showing the fill NA options for the user.
             String selectedFillNAAction = (String) spinnerSelectFillNAOptions.getItemAtPosition(spinnerSelectFillNAOptions.getSelectedItemPosition());
             map.put(context.getString(R.string.fill_na_block), selectedFillNAAction);
         }
-        return new Block(map, context.getString(R.string.da), daAction);
+// TODO - progress bar for 1 second.
+        btnSelectDAConfig.setOnClickListener(view -> {
+            this.block = new Block(map, context.getString(R.string.da), daAction);
+            dialog.dismiss();
+            selectDADialog.dismiss();
+        });
+
+        dialog.setOnCancelListener(dialogInterface -> { // If the dialog is canceled no block will be created.
+            selectDADialog.dismiss();
+        });
+        dialog.show();
     }
 
     /**
@@ -125,4 +141,7 @@ public class SelectDADialog {
         spinner.setAdapter(adapter);
     }
 
+    public Block getBlock() {
+        return this.block;
+    }
 }
