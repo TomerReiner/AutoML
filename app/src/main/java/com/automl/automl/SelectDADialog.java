@@ -5,10 +5,13 @@ import android.content.Context;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 
 import com.automl.automl.blocks.Block;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -19,14 +22,16 @@ import java.util.Set;
 public class SelectDADialog {
 
     private Context context;
-    private Block block; // This object will contain the generated block. If the block is empty, then it will be null.
-
+    private ScrollView scrollView;
+    private LinearLayout linearLayout;
+    private ArrayList<Block> blocks = new ArrayList<>(); // This array list will store all the blocksa for further usage by the python code.
 
     public static final String[] FILL_NA_ACTIONS = {"Max Value", "Min Value", "Average Value", "Default Value"};
 
-    public SelectDADialog(Context context) {
+    public SelectDADialog(Context context, ScrollView scrollView, LinearLayout linearLayout) {
         this.context = context;
-        this.block = null;
+        this.scrollView = scrollView;
+        this.linearLayout = linearLayout;
     }
 
     /**
@@ -94,7 +99,7 @@ public class SelectDADialog {
 
         if (daAction.equals(context.getString(R.string.drop_na))) { // If the user would like to remove NA values.
             map.put(context.getString(R.string.column), columns); // Add all the columns to the list.
-            this.block = new Block(map, context.getString(R.string.da), daAction);
+            Block block = new Block(map, context.getString(R.string.da), daAction);
             dialog.dismiss();
             selectDADialog.dismiss();
             return;
@@ -108,20 +113,25 @@ public class SelectDADialog {
         setSpinnerItems(spinnerSelectColumn, columns.toArray(new String[0]));
         setSpinnerItems(spinnerSelectFillNAOptions, FILL_NA_ACTIONS); // Set the items of the spinners.
 
-        String selectedColumn = (String) spinnerSelectColumn.getItemAtPosition(spinnerSelectColumn.getSelectedItemPosition());
 
-        map.put(context.getString(R.string.column), selectedColumn);
 
         if (daAction.equals(context.getString(R.string.fill_na_block))) { // If the user wants to fill NA values.
             spinnerSelectFillNAOptions.setVisibility(View.VISIBLE); // Showing the fill NA options for the user.
             String selectedFillNAAction = (String) spinnerSelectFillNAOptions.getItemAtPosition(spinnerSelectFillNAOptions.getSelectedItemPosition());
             map.put(context.getString(R.string.fill_na_block), selectedFillNAAction);
         }
-// TODO - progress bar for 1 second.
+
         btnSelectDAConfig.setOnClickListener(view -> {
-            this.block = new Block(map, context.getString(R.string.da), daAction);
-            dialog.dismiss();
+            String selectedColumn = (String) spinnerSelectColumn.getItemAtPosition(spinnerSelectColumn.getSelectedItemPosition());
+            map.put(context.getString(R.string.column), selectedColumn); // Add the relevant column
+
+            Block block = new Block(map, context.getString(R.string.da), daAction);
+            BlockView blockView = new BlockView(context, scrollView, linearLayout);
+            blockView.addBlock(block);
+            this.blocks.add(block);
+
             selectDADialog.dismiss();
+            dialog.dismiss();
         });
 
         dialog.setOnCancelListener(dialogInterface -> { // If the dialog is canceled no block will be created.
@@ -141,7 +151,7 @@ public class SelectDADialog {
         spinner.setAdapter(adapter);
     }
 
-    public Block getBlock() {
-        return this.block;
+    public ArrayList<Block> getBlocks() {
+        return blocks;
     }
 }

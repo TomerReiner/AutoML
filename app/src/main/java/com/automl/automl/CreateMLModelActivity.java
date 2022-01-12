@@ -18,6 +18,8 @@ import android.view.animation.AnimationUtils;
 import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.automl.automl.blocks.Block;
@@ -58,6 +60,9 @@ public class CreateMLModelActivity extends AppCompatActivity {
     private ExtendedFloatingActionButton fabAddMLModelBlock;
     private ExtendedFloatingActionButton fabAddDataAnalysisBlock;
 
+    private ScrollView scrollView;
+    private LinearLayout linearLayout;
+
     private EditText etFilename;
     private Button btnLoadFile;
 
@@ -83,9 +88,7 @@ public class CreateMLModelActivity extends AppCompatActivity {
 
         menuManager = new MenuManager(CreateMLModelActivity.this, TAG, navigationView);
         menuManager.switchActivity();
-
         accountManager = new AccountManager(CreateMLModelActivity.this);
-
         databaseManager = new DatabaseManager();
 
         fromButtonAnim = AnimationUtils.loadAnimation(CreateMLModelActivity.this, R.anim.from_bottom_anim);
@@ -93,9 +96,12 @@ public class CreateMLModelActivity extends AppCompatActivity {
         rotateOpenAnim = AnimationUtils.loadAnimation(CreateMLModelActivity.this, R.anim.rotate_open_anim);
         toButtonAnim = AnimationUtils.loadAnimation(CreateMLModelActivity.this, R.anim.to_bottom_anim);
 
+        scrollView = findViewById(R.id.scrollView);
+        linearLayout = findViewById(R.id.linearLayout);
+
         selectMLModelDialog = new SelectMLModelDialog(CreateMLModelActivity.this);
 
-        selectDADialog = new SelectDADialog(CreateMLModelActivity.this);
+        selectDADialog = new SelectDADialog(CreateMLModelActivity.this, scrollView, linearLayout);
 
         fabAddBlock = findViewById(R.id.fabAddBlock);
         fabAddMLModelBlock = findViewById(R.id.fabAddMLModelBlock);
@@ -109,7 +115,6 @@ public class CreateMLModelActivity extends AppCompatActivity {
 
         fabAddBlock.setOnClickListener(view -> {
             onAddItemClicked();
-            System.out.println(fileManager.getDataset());
         });
 
         fabAddMLModelBlock.setOnClickListener(view -> {
@@ -122,8 +127,6 @@ public class CreateMLModelActivity extends AppCompatActivity {
                 return;
             }
             selectDADialog.createSelectDADialog(dataset.keySet());
-            Block block = selectDADialog.getBlock();
-            System.out.println(block);
         });
 
         Log.e("HERE", isNetworkAvailable() + "");

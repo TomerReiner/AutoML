@@ -19,30 +19,28 @@ import java.util.HashMap;
  * The attributes vary between each ML Model and DA.
  */
 public class BlockView {
+
     private final Context context;
-
     private final ScrollView scrollView;
+    private LinearLayout linearLayout;
 
-    public BlockView(Context context, ScrollView scrollView) {
+    public BlockView(Context context, ScrollView scrollView, LinearLayout linearLayout) {
         this.context = context;
         this.scrollView = scrollView;
+        this.linearLayout = linearLayout;
     }
 
     /**
      * This function will create a block with <code>attributes.size()</code> text views. In addition,
      * the block will also have a title to indicate whether it's a DA block or ML block.
      * @param block A block with attributes.
-     * @return A {@link LinearLayout} with all the attributes of the block displayed in {@link android.widget.TextView}.
      * @see Block
      */
-    private LinearLayout createBlock(Block block) {
-        LinearLayout container = new LinearLayout(context); // This layout will contain the text views with the attributes of the DA/ML block.
-        container.setOrientation(LinearLayout.VERTICAL);
+    private void createBlock(Block block) {
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.setMargins(0, 10, 0, 10);
-
-        container.setLayoutParams(params);
+        //params.setMargins(0, 10, 0, 10);
 
         TextView tvTitle = new TextView(context);
         tvTitle.setLayoutParams(params);
@@ -50,17 +48,16 @@ public class BlockView {
         String title = block.getType() + ": " + block.getActionName();
         setAttributesForTextView(tvTitle, title, 24); // Add the title of the block.
 
-        container.addView(tvTitle);
+        linearLayout.addView(tvTitle);
 
         HashMap<String, Object> attributes = block.getAttributes();
+        TextView tv = new TextView(context);
 
         for (String k : attributes.keySet()) { // Add all the attributes to the container.
-            TextView tv = new TextView(context);
             tv.setLayoutParams(params);
-            setAttributesForTextView(tv, attributes.get(k).toString(), 16);
-            container.addView(tv);
+            setAttributesForTextView(tv, k +": " + attributes.get(k).toString() + "\n", 16);
         }
-        return container;
+        linearLayout.addView(tv); // Add the text view to the layout
     }
 
     /**
@@ -68,10 +65,8 @@ public class BlockView {
      * @param block A block with attributes.
      */
     public void addBlock(Block block) {
-        LinearLayout layout = createBlock(block);
-        scrollView.addView(layout);
+        createBlock(block);
     }
-
 
     /**
      * This function sets some attributes for a text view.
