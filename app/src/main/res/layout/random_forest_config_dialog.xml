@@ -1,47 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <SeekBar
-        android:id="@+id/skBarNEstimatorsRF"
+    <TextView
+        android:id="@+id/tvDisplayRFNEstimators"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:max="250"
-        android:min="10"
+        android:text="@string/n_estimators"
+        android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <SeekBar
+        android:id="@+id/skBarRFNEstimators"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:max="250"
+        android:min="10"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvDisplayRFNEstimators" />
+
     <TextView
-        android:id="@+id/tvDisplayNEstimatorsRF"
-        android:layout_width="match_parent"
+        android:id="@+id/tvMaxFeatures"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:textAlignment="center"
-        android:text="N Estimators:"
+        android:text="Max Features:"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/skBarNEstimatorsRF" />
-<!--TODO - “auto”, “sqrt”, “log2” -->
-    <Spinner
-        android:id="@+id/spinnerMaxFeaturesRF"
-        android:layout_marginTop="15dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvDisplayNEstimatorsRF" />
+        app:layout_constraintTop_toBottomOf="@+id/skBarRFNEstimators" />
 
     <Spinner
-        android:id="@+id/spinnerCriterionRF"
-        android:layout_marginTop="15dp"
+        android:id="@+id/spinnerRFMaxFeatures"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvMaxFeatures" />
+
+    <TextView
+        android:id="@+id/tvCriterion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="Criterion:"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerMaxFeaturesRF" />
+        app:layout_constraintTop_toBottomOf="@+id/spinnerRFMaxFeatures" />
 
+    <Spinner
+        android:id="@+id/spinnerRFCriterion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvCriterion" />
+
+    <Button
+        android:id="@+id/btnSelectRFConfig"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select!"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerRFCriterion" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

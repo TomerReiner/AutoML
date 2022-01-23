@@ -40,7 +40,6 @@ public class BlockView {
         linearLayout.setOrientation(LinearLayout.VERTICAL);
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        //params.setMargins(0, 10, 0, 10);
 
         TextView tvTitle = new TextView(context);
         tvTitle.setLayoutParams(params);
@@ -52,11 +51,10 @@ public class BlockView {
 
         HashMap<String, Object> attributes = block.getAttributes();
         TextView tv = new TextView(context);
+        tv.setLayoutParams(params);
 
-        for (String k : attributes.keySet()) { // Add all the attributes to the container.
-            tv.setLayoutParams(params);
-            setAttributesForTextView(tv, k +": " + attributes.get(k).toString() + "\n", 16);
-        }
+        for (String k : attributes.keySet()) // Add all the attributes to the container.
+            setAttributesForTextView(tv, k +": " + attributes.get(k).toString() + "\n" + tv.getText().toString(), 16);
         linearLayout.addView(tv); // Add the text view to the layout
     }
 

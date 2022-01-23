@@ -18,6 +18,7 @@ title __AUTOML's Class Diagram__\n
   namespace com.automl.automl {
     class com.automl.automl.BlockView {
         - context : Context
+        - linearLayout : LinearLayout
         - scrollView : ScrollView
         + BlockView()
         + addBlock()
@@ -41,9 +42,11 @@ title __AUTOML's Class Diagram__\n
         - fabAddDataAnalysisBlock : ExtendedFloatingActionButton
         - fabAddMLModelBlock : ExtendedFloatingActionButton
         - fromButtonAnim : Animation
+        - linearLayout : LinearLayout
         - navigationView : NavigationView
         - rotateCloseAnim : Animation
         - rotateOpenAnim : Animation
+        - scrollView : ScrollView
         - toButtonAnim : Animation
         + onCreateOptionsMenu()
         + onOptionsItemSelected()
@@ -78,6 +81,7 @@ title __AUTOML's Class Diagram__\n
         - dataset : HashMap<String, ArrayList<String>>
         + FileManager()
         + getDataset()
+        + removeColumn()
         # doInBackground()
         - readFile()
     }
@@ -87,27 +91,12 @@ title __AUTOML's Class Diagram__\n
   namespace com.automl.automl {
     class com.automl.automl.MLModel {
         - attributes : HashMap<String, Object>
+        - type : String
         + MLModel()
         + getAttributes()
-        + getMlModelType()
+        + getType()
         + setAttributes()
-        + setMlModelType()
-    }
-  }
-  
-
-  namespace com.automl.automl {
-    enum MLModelType {
-      DECISION_TREE_CLASSIFIER
-      DECISION_TREE_REGRESSOR
-      ELASTIC_NET_CV
-      K_NEAREST_NEIGHBORS
-      LINEAR_REGRESSION
-      NAIVE_BAYES
-      RANDOM_FOREST_CLASSIFIER
-      RANDOM_FOREST_REGRESSOR
-      SCV
-      SVR
+        + setType()
     }
   }
   
@@ -154,10 +143,14 @@ title __AUTOML's Class Diagram__\n
   namespace com.automl.automl {
     class com.automl.automl.SelectDADialog {
         {static} + FILL_NA_ACTIONS : String[]
+        - blocks : ArrayList<Block>
         - context : Context
+        - linearLayout : LinearLayout
+        - scrollView : ScrollView
         + SelectDADialog()
-        + createSelectDAConfigurationDialog()
         + createSelectDADialog()
+        + getBlocks()
+        - createSelectDAConfigurationDialog()
         - setSpinnerItems()
     }
   }
@@ -168,6 +161,7 @@ title __AUTOML's Class Diagram__\n
         - context : Context
         + SelectMLModelDialog()
         + createSelectMlModelDialog()
+        - createKNNConfigDialog()
         - createSelectClassificationModelDialog()
         - createSelectRegressionModelDialog()
     }
@@ -183,12 +177,12 @@ title __AUTOML's Class Diagram__\n
   com.automl.automl.CreateMLModelActivity o-- com.automl.automl.SelectDADialog : selectDADialog
   com.automl.automl.CreateMLModelActivity o-- com.automl.automl.SelectMLModelDialog : selectMLModelDialog
   com.automl.automl.FileManager -up-|> android.os.AsyncTask
-  com.automl.automl.MLModel o-- com.automl.automl.MLModelType : mlModelType
   com.automl.automl.MainActivity -up-|> androidx.appcompat.app.AppCompatActivity
   com.automl.automl.MainActivity o-- com.automl.automl.AccountManager : accountManager
   com.automl.automl.MainActivity o-- com.automl.automl.MenuManager : menuManager
   com.automl.automl.MyAccountActivity -up-|> androidx.appcompat.app.AppCompatActivity
   com.automl.automl.MyAccountActivity o-- com.automl.automl.DatabaseManager : databaseManager
+  com.automl.automl.SelectMLModelDialog o-- com.automl.automl.MLModel : mlModel
 
 
 right footer

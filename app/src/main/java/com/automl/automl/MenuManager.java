@@ -48,7 +48,7 @@ public class MenuManager {
                 context.startActivity(intents[0]);
             }
 
-            else if (item.getItemId() ==R.id.itemCreateMLModel) {
+            else if (item.getItemId() ==R.id.itemCreateMLModel) { // If the user wants to move the app's main screen (i.e., CreateMLModelActivity).
                 intents[0] = new Intent(context, CreateMLModelActivity.class);
                 context.startActivity(intents[0]);
                 return true;

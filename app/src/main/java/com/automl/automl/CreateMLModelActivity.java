@@ -22,7 +22,6 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
-import com.automl.automl.blocks.Block;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseUser;
@@ -99,7 +98,7 @@ public class CreateMLModelActivity extends AppCompatActivity {
         scrollView = findViewById(R.id.scrollView);
         linearLayout = findViewById(R.id.linearLayout);
 
-        selectMLModelDialog = new SelectMLModelDialog(CreateMLModelActivity.this);
+        selectMLModelDialog = new SelectMLModelDialog(CreateMLModelActivity.this, scrollView, linearLayout);
 
         selectDADialog = new SelectDADialog(CreateMLModelActivity.this, scrollView, linearLayout);
 
@@ -118,7 +117,8 @@ public class CreateMLModelActivity extends AppCompatActivity {
         });
 
         fabAddMLModelBlock.setOnClickListener(view -> {
-            String mlModel = selectMLModelDialog.createSelectMlModelDialog();
+            selectMLModelDialog.createSelectMlModelDialog();
+            //Toast.makeText(CreateMLModelActivity.this, mlModel, Toast.LENGTH_SHORT).show();
         });
 
         fabAddDataAnalysisBlock.setOnClickListener(view -> {
@@ -126,7 +126,7 @@ public class CreateMLModelActivity extends AppCompatActivity {
                 Toast.makeText(CreateMLModelActivity.this, "Please make sure you have inserted a valid url.", Toast.LENGTH_SHORT).show();
                 return;
             }
-            selectDADialog.createSelectDADialog(dataset.keySet());
+            selectDADialog.createSelectDADialog(fileManager);
         });
 
         Log.e("HERE", isNetworkAvailable() + "");
@@ -138,7 +138,6 @@ public class CreateMLModelActivity extends AppCompatActivity {
                 Toast.makeText(CreateMLModelActivity.this, "You must be logged in to use the app.", Toast.LENGTH_SHORT).show();
                 return;
             }
-
             String filename = etFilename.getText().toString();
 
             if (filename.length() == 0) { // If the user has not inserted a filename.
@@ -148,9 +147,8 @@ public class CreateMLModelActivity extends AppCompatActivity {
             boolean isURL = URLUtil.isValidUrl(filename);
 
             if (isURL)
-                fileManager.execute(filename); // TODO - make hashmap work.
+                fileManager.execute(filename);
         });
-
     }
 
     @Override

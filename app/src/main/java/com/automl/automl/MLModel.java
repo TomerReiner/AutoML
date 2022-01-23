@@ -10,20 +10,20 @@ import java.util.HashMap;
  */
 public class MLModel {
 
-    private MLModelType mlModelType; // The type of the ML model.
+    private String type; // The type of the ML model.
     private HashMap<String, Object> attributes;
 
-    public MLModel(MLModelType mlModelType, HashMap<String, Object> attributes) {
-        this.mlModelType = mlModelType;
+    public MLModel(String type, HashMap<String, Object> attributes) {
+        this.type = type;
         this.attributes = attributes;
     }
 
-    public MLModelType getMlModelType() {
-        return this.mlModelType;
+    public String getType() {
+        return type;
     }
 
-    public void setMlModelType(MLModelType mlModelType) {
-        this.mlModelType = mlModelType;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public HashMap<String, Object> getAttributes() {

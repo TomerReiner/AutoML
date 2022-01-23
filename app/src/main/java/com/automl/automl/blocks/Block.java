@@ -13,10 +13,10 @@ public class Block {
     private String type; // The type of the block - DA or ML
     private String actionName; // The name of the block.
 
-    public Block(HashMap<String, Object> attributes, String type, String actionName) {
-        this.attributes = attributes;
+    public Block(String type, String actionName, HashMap<String, Object> attributes) {
         this.type = type;
         this.actionName = actionName;
+        this.attributes = attributes;
     }
 
     public HashMap<String, Object> getAttributes() {

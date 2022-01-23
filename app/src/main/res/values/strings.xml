@@ -5,8 +5,9 @@
 
     <string name="column">column</string>
     <string name="da">DA</string>
+    <string name="data_analysis">Data Analysis</string>
     <string name="ml">ML</string>
-    <string name="fill_na_block">Fill NA</string>
+    <string name="fill_na">Fill NA</string>
 
     <!-- Classification ML Models   -->
     <string name="decision_tree_classifier">Decision Tree Classifier</string>
@@ -14,6 +15,11 @@
     <string name="k_nearest_neighbors_classifier">K Nearest Neighbors Classifier</string>
     <string name="svc">SVC</string>
     <string name="naive_bayes">Naive Bayes</string>
+    <string name="gaussian_nb">Gaussian NB</string>
+    <string name="multinomial_nb">Multinomial NB</string>
+    <string name="complement_nb">Complement NB</string>
+    <string name="bernoulli_nb">Bernoulli NB</string>
+    <string name="n_estimators">N Estimators:</string>
 
     <!--    Regression ML Models-->
     <string name="decision_tree_regressor">Decision Tree Regressor</string>
@@ -28,6 +34,14 @@
     <string name="normalize_column">Normalize Column</string>
     <string name="encode_column">Encode Column</string>
     <string name="drop_na">Drop NA</string>
-    <string name="fill_na">Fill NA</string>
+
+    <string name="weights">weights</string>
+    <string name="algorithm">algorithm</string>
+    <string name="n_estimators_param">n_estimators</string>
+    <string name="max_features">max_features</string>
+    <string name="criterion">criterion</string>
+    <string name="kernel">kernel</string>
+    <string name="degree_param">degree</string>
+    <string name="degree">Degree:</string>
 
 </resources>

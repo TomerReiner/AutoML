@@ -5,57 +5,55 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <TextView
-        android:id="@+id/tvSelectSVMKernel"
+        android:id="@+id/tvSelectKNNWeights"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Select a Kernel"
+        android:text="Select Weights:"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-<!--  {‘linear’, ‘poly’, ‘rbf’, ‘sigmoid’, ‘precomputed’}  -->
+<!--{‘uniform’, ‘distance’}-->
     <Spinner
-        android:id="@+id/spinnerSVMKernel"
+        android:id="@+id/spinnerKNNWeights"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvSelectSVMKernel" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvSelectKNNWeights" />
+<!--{‘auto’, ‘ball_tree’, ‘kd_tree’, ‘brute’}-->
 
     <TextView
-        android:id="@+id/tvSVMDegree"
+        android:id="@+id/tvKNNAlgorithm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:text="@string/degree"
+        android:text="Select the KNN Algorithm:"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerSVMKernel" />
+        app:layout_constraintTop_toBottomOf="@+id/spinnerKNNWeights" />
 
-    <SeekBar
-        android:id="@+id/skBarSVMDegree"
+    <Spinner
+        android:id="@+id/spinnerKNNAlgorithm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:max="10"
-        android:min="1"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvSVMDegree" />
+        app:layout_constraintTop_toBottomOf="@+id/tvKNNAlgorithm" />
 
     <Button
-        android:id="@+id/btnSelectSVMConfig"
+        android:id="@+id/btnSelectKNNConfig"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:text="Select!"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/skBarSVMDegree" />
+        app:layout_constraintTop_toBottomOf="@+id/spinnerKNNAlgorithm" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,5 @@
 package com.automl.automl;
-
+// https://raw.githubusercontent.com/codebasics/py/master/pandas/11_melt/weather.csv https://raw.githubusercontent.com/codebasics/py/master/pandas/2_dataframe_basics/weather_data.csv
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -16,7 +16,7 @@ import com.google.android.material.navigation.NavigationView;
  * 1) Make signup work - DONE
  * 2) Account Settings - change password, delete data, delete user, block notifications. finish change password and delete user during the weekend - DONE, finish the rest right after finishing task #8
  * 3) DA blocks - DONE
- * 4) Download file and read it. finish until 15.1
+ * 4) Download file and read it. finish until 15.1 DONE
  * 5) ML Models configuration dialogs - finish by 20.1.
  * 6) Add blocks animation. finish until 23.1
  * 7) My models activity. finish by 30.1
@@ -74,5 +74,4 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
 }

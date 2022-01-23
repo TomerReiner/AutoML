@@ -68,6 +68,14 @@ public class FileManager extends AsyncTask<String, Void, Void> {
         return null;
     }
 
+    /**
+     * This function removes a columns from the dataset.
+     * @param column
+     */
+    public void removeColumn(String column) {
+        this.dataset.remove(column);
+    }
+
     public HashMap<String, ArrayList<String>> getDataset() {
         return this.dataset;
     }

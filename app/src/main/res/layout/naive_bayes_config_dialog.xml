@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tvNBInstructions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select a Naive Bayes Model:"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RadioGroup
+        android:id="@+id/rgNaiveBayes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvNBInstructions">
+
+        <RadioButton
+            android:id="@+id/rbGaussianNB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/gaussian_nb" />
+
+        <RadioButton
+            android:id="@+id/rbMultinomialNB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/multinomial_nb" />
+
+        <RadioButton
+            android:id="@+id/rbComplementNB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/complement_nb" />
+
+        <RadioButton
+            android:id="@+id/rbBernoulliNB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/bernoulli_nb" />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/btnSelectNaiveBayesConfig"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select!"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rgNaiveBayes" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
