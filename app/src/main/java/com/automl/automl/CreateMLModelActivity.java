@@ -6,6 +6,8 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -22,6 +24,10 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
+import com.automl.automl.blocks.Block;
+import com.chaquo.python.PyObject;
+import com.chaquo.python.Python;
+import com.chaquo.python.android.AndroidPlatform;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseUser;
@@ -64,6 +70,7 @@ public class CreateMLModelActivity extends AppCompatActivity {
 
     private EditText etFilename;
     private Button btnLoadFile;
+    private Button btnFinish;
 
     private boolean clickedFabAddItem = false;
 
@@ -98,27 +105,34 @@ public class CreateMLModelActivity extends AppCompatActivity {
         scrollView = findViewById(R.id.scrollView);
         linearLayout = findViewById(R.id.linearLayout);
 
-        selectMLModelDialog = new SelectMLModelDialog(CreateMLModelActivity.this, scrollView, linearLayout);
-
-        selectDADialog = new SelectDADialog(CreateMLModelActivity.this, scrollView, linearLayout);
-
         fabAddBlock = findViewById(R.id.fabAddBlock);
         fabAddMLModelBlock = findViewById(R.id.fabAddMLModelBlock);
         fabAddDataAnalysisBlock = findViewById(R.id.fabAddDataAnalysisBlock);
 
         etFilename = findViewById(R.id.etFilename);
         btnLoadFile = findViewById(R.id.btnLoadFile);
+        btnFinish = findViewById(R.id.btnFinish);
         // TODO - load the file from the documents folder or from a url.
 
         fileManager = new FileManager(dataset);
+
+        selectMLModelDialog = new SelectMLModelDialog(CreateMLModelActivity.this, scrollView, linearLayout, fabAddDataAnalysisBlock);
+        selectDADialog = new SelectDADialog(CreateMLModelActivity.this, scrollView, linearLayout);
+
+        if (checkSelfPermission(Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED)
+            requestPermissions(new String[]{Manifest.permission.SEND_SMS}, 1);
+        if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
+            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+        if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
+            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+
 
         fabAddBlock.setOnClickListener(view -> {
             onAddItemClicked();
         });
 
         fabAddMLModelBlock.setOnClickListener(view -> {
-            selectMLModelDialog.createSelectMlModelDialog();
-            //Toast.makeText(CreateMLModelActivity.this, mlModel, Toast.LENGTH_SHORT).show();
+            selectMLModelDialog.createSelectMlModelDialog(this.dataset.keySet());
         });
 
         fabAddDataAnalysisBlock.setOnClickListener(view -> {
@@ -146,8 +160,27 @@ public class CreateMLModelActivity extends AppCompatActivity {
             }
             boolean isURL = URLUtil.isValidUrl(filename);
 
-            if (isURL)
+            if (isURL) {
                 fileManager.execute(filename);
+                etFilename.setVisibility(View.GONE);
+                btnLoadFile.setVisibility(View.GONE);
+            }
+        });
+
+        btnFinish.setOnClickListener(v -> { // When the user has finished the ML Model building process.
+            ArrayList<Block> blocks = selectDADialog.getBlocks();
+            MLModel mlModel = selectMLModelDialog.getMlModel();
+
+            if (blocks.isEmpty() || mlModel == null) {
+                Toast.makeText(CreateMLModelActivity.this, "Please Make Sure That You Have Completed the ML Model Pipeline", Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            if (!Python.isStarted())
+                Python.start(new AndroidPlatform(CreateMLModelActivity.this));
+
+            Python py = Python.getInstance();
+            PyObject pyFile = py.getModule("ml");
         });
     }
 
@@ -196,6 +229,11 @@ public class CreateMLModelActivity extends AppCompatActivity {
         clickedFabAddItem = !clickedFabAddItem;
     }
 
+    /**
+     * This function checks if there is an available network.
+     * The app needs a network connection to download files from the internet.
+     * @return <code>true</code> if there is an available network connection, <code>false</code> otherwise.
+     */
     private boolean isNetworkAvailable() {
         ConnectivityManager manager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
         NetworkInfo info = manager.getActiveNetworkInfo();

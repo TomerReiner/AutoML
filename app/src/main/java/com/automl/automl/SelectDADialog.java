@@ -174,4 +174,5 @@ public class SelectDADialog {
     public ArrayList<Block> getBlocks() {
         return blocks;
     }
+
 }

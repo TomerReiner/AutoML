@@ -4,13 +4,20 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
+
+import java.security.Permission;
+import java.security.Permissions;
+
 /**
  * TODO - tasks
  * 1) Make signup work - DONE
@@ -56,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         menuManager.switchActivity();
 
         accountManager = new AccountManager(MainActivity.this);
+
     }
 
     @Override

@@ -1,7 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'com.google.gms.google-services'
-//    id 'com.chaquo.python'
+    id 'com.chaquo.python'
 }
 
 android {
@@ -10,34 +10,34 @@ android {
     defaultConfig {
         applicationId "com.example.automl"
 
-//        sourceSets {
-//            main {
-//                python {
-//                    srcDirs = ["src/main/python"]
-//                }
-//            }
-//        }
-
+        sourceSets {
+            main {
+                python {
+                    srcDirs = ["src/main/python"]
+                }
+            }
+        }
         minSdk 28
         targetSdk 31
+
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-//        ndk {
-//            abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
-//        }
-//        python {
-//            buildPython "C:/Users/kids/AppData/Local/Programs/Python/Python38/python.exe"
-//        }
-//
-//        python {
-//            pip {
-//                install "pandas"
-//                install "scikit-learn"
-//            }
-//        }
+        ndk {
+            abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
+        }
+        python {
+            buildPython "C:/Users/kids/AppData/Local/Programs/Python/Python38/python.exe"
+        }
+
+        python {
+            pip {
+                install "pandas"
+                install "scikit-learn"
+            }
+        }
     }
 
     buildTypes {
