@@ -17,6 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AutoML">
         <activity
+            android:name=".MyModelsActivity"
+            android:exported="true" />
+        <activity
             android:name=".MyAccountActivity"
             android:exported="false" />
         <activity

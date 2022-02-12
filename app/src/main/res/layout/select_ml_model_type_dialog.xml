@@ -25,52 +25,51 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv" />
 
-    <Button
-        android:id="@+id/btnSelectYColumn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:text="Choose"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerSelectYColumn" />
+
 
     <TextView
         android:id="@+id/tv2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="24dp"
         android:text="Please Choose One:"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnSelectYColumn" />
+        app:layout_constraintTop_toBottomOf="@+id/spinnerSelectYColumn" />
 
-    <Button
-        android:id="@+id/btnClassificationModel"
+    <RadioGroup
+        android:id="@+id/rgSelectMLModel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:clickable="false"
-        android:text="Classification Model"
-        android:textAllCaps="false"
+        app:layout_constraintBottom_toTopOf="@+id/btnSelect"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv2" />
+        app:layout_constraintTop_toBottomOf="@+id/tv2">
+
+        <RadioButton
+            android:id="@+id/rbClassificationModel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Classification Model" />
+
+        <RadioButton
+            android:id="@+id/rbRegressionModel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Regression Model" />
+    </RadioGroup>
 
     <Button
-        android:id="@+id/btnRegressionModel"
+        android:id="@+id/btnSelect"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:clickable="false"
-        android:text="Regression Model"
-        android:textAllCaps="false"
+        android:text="Select!"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnClassificationModel" />
+        app:layout_constraintTop_toBottomOf="@+id/rgSelectMLModel" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

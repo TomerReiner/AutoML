@@ -9,22 +9,18 @@ import java.util.HashMap;
  */
 public class Block {
 
-    private HashMap<String, Object> attributes; // The attributes of the block.
+
     private String type; // The type of the block - DA or ML
     private String actionName; // The name of the block.
+    private HashMap<String, Object> attributes; // The attributes of the block.
 
-    public Block(String type, String actionName, HashMap<String, Object> attributes) {
+    public Block(String type, HashMap<String, Object> attributes) {
         this.type = type;
-        this.actionName = actionName;
         this.attributes = attributes;
     }
 
     public HashMap<String, Object> getAttributes() {
         return attributes;
-    }
-
-    public void setAttributes(HashMap<String, Object> attributes) {
-        this.attributes = attributes;
     }
 
     public String getType() {
@@ -33,13 +29,5 @@ public class Block {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public String getActionName() {
-        return actionName;
-    }
-
-    public void setActionName(String actionName) {
-        this.actionName = actionName;
     }
 }

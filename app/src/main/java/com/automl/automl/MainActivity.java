@@ -1,5 +1,6 @@
 package com.automl.automl;
 // https://raw.githubusercontent.com/codebasics/py/master/pandas/11_melt/weather.csv https://raw.githubusercontent.com/codebasics/py/master/pandas/2_dataframe_basics/weather_data.csv
+// https://raw.githubusercontent.com/codebasics/py/master/ML/9_decision_tree/salaries.csv
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -63,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
         menuManager.switchActivity();
 
         accountManager = new AccountManager(MainActivity.this);
-
     }
 
     @Override

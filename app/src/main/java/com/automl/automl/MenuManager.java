@@ -55,8 +55,9 @@ public class MenuManager {
             }
 
             else if (item.getItemId() == R.id.itemMyModels) {
-                // intent = new Intent(this.context, ) TODO - complete
-                int x = 7;
+                intents[0] = new Intent(context, MyModelsActivity.class);
+                context.startActivity(intents[0]);
+                return true;
             }
             return false;
         });

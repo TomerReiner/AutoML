@@ -16,6 +16,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -88,7 +90,7 @@ public class DatabaseManager {
         map.put(PHONE_NUM, phone);
 
         ref.child("" + email.hashCode()).setValue(map); // Save the phone number in the database for further usage.
-
+        ref.child("ML Models").setValue(""); // Create place for the ML Models.
         return true;
     }
 
@@ -99,13 +101,12 @@ public class DatabaseManager {
     /**
      * This function adds a ML Model to the database. THe model will be added to the user's model.
      * @param email The email of the user.
-     * @param mlBlock The ML Model to add.
+     * @param model The ML Model to add.
      */
-    public void addMLModel(String email, Block mlBlock) {
+    public void addMLModel(String email, MLModel model) {
         FirebaseDatabase db = FirebaseDatabase.getInstance();
-        DatabaseReference ref = db.getReference().child(email);
-
-        ref.push().setValue(mlBlock);
+        DatabaseReference ref = db.getReference().child("" + email.hashCode());
+        ref.child("ML Models").setValue(model); // Add the model to the database.
     }
 
     /**
@@ -138,9 +139,6 @@ public class DatabaseManager {
      * @see #signUp(String, String, String, String)
      */
     public void sendVerificationCode(Context context, String email, String verificationCode) {
-
-        boolean[] b = {false}; // If the massage was successfully sent.
-
         String username = "" + email.hashCode();
 
         FirebaseDatabase db = FirebaseDatabase.getInstance("https://myml-4f150-default-rtdb.europe-west1.firebasedatabase.app");
@@ -158,7 +156,6 @@ public class DatabaseManager {
                     SmsManager manager = SmsManager.getDefault();
                     PendingIntent sentIntent = PendingIntent.getBroadcast(context, 0, new Intent("SMS_SENT"), 0);
                     manager.sendTextMessage(phone, null, verificationCode + " is your verification code.", sentIntent, null);
-                    b[0] = true;
                 }
                 catch (Exception e) {
                     e.printStackTrace();
@@ -177,6 +174,37 @@ public class DatabaseManager {
      */
     public String generateVerificationCode() {
         int x = (int) (Math.random() * (999999 - 100000 + 1)) + 100000;
+        System.out.println(x);
         return "" + x;
+    }
+
+    /**
+     * This function retrieves all the ML Models of a user in the database.
+     * @param email The email of the user.
+     * @return An array list with all the user's models.
+     */
+    public ArrayList<MLModel> getMLModels(String email) {
+        String username = "" + email.hashCode();
+
+        FirebaseDatabase db = FirebaseDatabase.getInstance("https://myml-4f150-default-rtdb.europe-west1.firebasedatabase.app");
+        DatabaseReference ref = db.getReference().child("users").child(username).child("ML Models");
+
+        ArrayList<MLModel> models = new ArrayList<>();
+
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                    MLModel mlModel = postSnapshot.getValue(MLModel.class);
+                    models.add(mlModel);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        return models;
     }
 }

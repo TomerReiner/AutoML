@@ -25,6 +25,7 @@ import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.automl.automl.blocks.Block;
+
 import com.chaquo.python.PyObject;
 import com.chaquo.python.Python;
 import com.chaquo.python.android.AndroidPlatform;
@@ -70,6 +71,7 @@ public class CreateMLModelActivity extends AppCompatActivity {
 
     private EditText etFilename;
     private Button btnLoadFile;
+    private Button btnUndo;
     private Button btnFinish;
 
     private boolean clickedFabAddItem = false;
@@ -111,13 +113,14 @@ public class CreateMLModelActivity extends AppCompatActivity {
 
         etFilename = findViewById(R.id.etFilename);
         btnLoadFile = findViewById(R.id.btnLoadFile);
+        btnUndo = findViewById(R.id.btnUndo);
         btnFinish = findViewById(R.id.btnFinish);
         // TODO - load the file from the documents folder or from a url.
 
         fileManager = new FileManager(dataset);
 
         selectMLModelDialog = new SelectMLModelDialog(CreateMLModelActivity.this, scrollView, linearLayout, fabAddDataAnalysisBlock);
-        selectDADialog = new SelectDADialog(CreateMLModelActivity.this, scrollView, linearLayout);
+        selectDADialog = new SelectDADialog(CreateMLModelActivity.this, scrollView, linearLayout, fileManager);
 
         if (checkSelfPermission(Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED)
             requestPermissions(new String[]{Manifest.permission.SEND_SMS}, 1);
@@ -140,7 +143,7 @@ public class CreateMLModelActivity extends AppCompatActivity {
                 Toast.makeText(CreateMLModelActivity.this, "Please make sure you have inserted a valid url.", Toast.LENGTH_SHORT).show();
                 return;
             }
-            selectDADialog.createSelectDADialog(fileManager);
+            selectDADialog.createSelectDADialog();
         });
 
         Log.e("HERE", isNetworkAvailable() + "");
@@ -167,9 +170,23 @@ public class CreateMLModelActivity extends AppCompatActivity {
             }
         });
 
+        btnUndo.setOnClickListener(v -> { // If the user wants to undo an action.
+            if (selectMLModelDialog.getMlModel() != null) { // If a model was created, the user was in the final stage of preprocessing the data which is creating ML Model.
+                selectMLModelDialog.undo();
+                fabAddDataAnalysisBlock.setClickable(true);
+            }
+            else // If the user hasn't created ML Model yet then they are in the data analysis stage.
+                selectDADialog.undo();
+        });
+
         btnFinish.setOnClickListener(v -> { // When the user has finished the ML Model building process.
             ArrayList<Block> blocks = selectDADialog.getBlocks();
             MLModel mlModel = selectMLModelDialog.getMlModel();
+
+            if (blocks.size() == 0 || mlModel == null) { // If the user has not completed all the required steps.
+                Toast.makeText(CreateMLModelActivity.this, "You must first create a pipeline", Toast.LENGTH_LONG).show();
+                return;
+            }
 
             if (blocks.isEmpty() || mlModel == null) {
                 Toast.makeText(CreateMLModelActivity.this, "Please Make Sure That You Have Completed the ML Model Pipeline", Toast.LENGTH_LONG).show();
@@ -180,7 +197,15 @@ public class CreateMLModelActivity extends AppCompatActivity {
                 Python.start(new AndroidPlatform(CreateMLModelActivity.this));
 
             Python py = Python.getInstance();
-            PyObject pyFile = py.getModule("ml");
+            PyObject pyFile = py.getModule("main");
+            PyObject result = pyFile.callAttr("pipeline", fileManager.getColumns(), fileManager.getData(), selectDADialog.getBlocks(),
+                    selectMLModelDialog.getMlModel().getType(),
+                    selectMLModelDialog.getMlModel().getAttributes(), selectMLModelDialog.getyColumn()); // TODO - check if this works.
+            String score = result.toString();
+
+            Toast.makeText(CreateMLModelActivity.this, "The score of the model is: " + score, Toast.LENGTH_LONG).show();
+
+            databaseManager.addMLModel(databaseManager.getUser().getEmail(), selectMLModelDialog.getMlModel()); // TODO - make email more efficient.
         });
     }
 

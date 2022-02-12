@@ -9,7 +9,9 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Set;
 
 /**
  * This class manages the reading of the file.
@@ -20,9 +22,11 @@ public class FileManager extends AsyncTask<String, Void, Void> {
     private static final String SPLIT = ",";
 
     private HashMap<String, ArrayList<String>> dataset;
+    private HashMap<String, ArrayList<String>> removedColumns; // This variable will contain the removed columns to restore them if the user would like to.
 
     public FileManager(HashMap<String, ArrayList<String>> dataset) {
         this.dataset = dataset;
+        this.removedColumns = new HashMap<>();
     }
 
     /**
@@ -73,10 +77,48 @@ public class FileManager extends AsyncTask<String, Void, Void> {
      * @param column
      */
     public void removeColumn(String column) {
+        this.removedColumns.put(column, this.dataset.get(column)); // Save the deleted column
         this.dataset.remove(column);
     }
 
     public HashMap<String, ArrayList<String>> getDataset() {
         return this.dataset;
     }
+
+    /**
+     * This function restores a removed column in the dataset.
+     */
+    public void restoreColumn() {
+        Set<String> removedColumns = this.removedColumns.keySet();
+        String[] arr = removedColumns.toArray(new String[0]);
+
+        String lastColumnRemoved = arr[arr.length - 1];
+
+        this.dataset.put(lastColumnRemoved, this.removedColumns.get(lastColumnRemoved));
+        this.removedColumns.remove(lastColumnRemoved);
+    }
+
+    /**
+     * @return The columns of the dataset (i.e., {@link HashMap#keySet()} as an array.
+     * Before passing the data to the Python code, the data must be converted into an array.
+     */
+    public String[] getColumns() {
+        return this.dataset.keySet().toArray(new String[0]);
+    }
+// TODO - make sure there are a least two columns in the dataset.
+
+    /**
+     * This function returns an array of arrays with all the data in {@link #dataset}.
+     * @return The data in the form of arrays.
+     */
+    public Object[][] getData() {
+        String[] columns = this.getColumns();
+
+        Object[][] values = new Object[columns.length][this.dataset.get(columns[0]).size()];
+
+        for (int i = 0; i < columns.length; i++)
+            values[i] = this.dataset.get(columns[i]).toArray();
+        return values;
+    }
+
 }

@@ -33,4 +33,9 @@ public class MLModel {
     public void setAttributes(HashMap<String, Object> attributes) {
         this.attributes = attributes;
     }
+
+    @Override
+    public String toString() {
+        return "type='" + type + '\'' + ", attributes=" + attributes;
+    }
 }

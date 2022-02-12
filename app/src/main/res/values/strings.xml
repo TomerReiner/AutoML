@@ -7,7 +7,7 @@
     <string name="da">DA</string>
     <string name="data_analysis">Data Analysis</string>
     <string name="ml">ML</string>
-    <string name="fill_na">Fill NA</string>
+
 
     <!-- Classification ML Models   -->
     <string name="decision_tree_classifier">Decision Tree Classifier</string>
@@ -30,6 +30,8 @@
     <string name="sign_out">Sign Out</string>
     <string name="sign_in">Sign In</string>
 
+    <string name="fill_na">Fill NA</string>
+    <string name="fill_na_method">Fill NA Method</string>
     <string name="remove_column">Remove Column</string>
     <string name="normalize_column">Normalize Column</string>
     <string name="encode_column">Encode Column</string>
@@ -43,5 +45,6 @@
     <string name="kernel">kernel</string>
     <string name="degree_param">degree</string>
     <string name="degree">Degree:</string>
+    <string name="ml_model">ML Model</string>
 
 </resources>

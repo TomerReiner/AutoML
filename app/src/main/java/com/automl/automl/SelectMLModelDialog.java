@@ -11,6 +11,7 @@ import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.automl.automl.blocks.Block;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
@@ -44,7 +45,6 @@ public class SelectMLModelDialog {
      */
     private ExtendedFloatingActionButton fabAddDA;
 
-    private Set<String> xColumns = null; // The feature columns.
     private String yColumn = null; // The target columns.
     private MLModel mlModel = null;
 
@@ -66,35 +66,31 @@ public class SelectMLModelDialog {
      * a warning will be raised, and same if the opposite happens.
      */
     public void createSelectMlModelDialog(Set<String> columns) {
-        Dialog dialog = new Dialog(this.context);
+        Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.select_ml_model_type_dialog);
 
         Spinner spinnerSelectYColumn = dialog.findViewById(R.id.spinnerSelectYColumn);
-        Button btnSelectYColumn = dialog.findViewById(R.id.btnSelectYColumn);
-        Button btnClassificationModel = dialog.findViewById(R.id.btnClassificationModel);
-        Button btnRegressionModel = dialog.findViewById(R.id.btnRegressionModel);
-
-        btnSelectYColumn.setOnClickListener(v -> {
-            this.yColumn = (String) spinnerSelectYColumn.getItemAtPosition(spinnerSelectYColumn.getSelectedItemPosition());
-
-            this.xColumns.addAll(columns);
-            this.xColumns.remove(yColumn); // Setting the X columns.
-
-            btnClassificationModel.setClickable(true);
-            btnRegressionModel.setClickable(false); // Since the y column was chosen, the user can now select an ML Model, and the app will know to detect mismatch between the selected column type and the ML Model type.
-        });
+        RadioGroup rgSelectMLModel = dialog.findViewById(R.id.rgSelectMLModel);
+        Button btnSelect = dialog.findViewById(R.id.btnSelect);
 
         setSpinnerItems(spinnerSelectYColumn, columns.toArray(new String[0]));
 
-        btnClassificationModel.setOnClickListener(view -> { // If the user would like to select a classification model.
-            createSelectClassificationModelDialog();
-            dialog.dismiss();
+        btnSelect.setOnClickListener(v -> {
+
+            this.yColumn = (String) spinnerSelectYColumn.getItemAtPosition(spinnerSelectYColumn.getSelectedItemPosition());
+
+            if (rgSelectMLModel.getCheckedRadioButtonId() == R.id.rbClassificationModel) { // If the user wants to create a classification model.
+                createSelectClassificationModelDialog();
+                dialog.dismiss();
+            }
+            else if (rgSelectMLModel.getCheckedRadioButtonId() == R.id.rbRegressionModel) { // If the user wants to create a regression model.
+                createSelectRegressionModelDialog();
+                    dialog.dismiss();
+            }
+            else // If the user hasn't selected an ml model.
+                Toast.makeText(context, "You must select the type of the ML Model", Toast.LENGTH_LONG).show();
         });
 
-        btnRegressionModel.setOnClickListener(view -> { // If the user would like to select a regression model.
-            createSelectRegressionModelDialog();
-            dialog.dismiss();
-        });
         dialog.show();
     }
 
@@ -112,8 +108,10 @@ public class SelectMLModelDialog {
         Button btnNaiveBayes = dialog.findViewById(R.id.btnNaiveBayes);
 
         btnDecisionTreeClassifier.setOnClickListener(view -> {
-            this.mlModel = new MLModel(context.getString(R.string.decision_tree_classifier), new HashMap<>());
-            Block block = new Block(context.getString(R.string.ml), this.mlModel.getType(), this.mlModel.getAttributes());
+            HashMap<String, Object> attributes = new HashMap<>();
+
+            this.mlModel = new MLModel(context.getString(R.string.decision_tree_classifier), attributes);
+            Block block = new Block(context.getString(R.string.ml) + ": " + this.mlModel.getType(), this.mlModel.getAttributes());
             this.blockView.addBlock(block); // Add the ML Model to the graph on the screen.
             this.fabAddDA.setClickable(false);
             dialog.dismiss();
@@ -154,9 +152,11 @@ public class SelectMLModelDialog {
         Button btnSVR = dialog.findViewById(R.id.btnSVR);
         Button btnElasticNetCV = dialog.findViewById(R.id.btnElasticNetCV);
 
+        HashMap<String, Object> attributes = new HashMap<>();
+
         btnDecisionTreeRegressor.setOnClickListener(view -> {
-            this.mlModel = new MLModel(context.getString(R.string.decision_tree_regressor), new HashMap<>());
-            Block block = new Block(context.getString(R.string.ml), this.mlModel.getType(), this.mlModel.getAttributes());
+            this.mlModel = new MLModel(context.getString(R.string.decision_tree_regressor), attributes);
+            Block block = new Block(context.getString(R.string.ml) + ": " + this.mlModel.getType(), this.mlModel.getAttributes());
             this.blockView.addBlock(block); // Add the ML Model to the graph on the screen.
             this.fabAddDA.setClickable(false);
             dialog.dismiss();
@@ -169,8 +169,8 @@ public class SelectMLModelDialog {
         });
 
         btnLinearRegression.setOnClickListener(view -> {
-            this.mlModel = new MLModel(context.getString(R.string.linear_regression), new HashMap<>());
-            Block block = new Block(context.getString(R.string.ml), this.mlModel.getType(), this.mlModel.getAttributes());
+            this.mlModel = new MLModel(context.getString(R.string.linear_regression), attributes);
+            Block block = new Block(context.getString(R.string.ml) + ": " + this.mlModel.getType(), this.mlModel.getAttributes());
             this.blockView.addBlock(block); // Add the ML Model to the graph on the screen.
             this.fabAddDA.setClickable(false);
             dialog.dismiss();
@@ -182,12 +182,8 @@ public class SelectMLModelDialog {
         });
 
         btnElasticNetCV.setOnClickListener(view -> {
-            HashMap<String, Object> attributes = new HashMap<>();
-            attributes.put("X", this.xColumns);
-            attributes.put("y", this.yColumn);
-
             this.mlModel = new MLModel(context.getString(R.string.elastic_net_cv), attributes);
-            Block block = new Block(context.getString(R.string.ml), this.mlModel.getType(), this.mlModel.getAttributes());
+            Block block = new Block(context.getString(R.string.ml) + ": " + this.mlModel.getType(), this.mlModel.getAttributes());
             this.blockView.addBlock(block); // Add the ML Model to the graph on the screen.
             this.fabAddDA.setClickable(false);
             dialog.dismiss();
@@ -216,15 +212,13 @@ public class SelectMLModelDialog {
             HashMap<String, Object> attributes = new HashMap<>();
 
             String selectedKNNWeights = (String) spinnerKNNWeights.getItemAtPosition(spinnerKNNWeights.getSelectedItemPosition());
-            String selectedKKAlgorithm = (String) spinnerKNNWeights.getItemAtPosition(spinnerKNNAlgorithm.getSelectedItemPosition()); // Get the config parameters for the ML Model
+            String selectedKNNAlgorithm = (String) spinnerKNNAlgorithm.getItemAtPosition(spinnerKNNAlgorithm.getSelectedItemPosition()); // Get the config parameters for the ML Model
 
-            attributes.put("X", this.xColumns);
-            attributes.put("y", this.yColumn);
             attributes.put(context.getString(R.string.weights), selectedKNNWeights);
-            attributes.put(context.getString(R.string.algorithm), selectedKKAlgorithm);
+            attributes.put(context.getString(R.string.algorithm), selectedKNNAlgorithm);
 
             this.mlModel = new MLModel(context.getString(R.string.k_nearest_neighbors_classifier), attributes);
-            Block block = new Block(context.getString(R.string.ml), this.mlModel.getType(), this.mlModel.getAttributes());
+            Block block = new Block(context.getString(R.string.ml) + ": " + this.mlModel.getType(), this.mlModel.getAttributes());
             this.blockView.addBlock(block); // Add the ML Model to the graph on the screen.
 
             this.fabAddDA.setClickable(false);
@@ -253,11 +247,9 @@ public class SelectMLModelDialog {
                 RadioButton rb = dialog.findViewById(id); // Get the selected radio button.
 
                 HashMap<String, Object> attributes = new HashMap<>();
-                attributes.put("X", this.xColumns);
-                attributes.put("y", this.yColumn);
 
                 this.mlModel = new MLModel(rb.getText().toString(), attributes);
-                Block block = new Block(context.getString(R.string.ml), this.mlModel.getType(), this.mlModel.getAttributes());
+                Block block = new Block(context.getString(R.string.ml) + ": " + this.mlModel.getType(), this.mlModel.getAttributes());
                 this.blockView.addBlock(block); // Add the ML Model to the graph on the screen.
             }
             this.fabAddDA.setClickable(false);
@@ -314,8 +306,6 @@ public class SelectMLModelDialog {
             String maxFeatures = (String) spinnerRFMaxFeatures.getItemAtPosition(spinnerRFMaxFeatures.getSelectedItemPosition());
             String criterion = (String) spinnerRFCriterion.getItemAtPosition(spinnerRFCriterion.getSelectedItemPosition());
 
-            attributes.put("X", this.xColumns);
-            attributes.put("y", this.yColumn);
             attributes.put(context.getString(R.string.n_estimators_param), skBarRFNEstimators.getProgress());
             attributes.put(context.getString(R.string.max_features), maxFeatures);
             attributes.put(context.getString(R.string.criterion), criterion); // Set the configuration parameters.
@@ -325,7 +315,7 @@ public class SelectMLModelDialog {
             else
                 this.mlModel = new MLModel(context.getString(R.string.random_forest_regressor), attributes);
 
-            Block block = new Block(context.getString(R.string.ml), this.mlModel.getType(), this.mlModel.getAttributes());
+            Block block = new Block(context.getString(R.string.ml) + ": " + this.mlModel.getType(), this.mlModel.getAttributes());
             this.blockView.addBlock(block); // Add the ML Model to the graph on the screen.
 
             this.fabAddDA.setClickable(false);
@@ -373,17 +363,15 @@ public class SelectMLModelDialog {
 
             String kernel = (String) spinnerSVMKernel.getItemAtPosition(spinnerSVMKernel.getSelectedItemPosition());
 
-            attributes.put("X", this.xColumns);
-            attributes.put("y", this.yColumn);
             attributes.put(context.getString(R.string.kernel), kernel);
-            attributes.put(context.getString(R.string.degree), skBarSVMDegree.getProgress()); // Set the configuration parameters.
+            attributes.put(context.getString(R.string.degree_param), skBarSVMDegree.getProgress()); // Set the configuration parameters.
 
             if (isClassification) // Distinguish between SVC and SVR.
                 this.mlModel = new MLModel(context.getString(R.string.svc), attributes);
             else
                 this.mlModel = new MLModel(context.getString(R.string.svr), attributes);
 
-            Block block = new Block(context.getString(R.string.ml), this.mlModel.getType(), this.mlModel.getAttributes());
+            Block block = new Block(context.getString(R.string.ml) + ": " + this.mlModel.getType(), this.mlModel.getAttributes());
             this.blockView.addBlock(block); // Add the ML Model to the graph on the screen.
 
             this.fabAddDA.setClickable(false);
@@ -403,7 +391,19 @@ public class SelectMLModelDialog {
         spinner.setAdapter(adapter);
     }
 
+    public String getyColumn() {
+        return this.yColumn;
+    }
+
     public MLModel getMlModel() {
         return this.mlModel;
+    }
+
+    /**
+     * This function undo the creation of ML Model.
+     */
+    public void undo() {
+        this.mlModel = null;
+        this.blockView.removeBlock();
     }
 }
