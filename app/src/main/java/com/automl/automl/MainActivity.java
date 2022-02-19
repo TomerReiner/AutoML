@@ -5,34 +5,27 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
 
-import java.security.Permission;
-import java.security.Permissions;
-
 /**
  * TODO - tasks
- * 1) Make signup work - DONE
- * 2) Account Settings - change password, delete data, delete user, block notifications. finish change password and delete user during the weekend - DONE, finish the rest right after finishing task #8
- * 3) DA blocks - DONE
- * 4) Download file and read it. finish until 15.1 DONE
- * 5) ML Models configuration dialogs - finish by 20.1.
- * 6) Add blocks animation. finish until 23.1
- * 7) My models activity. finish by 30.1
- * 8) Add MyModels for each user - partially done. finish by 10.2
- * 9) Add python connection. finish until 10.3
+ * 1) Make signup work - DONE.
+ * 2) Account Settings - change password, delete data, delete user, block notifications. block security breach - finish by 25.2
+ * 3) DA blocks - DONE.
+ * 4) Download file and read it - DONE.
+ * 5) ML Models configuration dialogs - DONE.
+ * 6) Add service to build ML Model and vibration when done - finish by 10.3
+ * 7) My models activity. finish by 8.2
+ * 8) Add MyModels for each user - partially done. finish by 28.2
+ * 9) Add python connection - DONE.
  */
 
-@SuppressWarnings("FieldCanBeLocal")
 public class MainActivity extends AppCompatActivity {
 
     public static final String TAG = MainActivity.class.getSimpleName();
@@ -44,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
     private MenuManager menuManager;
     private AccountManager accountManager;
+    private FirebaseDatabaseHelper firebaseDatabaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         menuManager.switchActivity();
 
         accountManager = new AccountManager(MainActivity.this);
+        firebaseDatabaseHelper = new FirebaseDatabaseHelper(MainActivity.this);
     }
 
     @Override
@@ -75,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.itemMyAccount)
-            accountManager.openAccountManagerDialog();
+            accountManager.openAccountManagerDialog(firebaseDatabaseHelper.getUser());
 
         if (drawerToggle.onOptionsItemSelected(item))
             return true;

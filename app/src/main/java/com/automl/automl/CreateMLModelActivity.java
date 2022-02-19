@@ -31,7 +31,6 @@ import com.chaquo.python.Python;
 import com.chaquo.python.android.AndroidPlatform;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,7 +49,7 @@ public class CreateMLModelActivity extends AppCompatActivity {
 
     private AccountManager accountManager;
 
-    private DatabaseManager databaseManager;
+    private FirebaseDatabaseHelper firebaseDatabaseHelper;
 
     private SelectMLModelDialog selectMLModelDialog; // This object will manage the ML Model selection.
 
@@ -97,7 +96,7 @@ public class CreateMLModelActivity extends AppCompatActivity {
         menuManager = new MenuManager(CreateMLModelActivity.this, TAG, navigationView);
         menuManager.switchActivity();
         accountManager = new AccountManager(CreateMLModelActivity.this);
-        databaseManager = new DatabaseManager();
+        firebaseDatabaseHelper = new FirebaseDatabaseHelper(CreateMLModelActivity.this);
 
         fromButtonAnim = AnimationUtils.loadAnimation(CreateMLModelActivity.this, R.anim.from_bottom_anim);
         rotateCloseAnim = AnimationUtils.loadAnimation(CreateMLModelActivity.this, R.anim.rotate_close_anim);
@@ -149,7 +148,7 @@ public class CreateMLModelActivity extends AppCompatActivity {
         Log.e("HERE", isNetworkAvailable() + "");
 
         btnLoadFile.setOnClickListener(view -> {
-            FirebaseUser user = databaseManager.getUser();
+            User user = firebaseDatabaseHelper.getUser();
 
             if (user == null) {
                 Toast.makeText(CreateMLModelActivity.this, "You must be logged in to use the app.", Toast.LENGTH_SHORT).show();
@@ -205,7 +204,7 @@ public class CreateMLModelActivity extends AppCompatActivity {
 
             Toast.makeText(CreateMLModelActivity.this, "The score of the model is: " + score, Toast.LENGTH_LONG).show();
 
-            databaseManager.addMLModel(databaseManager.getUser().getEmail(), selectMLModelDialog.getMlModel()); // TODO - make email more efficient.
+            firebaseDatabaseHelper.addMLModel(firebaseDatabaseHelper.getUser().getUsername(), selectMLModelDialog.getMlModel()); // TODO - make email more efficient.
         });
     }
 
@@ -218,7 +217,7 @@ public class CreateMLModelActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.itemMyAccount)
-            accountManager.openAccountManagerDialog();
+            accountManager.openAccountManagerDialog(firebaseDatabaseHelper.getUser());
 
         if (drawerToggle.onOptionsItemSelected(item))
             return true;

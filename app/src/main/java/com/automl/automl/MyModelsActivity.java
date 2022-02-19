@@ -13,7 +13,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 
@@ -28,7 +27,7 @@ public class MyModelsActivity extends AppCompatActivity {
 
     private MenuManager menuManager;
     private AccountManager accountManager;
-    private DatabaseManager databaseManager;
+    private FirebaseDatabaseHelper firebaseDatabaseHelper;
     private ListView lvMyModels;
 
     @Override
@@ -51,15 +50,15 @@ public class MyModelsActivity extends AppCompatActivity {
 
         accountManager = new AccountManager(MyModelsActivity.this);
 
-        databaseManager = new DatabaseManager();
+        firebaseDatabaseHelper = new FirebaseDatabaseHelper(MyModelsActivity.this);
         lvMyModels = findViewById(R.id.lvMyModels);
 
-        FirebaseUser user = databaseManager.getUser();
+        User user = firebaseDatabaseHelper.getUser();
 
         if (user == null) // If the user is null, there is no data to display.
             Toast.makeText(MyModelsActivity.this, "You must be logged in to view your ML Models. Please sign in using the button at the top of the screen.", Toast.LENGTH_LONG).show();
         else { // Display the data.
-            ArrayList<MLModel> models = databaseManager.getMLModels(user.getEmail());
+            ArrayList<MLModel> models = firebaseDatabaseHelper.getMLModels(user.getUsername());
 
             MyModelsListViewAdapter adapter = new MyModelsListViewAdapter(MyModelsActivity.this, models);
             lvMyModels.setAdapter(adapter);
@@ -75,7 +74,7 @@ public class MyModelsActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.itemMyAccount)
-            accountManager.openAccountManagerDialog();
+            accountManager.openAccountManagerDialog(firebaseDatabaseHelper.getUser());
 
         if (drawerToggle.onOptionsItemSelected(item))
             return true;

@@ -5,12 +5,12 @@
     android:layout_height="match_parent">
 
     <EditText
-        android:id="@+id/etSignUpEmail"
+        android:id="@+id/etSignUpUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="200dp"
         android:ems="10"
-        android:hint="Email:"
+        android:hint="Username:"
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -27,7 +27,7 @@
         android:inputType="phone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etSignUpEmail" />
+        app:layout_constraintTop_toBottomOf="@+id/etSignUpUsername" />
 
 
     <EditText

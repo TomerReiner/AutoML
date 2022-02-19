@@ -1,14 +1,16 @@
 package com.automl.automl;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import com.google.firebase.auth.FirebaseUser;
 
 /**
  * This class manages the account.
@@ -23,19 +25,20 @@ import com.google.firebase.auth.FirebaseUser;
 public class AccountManager {
 
     private final Context context;
-    private final DatabaseManager manager;
-    private FirebaseUser user;
+    private FirebaseDatabaseHelper manager;
+    private User user;
 
     public AccountManager(Context context) {
         this.context = context;
-        this.manager = new DatabaseManager();
+        this.manager = new FirebaseDatabaseHelper(context);
+        this.manager.getData();
         this.user = manager.getUser();
     }
 
     /**
      * This function opens a dialog where the user will select account-related actions.
      */
-    public void openAccountManagerDialog() {
+    public void openAccountManagerDialog(User user) {
         Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.account_manager_dialog);
         dialog.setCancelable(true);
@@ -44,7 +47,7 @@ public class AccountManager {
         Button btnSignInSignOut = dialog.findViewById(R.id.btnSignInSignOut);
         Button btnSignup = dialog.findViewById(R.id.btnSignup);
 
-         this.user = manager.getUser();
+        this.user = manager.getUser();
 
         if (user != null) { // If there is a user that is logged into the app we would like to enable the account settings activity.
             btnAccountSettings.setVisibility(View.VISIBLE);
@@ -55,6 +58,11 @@ public class AccountManager {
 
         btnAccountSettings.setOnClickListener(view -> {
             Intent intent = new Intent(context, MyAccountActivity.class);
+
+            intent.putExtra(FirebaseDatabaseHelper.USERNAME, this.user.getUsername());
+            intent.putExtra(FirebaseDatabaseHelper.PHONE_NUM, this.user.getPhoneNum());
+            intent.putExtra(FirebaseDatabaseHelper.PASSWORD, this.user.getPassword());
+
             intent.putExtra("context", context.getClass().getSimpleName()); // Send the activity name to MyAccountActivity so it will return the user to the original activity.
             context.startActivity(intent);
         });
@@ -66,8 +74,8 @@ public class AccountManager {
             }
             else { // If the user has logged out of the app.
                 this.manager.signOut();
+                this.manager = new FirebaseDatabaseHelper(context);
                 btnSignInSignOut.setText(R.string.sign_in);
-                this.user = this.manager.getUser();
                 btnAccountSettings.setVisibility(View.INVISIBLE);
                 dialog.dismiss();
             }
@@ -90,19 +98,19 @@ public class AccountManager {
         dialog.setContentView(R.layout.sign_up_dialog);
         dialog.setCancelable(true);
 
-        EditText etEmail = dialog.findViewById(R.id.etSignUpEmail);
+        EditText etUsername = dialog.findViewById(R.id.etSignUpUsername);
         EditText etPhone = dialog.findViewById(R.id.etPhone);
         EditText etPassword = dialog.findViewById(R.id.etSignUpPassword);
         EditText etRetypePassword = dialog.findViewById(R.id.etSignUpRetypePassword);
         Button btnSignUp = dialog.findViewById(R.id.btnSignUp);
 
         btnSignUp.setOnClickListener(view -> {
-            String email = etEmail.getText().toString();
+            String username = etUsername.getText().toString();
             String phone = etPhone.getText().toString();
             String password = etPassword.getText().toString();
             String retypePassword = etRetypePassword.getText().toString();
 
-            boolean hasSuccessfullySignedUp = this.manager.signUp(email, phone, password, retypePassword);
+            boolean hasSuccessfullySignedUp = this.manager.signUp(username, phone, password, retypePassword);
 
             if (hasSuccessfullySignedUp) { // If a new user was created.
                 Toast.makeText(context, "Welcome!", Toast.LENGTH_SHORT).show();
@@ -123,23 +131,17 @@ public class AccountManager {
         dialog.setContentView(R.layout.sign_in_dialog);
         dialog.setCancelable(true);
 
-        EditText etEmail = dialog.findViewById(R.id.etSignInEmail);
+        EditText etUsername = dialog.findViewById(R.id.etSignInUsername);
         EditText etPassword = dialog.findViewById(R.id.etSignInPassword);
         Button btnSignIn = dialog.findViewById(R.id.btnSignIn);
 
         dialog.setOnCancelListener(dialogInterface -> this.manager.signOut()); // Prevent security breaches.
 
         btnSignIn.setOnClickListener(view -> {
-            String email = etEmail.getText().toString();
+            String username = etUsername.getText().toString();
             String password = etPassword.getText().toString();
-
-            boolean hasSuccessfullySignedIn = this.manager.signIn(email, password);
-
-            if (hasSuccessfullySignedIn)
-                createSignInAuthDialog(dialog, btnSignInSignOut, btnAccountSettings, email, password);
-            else
-                Toast.makeText(context, "Incorrect Email or Password", Toast.LENGTH_SHORT).show();
-
+            manager.signIn(username, password);
+            createSignInAuthDialog(dialog, btnSignInSignOut, btnAccountSettings, username);;
         });
         dialog.show();
     }
@@ -150,11 +152,10 @@ public class AccountManager {
      * @param signInDialog The signIn dialog.
      * @param btnSignInSignOut A button to change its text - sign in or sign out.
      * @param  btnAccountSettings A button to change its visibility.
-     * @param email The email of the user.
-     * @param password The password of the user.
-     * @see DatabaseManager#sendVerificationCode(Context, String, String)
+     * @param username The username of the user.
+     * @see FirebaseDatabaseHelper#sendVerificationCode(Context, String, String)
      */
-    private void createSignInAuthDialog(Dialog signInDialog, Button btnSignInSignOut, Button btnAccountSettings, String email, String password) {
+    public void createSignInAuthDialog(Dialog signInDialog, Button btnSignInSignOut, Button btnAccountSettings, String username) {
         Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.sign_in_verification_dialog);
         dialog.setCancelable(true);
@@ -162,9 +163,7 @@ public class AccountManager {
         this.manager.signOut();
 
         String verificationCode = this.manager.generateVerificationCode();
-        this.manager.sendVerificationCode(context, email, verificationCode);
-
-        boolean[] b = {false}; // The result of this function.
+        this.manager.sendVerificationCode(context, username, verificationCode);
 
         EditText etVerify = dialog.findViewById(R.id.etVerify);
         Button btnVerify = dialog.findViewById(R.id.btnVerify);
@@ -173,8 +172,6 @@ public class AccountManager {
             String insertedCode = etVerify.getText().toString(); // The code that the user has inserted.
 
             if (insertedCode.equals(verificationCode)) { // If the code is correct then the user is signed in.
-                this.manager.signIn(email, password);
-                b[0] = true;
 
                 btnSignInSignOut.setText(context.getString(R.string.sign_out));
                 Toast.makeText(context, "Welcome Back!", Toast.LENGTH_SHORT).show();

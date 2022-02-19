@@ -15,7 +15,6 @@ import android.widget.Toast;
 
 import com.automl.automl.blocks.Block;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.HashMap;
 import java.util.Set;

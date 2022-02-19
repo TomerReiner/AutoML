@@ -58,7 +58,7 @@ title __AUTOML's Class Diagram__\n
   
 
   namespace com.automl.automl {
-    class com.automl.automl.DatabaseManager {
+    class com.automl.automl.FirebaseDatabaseHelper {
         {static} + PHONE_NUM : String
         - auth : FirebaseAuth
         + DatabaseManager()
@@ -168,10 +168,10 @@ title __AUTOML's Class Diagram__\n
   }
   
 
-  com.automl.automl.AccountManager o-- com.automl.automl.DatabaseManager : manager
+  com.automl.automl.AccountManager o-- com.automl.automl.FirebaseDatabaseHelper : manager
   com.automl.automl.CreateMLModelActivity -up-|> androidx.appcompat.app.AppCompatActivity
   com.automl.automl.CreateMLModelActivity o-- com.automl.automl.AccountManager : accountManager
-  com.automl.automl.CreateMLModelActivity o-- com.automl.automl.DatabaseManager : databaseManager
+  com.automl.automl.CreateMLModelActivity o-- com.automl.automl.FirebaseDatabaseHelper : databaseManager
   com.automl.automl.CreateMLModelActivity o-- com.automl.automl.FileManager : fileManager
   com.automl.automl.CreateMLModelActivity o-- com.automl.automl.MenuManager : menuManager
   com.automl.automl.CreateMLModelActivity o-- com.automl.automl.SelectDADialog : selectDADialog
@@ -181,7 +181,7 @@ title __AUTOML's Class Diagram__\n
   com.automl.automl.MainActivity o-- com.automl.automl.AccountManager : accountManager
   com.automl.automl.MainActivity o-- com.automl.automl.MenuManager : menuManager
   com.automl.automl.MyAccountActivity -up-|> androidx.appcompat.app.AppCompatActivity
-  com.automl.automl.MyAccountActivity o-- com.automl.automl.DatabaseManager : databaseManager
+  com.automl.automl.MyAccountActivity o-- com.automl.automl.FirebaseDatabaseHelper : databaseManager
   com.automl.automl.SelectMLModelDialog o-- com.automl.automl.MLModel : mlModel
 
 

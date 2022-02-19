@@ -9,7 +9,6 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -74,7 +73,7 @@ public class FileManager extends AsyncTask<String, Void, Void> {
 
     /**
      * This function removes a columns from the dataset.
-     * @param column
+     * @param column The column that the user would like to remove.
      */
     public void removeColumn(String column) {
         this.removedColumns.put(column, this.dataset.get(column)); // Save the deleted column

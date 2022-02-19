@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.automl.automl.blocks.Block;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
