@@ -140,8 +140,13 @@ public class AccountManager {
         btnSignIn.setOnClickListener(view -> {
             String username = etUsername.getText().toString();
             String password = etPassword.getText().toString();
-            manager.signIn(username, password);
-            createSignInAuthDialog(dialog, btnSignInSignOut, btnAccountSettings, username);;
+
+            boolean isSuccessfullySignedIn = this.manager.signIn(username, password);
+
+            if (isSuccessfullySignedIn)
+                createSignInAuthDialog(dialog, btnSignInSignOut, btnAccountSettings, username);
+            else
+                Toast.makeText(context, "Incorrect username or password", Toast.LENGTH_LONG).show();
         });
         dialog.show();
     }
@@ -159,9 +164,7 @@ public class AccountManager {
         Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.sign_in_verification_dialog);
         dialog.setCancelable(true);
-
-        this.manager.signOut();
-
+        
         String verificationCode = this.manager.generateVerificationCode();
         this.manager.sendVerificationCode(context, username, verificationCode);
 
@@ -172,15 +175,14 @@ public class AccountManager {
             String insertedCode = etVerify.getText().toString(); // The code that the user has inserted.
 
             if (insertedCode.equals(verificationCode)) { // If the code is correct then the user is signed in.
-
                 btnSignInSignOut.setText(context.getString(R.string.sign_out));
+                btnAccountSettings.setVisibility(View.VISIBLE);
                 Toast.makeText(context, "Welcome Back!", Toast.LENGTH_SHORT).show();
 
                 dialog.dismiss();
                 signInDialog.dismiss();
             }
             else {
-
                 this.manager.signOut(); // Prevent security breaches.
                 btnAccountSettings.setVisibility(View.INVISIBLE);
                 Toast.makeText(context, "Something went wrong.", Toast.LENGTH_SHORT).show();

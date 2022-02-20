@@ -54,7 +54,6 @@ public class FirebaseDatabaseHelper {
     }
 
     public User getUser() {
-        getCurrentlyLoggedInUser();
         return this.user[0];
     }
 
@@ -65,7 +64,8 @@ public class FirebaseDatabaseHelper {
         ref.child(USERS).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    Log.e("DATA", "DATA" + snapshot.getValue());
+                map = (Map) snapshot.getValue();
+                Log.e("DATA", "DATA" + snapshot.getValue());
             }
 
             @Override
@@ -144,27 +144,31 @@ public class FirebaseDatabaseHelper {
      * @param password The password of the user.
      * @return <code>true</code> if the user was successfully signed in <code>false</code> otherwise.
      */
-    public void signIn(String username, String password) {
+    public boolean signIn(String username, String password) {
         if (username.length() == 0 || password.length() == 0)
-            return;
+            return false;
 
         FirebaseDatabase db = FirebaseDatabase.getInstance("https://myml-4f150-default-rtdb.europe-west1.firebasedatabase.app");
         DatabaseReference ref = db.getReference();
 
         try {
             HashMap<String, String> userData = (HashMap<String, String>) map.get(username); // Trying to get the user's data.
+            System.out.println(userData);
             String realPassword = userData.get(PASSWORD); // Extract the user's password from the dataset.
             String insertedPassword = "" + password.hashCode();
 
             if (insertedPassword.equals(realPassword)) { // The login was successful.
                 user[0] = new User(userData.get(USERNAME), userData.get(PHONE_NUM), userData.get(PASSWORD));
-                user[0] = new User(userData.get(USERNAME), userData.get(PHONE_NUM), userData.get(PASSWORD));
-                ref.child(LOGGED_IN_USERS).child(deviceId).setValue(user[0]); // Chane the logged in user in this device to the new user.
+                System.out.println(user[0]);
+                ref.child(LOGGED_IN_USERS).child(deviceId).setValue(userData); // Chane the logged in user in this device to the new user.
+                ref.push();
+                return true;
             }
         }
         catch (Exception e) {
             e.printStackTrace();
         }
+        return false;
     }
 
 
@@ -176,7 +180,7 @@ public class FirebaseDatabaseHelper {
         FirebaseDatabase db = FirebaseDatabase.getInstance("https://myml-4f150-default-rtdb.europe-west1.firebasedatabase.app");
         DatabaseReference ref = db.getReference().child(LOGGED_IN_USERS).child(this.deviceId);
         ref.setValue("");
-        getCurrentlyLoggedInUser();
+        this.user[0] = null;
     }
 
     /**
