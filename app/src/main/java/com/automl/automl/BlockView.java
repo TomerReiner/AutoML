@@ -3,11 +3,9 @@ package com.automl.automl;
 import android.content.Context;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.automl.automl.blocks.Block;
-
+import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -20,14 +18,11 @@ import java.util.HashMap;
  */
 public class BlockView {
 
-    private final Context context;
-    private final ScrollView scrollView;
-    private LinearLayout linearLayout;
+    private final Context context;private final LinearLayout linearLayout;
     private static int count = 0; // The number of blocks on the screen.
 
-    public BlockView(Context context, ScrollView scrollView, LinearLayout linearLayout) {
+    public BlockView(Context context,  LinearLayout linearLayout) {
         this.context = context;
-        this.scrollView = scrollView;
         this.linearLayout = linearLayout;
     }
 
@@ -51,8 +46,13 @@ public class BlockView {
         TextView tv = new TextView(context);
         tv.setLayoutParams(params);
 
-        for (String k : attributes.keySet()) // Add all the attributes to the container.
-            setAttributesForTextView(tv, k +": " + attributes.get(k).toString() + "\n" + tv.getText().toString(), 16);
+        for (String k : attributes.keySet()) {// Add all the attributes to the container.
+            if (attributes.get(k) instanceof String[])
+                setAttributesForTextView(tv, k + ": " + Arrays.toString((String[]) attributes.get(k)) + "\n" + tv.getText().toString(), 16);
+            else
+                setAttributesForTextView(tv, k + ": " + attributes.get(k) + "\n" + tv.getText().toString(), 16);
+
+        }
         linearLayout.addView(tv); // Add the text view to the layout
         count += 2;
     }
@@ -69,8 +69,7 @@ public class BlockView {
      * This function removes a block from the screen.
      */
     public void removeBlock() {
-        linearLayout.removeViewsInLayout(count - 2, 2);
-
+        linearLayout.removeViewsInLayout(count - 2, 2); // Remove 2 because we remove to views.
         count -= 2;
     }
 

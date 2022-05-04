@@ -1,5 +1,8 @@
 package com.automl.automl;
 
+import androidx.annotation.NonNull;
+
+import java.io.Serializable;
 import java.util.HashMap;
 
 /**
@@ -8,7 +11,7 @@ import java.util.HashMap;
  * @see R.layout#select_classification_model_dialog
  * @see R.layout#select_regression_model_dialog
  */
-public class MLModel {
+public class MLModel implements Serializable {
 
     private String type; // The type of the ML model.
     private HashMap<String, Object> attributes;
@@ -27,13 +30,14 @@ public class MLModel {
     }
 
     public HashMap<String, Object> getAttributes() {
-        return this.attributes;
+        return attributes;
     }
 
     public void setAttributes(HashMap<String, Object> attributes) {
         this.attributes = attributes;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "type='" + type + '\'' + ", attributes=" + attributes;

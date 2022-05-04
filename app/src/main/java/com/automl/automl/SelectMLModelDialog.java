@@ -7,14 +7,12 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.automl.automl.blocks.Block;
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.HashMap;
 import java.util.Set;
@@ -34,23 +32,23 @@ public class SelectMLModelDialog {
     public static final String[] RANDOM_FOREST_REGRESSOR_CRITERIA = {"auto", "sqrt", "log2"};
     public static final String[] SVM_KERNEL = {"linear", "poly", "rbf", "sigmoid", "precomputed"};
 
-    private Context context; // The context of the activity.
-    private BlockView blockView; // A block view where the user will see the ML Model building pipeline.
+    private final Context context; // The context of the activity.
+    private final BlockView blockView; // A block view where the user will see the ML Model building pipeline.
 
     /**
-     * This variable is used to set {@link ExtendedFloatingActionButton#setClickable(boolean)} to <code>false</code>
+     * This variable is used to set {@link FloatingActionButton#setClickable(boolean)} to <code>false</code>
      * after an ML Model was chosen, since Adding ML Model to the pipeline is the last step.
      * @see R.id#fabAddDataAnalysisBlock
      */
-    private ExtendedFloatingActionButton fabAddDA;
+    private final FloatingActionButton fabAddDA;
 
     private String yColumn = null; // The target columns.
     private MLModel mlModel = null;
 
-    public SelectMLModelDialog(Context context, ScrollView scrollView, LinearLayout linearLayout, ExtendedFloatingActionButton fabAddDA) {
+    public SelectMLModelDialog(Context context, LinearLayout linearLayout, FloatingActionButton fabAddDA) {
         this.context = context;
         this.fabAddDA = fabAddDA;
-        this.blockView = new BlockView(context, scrollView, linearLayout);
+        this.blockView = new BlockView(context,  linearLayout);
     }
 
     /**
@@ -64,7 +62,11 @@ public class SelectMLModelDialog {
      * and the rest will be the X columns. If the user has selected the Y column to be a regression model, and the ML Model to be a classification model,
      * a warning will be raised, and same if the opposite happens.
      */
-    public void createSelectMlModelDialog(Set<String> columns) {
+    public void createSelectMlModelTypeDialog(Set<String> columns) {
+        if (this.mlModel != null) {
+            Toast.makeText(this.context, "You cannot add more than one ML Model to the pipeline. Please undo the last ML Model and add the new desired one.", Toast.LENGTH_LONG).show();
+            return;
+        }
         Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.select_ml_model_type_dialog);
 
@@ -73,6 +75,8 @@ public class SelectMLModelDialog {
         Button btnSelect = dialog.findViewById(R.id.btnSelect);
 
         setSpinnerItems(spinnerSelectYColumn, columns.toArray(new String[0]));
+
+
 
         btnSelect.setOnClickListener(v -> {
 
@@ -271,7 +275,7 @@ public class SelectMLModelDialog {
         dialog.setCancelable(true);
         dialog.setContentView(R.layout.random_forest_config_dialog);
 
-        TextView tvMaxFeatures = dialog.findViewById(R.id.tvMaxFeatures);
+        TextView tvDisplayRFNEstimators = dialog.findViewById(R.id.tvDisplayRFNEstimators);
         SeekBar skBarRFNEstimators = dialog.findViewById(R.id.skBarRFNEstimators);
         Spinner spinnerRFMaxFeatures = dialog.findViewById(R.id.spinnerRFMaxFeatures);
         Spinner spinnerRFCriterion = dialog.findViewById(R.id.spinnerRFCriterion);
@@ -280,7 +284,7 @@ public class SelectMLModelDialog {
         skBarRFNEstimators.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                tvMaxFeatures.setText(context.getString(R.string.n_estimators) + " " + progress);
+                tvDisplayRFNEstimators.setText(context.getString(R.string.n_estimators) + " " + progress);
             }
 
             @Override
@@ -390,7 +394,7 @@ public class SelectMLModelDialog {
         spinner.setAdapter(adapter);
     }
 
-    public String getyColumn() {
+    public String getYColumn() {
         return this.yColumn;
     }
 

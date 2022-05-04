@@ -10,9 +10,9 @@ import com.google.android.material.navigation.NavigationView;
  */
 public class MenuManager {
 
-    private Context context;
-    private String tag; // The name of the activity.
-    private NavigationView navigationView;
+    private final Context context;
+    private final String tag; // The name of the activity.
+    private final NavigationView navigationView;
 
     public MenuManager(Context context, String tag, NavigationView navigationView) {
         this.context = context;
@@ -35,8 +35,9 @@ public class MenuManager {
 
     /**
      * This function switches between the different activities.
+     * @param firebaseDatabaseHelper The database of the app. Used to retrieve the user's ML Models and display it in {@link MyModelsActivity}.
      */
-    public void switchActivity() {
+    public void switchActivity(FirebaseDatabaseHelper firebaseDatabaseHelper) {
         Intent[] intents = {null};
 
         navigationView.setNavigationItemSelectedListener(item -> {
@@ -56,6 +57,13 @@ public class MenuManager {
 
             else if (item.getItemId() == R.id.itemMyModels) {
                 intents[0] = new Intent(context, MyModelsActivity.class);
+                intents[0].putExtra("models", firebaseDatabaseHelper.getModels());
+                context.startActivity(intents[0]);
+                return true;
+            }
+            else if (item.getItemId() == R.id.itemAbout) {
+                intents[0] = new Intent(context, AboutActivity.class);
+                intents[0].putExtra("models", firebaseDatabaseHelper.getModels());
                 context.startActivity(intents[0]);
                 return true;
             }

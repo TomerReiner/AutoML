@@ -15,6 +15,7 @@ class DataPreprocessor:
 
     def __init__(self, df: pd.DataFrame):
         self.df = df
+        self.normalization_info = {}
 
     def normalize(self, column: str):
         """
@@ -24,6 +25,7 @@ class DataPreprocessor:
         """
 
         if self.df[column].dtype != "object":
+            self.normalization_info[column] = [self.df[column].min(), self.df[column].max()]
             scaler = MinMaxScaler()
             self.df[column] = scaler.fit_transform(self.df[column].values.reshape(-1, 1))  # Normalize the values in the column.
 
@@ -56,10 +58,12 @@ class DataPreprocessor:
 
         try:  # Check if the column can be a numerical column.
             self.df[column] = self.df[column].astype(float)
+            self.normalization_info[column] = [self.df[column].min(), self.df[column].max()]
 
         except:  # The conversion has failed, therefore the column should be encoded.
             encoder = LabelEncoder()
             self.df[column] = encoder.fit_transform(self.df[column].values.reshape(-1, 1))
+            self.normalization_info[column] = [self.df[column].min(), self.df[column].max()]
 
     def drop_na(self):
         """
@@ -105,6 +109,18 @@ class DataPreprocessor:
             if self.df[column].hasnans:
                 return False, f"The column `{column}` has NaN values."
 
-
-
         return True, ""  # The dataset is valid.
+
+
+    def encode_y_column(self, y_column_name: str) -> dict:
+        y = self.df[y_column_name]
+
+        encoder = LabelEncoder()
+
+        encoder.fit(y)
+
+        classes = list(encoder.classes_)
+
+        return {x: classes[x] for x in range(len(classes))}
+
+

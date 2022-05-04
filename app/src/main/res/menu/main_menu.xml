@@ -14,4 +14,10 @@
         android:id="@+id/itemMyModels"
         android:icon="@drawable/ic_computer"
         android:title="My Models"/>
+
+    <item
+        android:id="@+id/itemAbout"
+        android:icon="@drawable/ic_about"
+        android:title="About"/>
+
 </menu>

@@ -16,7 +16,7 @@
             android:id="@+id/etFilename"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Select File"
+            android:hint="Enter URL"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -27,7 +27,8 @@
             android:id="@+id/btnLoadFile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Load File"
+            android:background="@drawable/button_shape"
+            android:text="Download File"
             android:textAllCaps="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
@@ -58,14 +59,15 @@
             </ScrollView>
         </LinearLayout>
 
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabAddDataAnalysisBlock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
             android:clickable="true"
             android:contentDescription="Add DA"
-            android:text="Add Da"
             android:textAllCaps="false"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -74,9 +76,9 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.8"
-            app:srcCompat="@drawable/ic_add_ml_action" />
+            app:srcCompat="@drawable/ic_data_analysis" />
 
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabAddMLModelBlock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -85,7 +87,6 @@
             android:layout_marginBottom="10dp"
             android:clickable="true"
             android:contentDescription="Add ML"
-            android:text="Add ML"
             android:textAllCaps="false"
             android:visibility="invisible"
             app:layout_constraintBottom_toTopOf="@+id/fabAddBlock"
@@ -94,9 +95,9 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/fabAddDataAnalysisBlock"
             app:layout_constraintVertical_bias="0.8"
-            app:srcCompat="@drawable/ic_add_ml_action" />
+            app:srcCompat="@drawable/ic_ml_model" />
 
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabAddBlock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -117,8 +118,9 @@
             android:id="@+id/btnFinish"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Finish"
             android:layout_marginRight="20dp"
+            android:background="@drawable/button_shape"
+            android:text="Finish"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/fabAddBlock"
             app:layout_constraintHorizontal_bias="1.0"
@@ -129,10 +131,10 @@
             android:id="@+id/btnUndo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/button_shape"
             android:text="Undo"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

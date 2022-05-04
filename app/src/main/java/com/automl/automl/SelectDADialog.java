@@ -6,14 +6,12 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.automl.automl.blocks.Block;
-
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -22,21 +20,17 @@ import java.util.Set;
  */
 public class SelectDADialog {
 
-    private Context context;
-    private ScrollView scrollView;
-    private LinearLayout linearLayout;
-    private FileManager fileManager;
-    private BlockView blockView;
-    private ArrayList<Block> blocks = new ArrayList<>(); // This array list will store all the blocksa for further usage by the python code.
+    private final Context context;
+    private final FileManager fileManager;
+    private final BlockView blockView;
+    private final ArrayList<Block> blocks = new ArrayList<>(); // This array list will store all the blocksa for further usage by the python code.
 
     public static final String[] FILL_NA_ACTIONS = {"Max Value", "Min Value", "Average Value", "Default Value"};
 
-    public SelectDADialog(Context context, ScrollView scrollView, LinearLayout linearLayout, FileManager fileManager) {
+    public SelectDADialog(Context context, LinearLayout linearLayout, FileManager fileManager) {
         this.context = context;
-        this.scrollView = scrollView;
-        this.linearLayout = linearLayout;
         this.fileManager = fileManager;
-        this.blockView = new BlockView(context, scrollView, linearLayout);
+        this.blockView = new BlockView(context, linearLayout);
     }
 
     /**
@@ -104,7 +98,7 @@ public class SelectDADialog {
         attributes.put("action", daAction);
 
         if (daAction.equals(context.getString(R.string.drop_na))) { // If the user would like to remove NA values.
-            attributes.put(context.getString(R.string.column), columns); // Add all the columns to the list.
+            attributes.put(context.getString(R.string.column), columns.toArray(new String[0])); // Add all the columns to the list.
             Block block = new Block(context.getString(R.string.data_analysis), attributes);
             this.blockView.addBlock(block);
             this.blocks.add(block); // Add the block to the list.
@@ -127,9 +121,7 @@ public class SelectDADialog {
         }
 
         btnSelectDAConfig.setOnClickListener(view -> {
-            Block block = null;
-            BlockView blockView = null;
-
+            Block block;
             String selectedColumn = (String) spinnerSelectColumn.getItemAtPosition(spinnerSelectColumn.getSelectedItemPosition());
             attributes.put(context.getString(R.string.column), selectedColumn); // Add the relevant column
 
@@ -190,7 +182,7 @@ public class SelectDADialog {
         Block last = this.blocks.get(this.blocks.size() - 1);
         HashMap<String, Object> attributes = last.getAttributes();
 
-        if (attributes.get(context.getString(R.string.column)).equals(context.getString(R.string.remove_column))) { // If the last Data Analysis action was removing a column.
+        if (Objects.requireNonNull(attributes.get(context.getString(R.string.column))).equals(context.getString(R.string.remove_column))) { // If the last Data Analysis action was removing a column.
             this.fileManager.restoreColumn();
         }
         this.blocks.remove(this.blocks.size() - 1);

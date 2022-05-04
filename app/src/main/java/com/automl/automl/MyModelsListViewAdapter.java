@@ -16,10 +16,10 @@ import java.util.ArrayList;
  */
 public class MyModelsListViewAdapter extends BaseAdapter {
 
-    private Context context;
-    private ArrayList<MLModel> models;
+    private final Context context;
+    private final ArrayList<MLModelDisplay> models;
 
-    public MyModelsListViewAdapter(Context context, ArrayList<MLModel> models) {
+    public MyModelsListViewAdapter(Context context, ArrayList<MLModelDisplay> models) {
         this.context = context;
         this.models = models;
     }
@@ -44,10 +44,11 @@ public class MyModelsListViewAdapter extends BaseAdapter {
         View v = LayoutInflater.from(context).inflate(R.layout.ml_model_item_list_view, viewGroup, false);
 
         TextView tvMLModel = v.findViewById(R.id.tvMLModel);
-        MLModel model = this.models.get(i);
+
+        MLModelDisplay model = this.models.get(i);
 
         tvMLModel.setText(model.toString());
 
-        return view;
+        return v;
     }
 }

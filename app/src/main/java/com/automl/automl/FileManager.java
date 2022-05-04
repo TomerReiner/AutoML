@@ -6,22 +6,24 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.Set;
 
 /**
  * This class manages the reading of the file.
  */
-public class FileManager extends AsyncTask<String, Void, Void> {
+public class FileManager extends AsyncTask<String, Void, Void> implements Serializable {
 
 
     private static final String SPLIT = ",";
 
-    private HashMap<String, ArrayList<String>> dataset;
-    private HashMap<String, ArrayList<String>> removedColumns; // This variable will contain the removed columns to restore them if the user would like to.
+    private final HashMap<String, ArrayList<String>> dataset;
+    private final HashMap<String, ArrayList<String>> removedColumns; // This variable will contain the removed columns to restore them if the user would like to.
 
     public FileManager(HashMap<String, ArrayList<String>> dataset) {
         this.dataset = dataset;
@@ -48,9 +50,23 @@ public class FileManager extends AsyncTask<String, Void, Void> {
         while ((line = reader.readLine()) != null) { // Append all the values to the HashMap.
             String[] values = line.split(SPLIT);
 
-            for (int i = 0; i < values.length; i++) {
-                if (i < this.dataset.size())
-                    this.dataset.get(this.dataset.keySet().toArray()[i]).add(values[i]);
+            if (values.length < columnNames.length) { // If there are less values in the line than the number of columns we will fill the values with null.
+                for (int i = 0; i < values.length; i++)
+                    Objects.requireNonNull(this.dataset.get(columnNames[i])).add(values[i]);
+
+                for (int i = values.length; i < columnNames.length; i++) {
+                    Objects.requireNonNull(this.dataset.get(columnNames[i])).add(null);
+                }
+            }
+
+            else if (values.length > columnNames.length) { // If there are more values in the line than the number of columns we will only add the first n (number of columns) values to the dataset.
+                for (int i = 0; i < columnNames.length; i++)
+                    Objects.requireNonNull(this.dataset.get(columnNames[i])).add(values[i]);
+            }
+
+            else { // There are exactly n values in the line.
+                for (int i = 0; i < values.length; i++)
+                    Objects.requireNonNull(this.dataset.get(columnNames[i])).add(values[i]);
             }
         }
     }
@@ -104,7 +120,6 @@ public class FileManager extends AsyncTask<String, Void, Void> {
     public String[] getColumns() {
         return this.dataset.keySet().toArray(new String[0]);
     }
-// TODO - make sure there are a least two columns in the dataset.
 
     /**
      * This function returns an array of arrays with all the data in {@link #dataset}.
@@ -113,10 +128,10 @@ public class FileManager extends AsyncTask<String, Void, Void> {
     public Object[][] getData() {
         String[] columns = this.getColumns();
 
-        Object[][] values = new Object[columns.length][this.dataset.get(columns[0]).size()];
+        Object[][] values = new Object[columns.length][Objects.requireNonNull(this.dataset.get(columns[0])).size()];
 
         for (int i = 0; i < columns.length; i++)
-            values[i] = this.dataset.get(columns[i]).toArray();
+            values[i] = Objects.requireNonNull(this.dataset.get(columns[i])).toArray();
         return values;
     }
 

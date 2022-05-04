@@ -7,6 +7,8 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -55,10 +57,14 @@ public class MainActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true); // Display the navigation view.
 
         menuManager = new MenuManager(MainActivity.this, TAG, navigationView);
-        menuManager.switchActivity();
 
         accountManager = new AccountManager(MainActivity.this);
         firebaseDatabaseHelper = new FirebaseDatabaseHelper(MainActivity.this);
+
+        menuManager.switchActivity(firebaseDatabaseHelper);
+
+        if (checkSelfPermission(Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) // Request Permission to send SMS.
+            requestPermissions(new String[]{Manifest.permission.SEND_SMS}, 1);
     }
 
     @Override
@@ -70,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.itemMyAccount)
-            accountManager.openAccountManagerDialog(firebaseDatabaseHelper.getUser());
+            accountManager.openAccountManagerDialog();
 
         if (drawerToggle.onOptionsItemSelected(item))
             return true;

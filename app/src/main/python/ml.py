@@ -42,40 +42,40 @@ class MyML:
         if ml_model_name == "Decision Tree Classifier":
             self.ml_model = DecisionTreeClassifier(**ml_model_config)
 
-        if ml_model_name == "Decision Tree Regressor":
+        elif ml_model_name == "Decision Tree Regressor":
             self.ml_model = DecisionTreeRegressor(**ml_model_config)
 
-        if ml_model_name == "Random Forest Classifier":
+        elif ml_model_name == "Random Forest Classifier":
             self.ml_model = RandomForestClassifier(**ml_model_config)
 
-        if ml_model_name == "Random Forest Regressor":
+        elif ml_model_name == "Random Forest Regressor":
             self.ml_model = RandomForestRegressor(**ml_model_config)
 
-        if ml_model_name == "Linear Regression":
+        elif ml_model_name == "Linear Regression":
             self.ml_model = LinearRegression(**ml_model_config)
 
-        if ml_model_name == "Elastic Net CV":
+        elif ml_model_name == "Elastic Net CV":
             self.ml_model = ElasticNetCV(**ml_model_config)
 
-        if ml_model_name == "SVC":
+        elif ml_model_name == "SVC":
             self.ml_model = SVC(**ml_model_config)
 
-        if ml_model_name == "SVR":
+        elif ml_model_name == "SVR":
             self.ml_model = SVR(**ml_model_config)
 
-        if ml_model_name == "K Nearest Neighbors Classifier":
+        elif ml_model_name == "K Nearest Neighbors Classifier":
             self.ml_model = KNeighborsClassifier(**ml_model_config)
 
-        if ml_model_name == "Gaussian NB":
+        elif ml_model_name == "Gaussian NB":
             self.ml_model = GaussianNB(**ml_model_config)
 
-        if ml_model_name == "Multinomial NB":
+        elif ml_model_name == "Multinomial NB":
             self.ml_model = MultinomialNB(**ml_model_config)
 
-        if ml_model_name == "Complement NB":
+        elif ml_model_name == "Complement NB":
             self.ml_model = ComplementNB(**ml_model_config)
 
-        if ml_model_name == "Bernoulli NB":
+        else:
             self.ml_model = BernoulliNB(**ml_model_config)
 
         self.ml_model.fit(self.X_train, self.y_train)

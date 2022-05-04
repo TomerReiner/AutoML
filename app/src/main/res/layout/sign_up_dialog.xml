@@ -12,6 +12,7 @@
         android:ems="10"
         android:hint="Username:"
         android:inputType="textEmailAddress"
+        android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,14 +22,13 @@
         android:id="@+id/etPhone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
         android:layout_marginTop="10dp"
+        android:ems="10"
         android:hint="Phone:"
         android:inputType="phone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etSignUpUsername" />
-
 
     <EditText
         android:id="@+id/etSignUpPassword"
@@ -61,6 +61,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:background="@drawable/button_shape"
         android:text="Sign Up"
         android:textAllCaps="false"
         app:layout_constraintEnd_toEndOf="parent"

@@ -5,10 +5,9 @@ title __AUTOML's Class Diagram__\n
   namespace com.automl.automl {
     class com.automl.automl.AccountManager {
         - context : Context
-        - user : FirebaseUser
         + AccountManager()
+        + createSignInAuthDialog()
         + openAccountManagerDialog()
-        - createSignInAuthDialog()
         - createSignInDialog()
         - createSignUpDialog()
     }
@@ -16,12 +15,27 @@ title __AUTOML's Class Diagram__\n
   
 
   namespace com.automl.automl {
+    class com.automl.automl.Block {
+        - attributes : HashMap<String, Object>
+        - type : String
+        + Block()
+        + getAttributes()
+        + getType()
+        + setAttributes()
+        + setType()
+        + toString()
+    }
+  }
+  
+
+  namespace com.automl.automl {
     class com.automl.automl.BlockView {
         - context : Context
+        {static} - count : int
         - linearLayout : LinearLayout
-        - scrollView : ScrollView
         + BlockView()
         + addBlock()
+        + removeBlock()
         - createBlock()
         - setAttributesForTextView()
     }
@@ -32,15 +46,17 @@ title __AUTOML's Class Diagram__\n
     class com.automl.automl.CreateMLModelActivity {
         {static} + TAG : String
         - actionBar : ActionBar
+        - btnFinish : Button
         - btnLoadFile : Button
+        - btnUndo : Button
         - clickedFabAddItem : boolean
         - dataset : HashMap<String, ArrayList<String>>
         - drawerLayout : DrawerLayout
         - drawerToggle : ActionBarDrawerToggle
         - etFilename : EditText
-        - fabAddBlock : ExtendedFloatingActionButton
-        - fabAddDataAnalysisBlock : ExtendedFloatingActionButton
-        - fabAddMLModelBlock : ExtendedFloatingActionButton
+        - fabAddBlock : FloatingActionButton
+        - fabAddDataAnalysisBlock : FloatingActionButton
+        - fabAddMLModelBlock : FloatingActionButton
         - fromButtonAnim : Animation
         - linearLayout : LinearLayout
         - navigationView : NavigationView
@@ -58,32 +74,51 @@ title __AUTOML's Class Diagram__\n
   
 
   namespace com.automl.automl {
-    class com.automl.automl.FirebaseDatabaseHelper {
-        {static} + PHONE_NUM : String
-        - auth : FirebaseAuth
-        + DatabaseManager()
-        + addMLModel()
-        + changePassword()
-        + deleteUser()
-        + generateVerificationCode()
-        + getUser()
-        + sendVerificationCode()
-        + signIn()
-        + signOut()
-        + signUp()
+    class com.automl.automl.FileManager {
+        {static} - SPLIT : String
+        - dataset : HashMap<String, ArrayList<String>>
+        - removedColumns : HashMap<String, ArrayList<String>>
+        + FileManager()
+        + getColumns()
+        + getData()
+        + getDataset()
+        + removeColumn()
+        + restoreColumn()
+        # doInBackground()
+        - readFile()
     }
   }
   
 
   namespace com.automl.automl {
-    class com.automl.automl.FileManager {
-        {static} - SPLIT : String
-        - dataset : HashMap<String, ArrayList<String>>
-        + FileManager()
-        + getDataset()
-        + removeColumn()
-        # doInBackground()
-        - readFile()
+    class com.automl.automl.FirebaseDatabaseHelper {
+        {static} + LOGGED_IN_USERS : String
+        {static} + ML_MODELS : String
+        {static} + PASSWORD : String
+        {static} + PHONE_NUM : String
+        {static} + USERNAME : String
+        {static} + USERS : String
+        - deviceId : String
+        - map : Map<Object, Object>
+        - models : ArrayList<MLModelDisplay>
+        - user : User[]
+        + FirebaseDatabaseHelper()
+        + addMLModel()
+        + changePassword()
+        + deleteData()
+        + deleteUser()
+        + generateVerificationCode()
+        + getModels()
+        + getUser()
+        + getUsersData()
+        + sendVerificationCode()
+        + setModels()
+        + signIn()
+        + signOut()
+        + signUp()
+        - isUserExists()
+        - isUsernameValid()
+        - retrieveMLModels()
     }
   }
   
@@ -97,6 +132,69 @@ title __AUTOML's Class Diagram__\n
         + getType()
         + setAttributes()
         + setType()
+        + toString()
+    }
+  }
+  
+
+  namespace com.automl.automl {
+    class com.automl.automl.MLModelDisplay {
+        - attributes : HashMap<String, Object>
+        - columns : String
+        - rows : String
+        - score : String
+        - type : String
+        + MLModelDisplay()
+        {static} + fromMap()
+        + getAttributes()
+        + getColumns()
+        + getRows()
+        + getScore()
+        + getType()
+        + setType()
+        + toString()
+    }
+  }
+  
+
+  namespace com.automl.automl {
+    class com.automl.automl.MLPipelineService {
+        {static} + CHANNEL_ID : String
+        {static} + ML_TEST : String
+        {static} + NOTIFICATION_ID : int
+        - blocks : ArrayList<Block>
+        - columns : String[]
+        - data : Object[][]
+        - yColumnName : String
+        + MLPipelineService()
+        + onBind()
+        + onCreate()
+        + onStartCommand()
+        - createMLModelFailedNotification()
+        - createMLReadyNotification()
+        - isAppInBackground()
+    }
+  }
+  
+
+  namespace com.automl.automl {
+    class com.automl.automl.MLTest {
+        - columns : String[]
+        {static} - mlModel : PyObject
+        - normalizationInfo : HashMap<String, double[]>
+        - score : String
+        {static} - yColumnEncoding : PyObject
+        + MLTest()
+        + getColumns()
+        + getMlModel()
+        + getNormalizationInfo()
+        + getScore()
+        + getyColumnEncoding()
+        + setColumns()
+        + setMlModel()
+        + setNormalizationInfo()
+        + setScore()
+        + setyColumnEncoding()
     }
   }
   
@@ -129,13 +227,72 @@ title __AUTOML's Class Diagram__\n
 
   namespace com.automl.automl {
     class com.automl.automl.MyAccountActivity {
+        {static} + DELETE_ACCOUNT : String
+        {static} + DELETE_ML_MODELS : String
         - btnChangePassword : Button
         - btnDeleteAccount : Button
         - btnDeleteData : Button
-        - originalActivity : Context
+        - intent : Intent
         - switchBlockNotifications : Switch
-        - tvEmail : TextView
+        - tvUsername : TextView
         # onCreate()
+        - createChangePasswordDialog()
+        - createDeleteDataDialog()
+    }
+  }
+  
+
+  namespace com.automl.automl {
+    class com.automl.automl.MyModelsActivity {
+        {static} + TAG : String
+        - actionBar : ActionBar
+        - drawerLayout : DrawerLayout
+        - drawerToggle : ActionBarDrawerToggle
+        - lvMyModels : ListView
+        - navigationView : NavigationView
+        + onCreateOptionsMenu()
+        + onOptionsItemSelected()
+        # onCreate()
+    }
+  }
+  
+
+  namespace com.automl.automl {
+    class com.automl.automl.MyModelsListViewAdapter {
+        - context : Context
+        - models : ArrayList<MLModelDisplay>
+        + MyModelsListViewAdapter()
+        + getCount()
+        + getItem()
+        + getItemId()
+        + getView()
+    }
+  }
+  
+
+  namespace com.automl.automl {
+    class com.automl.automl.SQLiteDatabaseHelper {
+        {static} + DATABASE_NAME : String
+        {static} + PASSWORD : String
+        {static} + PHONE_NUMBER : String
+        {static} + USERNAME : String
+        {static} + USERS : String
+        + SQLiteDatabaseHelper()
+        + fastLogin()
+        + getUser()
+        + onCreate()
+        + onUpgrade()
+        + signOut()
+    }
+  }
+  
+
+  namespace com.automl.automl {
+    class com.automl.automl.ScreenStateReceiver {
+        - isOff : boolean
+        + ScreenStateReceiver()
+        + isOff()
+        + onReceive()
     }
   }
   
@@ -145,11 +302,10 @@ title __AUTOML's Class Diagram__\n
         {static} + FILL_NA_ACTIONS : String[]
         - blocks : ArrayList<Block>
         - context : Context
-        - linearLayout : LinearLayout
-        - scrollView : ScrollView
         + SelectDADialog()
         + createSelectDADialog()
         + getBlocks()
+        + undo()
         - createSelectDAConfigurationDialog()
         - setSpinnerItems()
     }
@@ -158,31 +314,107 @@ title __AUTOML's Class Diagram__\n
 
   namespace com.automl.automl {
     class com.automl.automl.SelectMLModelDialog {
+        {static} + KNN_ALGORITHMS : String[]
+        {static} + KNN_WEIGHTS : String[]
+        {static} + RANDOM_FOREST_CLASSIFIER_CRITERIA : String[]
+        {static} + RANDOM_FOREST_MAX_FEATURES : String[]
+        {static} + RANDOM_FOREST_REGRESSOR_CRITERIA : String[]
+        {static} + SVM_KERNEL : String[]
         - context : Context
+        - fabAddDA : FloatingActionButton
+        - yColumn : String
         + SelectMLModelDialog()
-        + createSelectMlModelDialog()
+        + createSelectMlModelTypeDialog()
+        + getMlModel()
+        + getYColumn()
+        + undo()
         - createKNNConfigDialog()
+        - createNaiveBayesConfigDialog()
+        - createRandomForestConfigDialog()
+        - createSVMConfigDialog()
         - createSelectClassificationModelDialog()
         - createSelectRegressionModelDialog()
+        - setSpinnerItems()
     }
   }
   
 
-  com.automl.automl.AccountManager o-- com.automl.automl.FirebaseDatabaseHelper : manager
+  namespace com.automl.automl {
+    class com.automl.automl.TestMLModelActivity {
+        - btnClear : Button
+        - btnTest : Button
+        - llTestMLModel : LinearLayout
+        - scrollViewTestMLModel : ScrollView
+        - tvMLModelScore : TextView
+        - tvResult : TextView
+        + onCreateOptionsMenu()
+        + onOptionsItemSelected()
+        # onCreate()
+        - clearAllFields()
+        - createTestLayout()
+        - getTestingData()
+    }
+  }
+  
+
+  namespace com.automl.automl {
+    class com.automl.automl.User {
+        - password : String
+        - phoneNum : String
+        - username : String
+        + User()
+        + getPassword()
+        + getPhoneNum()
+        + getUsername()
+        + setPassword()
+        + toString()
+    }
+  }
+  
+
+  com.automl.automl.AccountManager o-- com.automl.automl.FirebaseDatabaseHelper : firebaseDatabaseHelper
+  com.automl.automl.AccountManager o-- com.automl.automl.SQLiteDatabaseHelper : sqLiteDatabaseHelper
+  com.automl.automl.AccountManager o-- com.automl.automl.User : user
+  com.automl.automl.Block .up.|> java.io.Serializable
   com.automl.automl.CreateMLModelActivity -up-|> androidx.appcompat.app.AppCompatActivity
   com.automl.automl.CreateMLModelActivity o-- com.automl.automl.AccountManager : accountManager
-  com.automl.automl.CreateMLModelActivity o-- com.automl.automl.FirebaseDatabaseHelper : databaseManager
   com.automl.automl.CreateMLModelActivity o-- com.automl.automl.FileManager : fileManager
+  com.automl.automl.CreateMLModelActivity o-- com.automl.automl.FirebaseDatabaseHelper : firebaseDatabaseHelper
   com.automl.automl.CreateMLModelActivity o-- com.automl.automl.MenuManager : menuManager
   com.automl.automl.CreateMLModelActivity o-- com.automl.automl.SelectDADialog : selectDADialog
   com.automl.automl.CreateMLModelActivity o-- com.automl.automl.SelectMLModelDialog : selectMLModelDialog
+  com.automl.automl.CreateMLModelActivity o-- com.automl.automl.SQLiteDatabaseHelper : sqLiteDatabaseHelper
+  com.automl.automl.FileManager .up.|> java.io.Serializable
   com.automl.automl.FileManager -up-|> android.os.AsyncTask
+  com.automl.automl.FirebaseDatabaseHelper o-- com.automl.automl.SQLiteDatabaseHelper : sqLiteDatabaseHelper
+  com.automl.automl.MLModel .up.|> java.io.Serializable
+  com.automl.automl.MLModelDisplay .up.|> java.io.Serializable
+  com.automl.automl.MLPipelineService -up-|> android.app.Service
+  com.automl.automl.MLPipelineService o-- com.automl.automl.FirebaseDatabaseHelper : firebaseDatabaseHelper
+  com.automl.automl.MLPipelineService o-- com.automl.automl.MLModel : mlModel
+  com.automl.automl.MLPipelineService o-- com.automl.automl.SQLiteDatabaseHelper : sqLiteDatabaseHelper
+  com.automl.automl.MLTest .up.|> java.io.Serializable
   com.automl.automl.MainActivity -up-|> androidx.appcompat.app.AppCompatActivity
   com.automl.automl.MainActivity o-- com.automl.automl.AccountManager : accountManager
+  com.automl.automl.MainActivity o-- com.automl.automl.FirebaseDatabaseHelper : firebaseDatabaseHelper
   com.automl.automl.MainActivity o-- com.automl.automl.MenuManager : menuManager
   com.automl.automl.MyAccountActivity -up-|> androidx.appcompat.app.AppCompatActivity
-  com.automl.automl.MyAccountActivity o-- com.automl.automl.FirebaseDatabaseHelper : databaseManager
+  com.automl.automl.MyAccountActivity o-- com.automl.automl.FirebaseDatabaseHelper : firebaseDatabaseHelper
+  com.automl.automl.MyAccountActivity o-- com.automl.automl.SQLiteDatabaseHelper : sqLiteDatabaseHelper
+  com.automl.automl.MyAccountActivity o-- com.automl.automl.User : user
+  com.automl.automl.MyModelsActivity -up-|> androidx.appcompat.app.AppCompatActivity
+  com.automl.automl.MyModelsActivity o-- com.automl.automl.AccountManager : accountManager
+  com.automl.automl.MyModelsActivity o-- com.automl.automl.FirebaseDatabaseHelper : firebaseDatabaseHelper
+  com.automl.automl.MyModelsActivity o-- com.automl.automl.MenuManager : menuManager
+  com.automl.automl.MyModelsActivity o-- com.automl.automl.SQLiteDatabaseHelper : sqLiteDatabaseHelper
+  com.automl.automl.MyModelsListViewAdapter -up-|> android.widget.BaseAdapter
+  com.automl.automl.SQLiteDatabaseHelper -up-|> android.database.sqlite.SQLiteOpenHelper
+  com.automl.automl.ScreenStateReceiver -up-|> android.content.BroadcastReceiver
+  com.automl.automl.SelectDADialog o-- com.automl.automl.BlockView : blockView
+  com.automl.automl.SelectDADialog o-- com.automl.automl.FileManager : fileManager
+  com.automl.automl.SelectMLModelDialog o-- com.automl.automl.BlockView : blockView
   com.automl.automl.SelectMLModelDialog o-- com.automl.automl.MLModel : mlModel
+  com.automl.automl.TestMLModelActivity -up-|> androidx.appcompat.app.AppCompatActivity
 
 
 right footer

@@ -7,11 +7,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,12 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
-import com.automl.automl.blocks.Block;
-
-import com.chaquo.python.PyObject;
-import com.chaquo.python.Python;
-import com.chaquo.python.android.AndroidPlatform;
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
@@ -50,6 +45,7 @@ public class CreateMLModelActivity extends AppCompatActivity {
     private AccountManager accountManager;
 
     private FirebaseDatabaseHelper firebaseDatabaseHelper;
+    private SQLiteDatabaseHelper sqLiteDatabaseHelper;
 
     private SelectMLModelDialog selectMLModelDialog; // This object will manage the ML Model selection.
 
@@ -61,9 +57,9 @@ public class CreateMLModelActivity extends AppCompatActivity {
     private Animation rotateOpenAnim;
     private Animation toButtonAnim;
 
-    private ExtendedFloatingActionButton fabAddBlock;
-    private ExtendedFloatingActionButton fabAddMLModelBlock;
-    private ExtendedFloatingActionButton fabAddDataAnalysisBlock;
+    private FloatingActionButton fabAddBlock;
+    private FloatingActionButton fabAddMLModelBlock;
+    private FloatingActionButton fabAddDataAnalysisBlock;
 
     private ScrollView scrollView;
     private LinearLayout linearLayout;
@@ -76,7 +72,7 @@ public class CreateMLModelActivity extends AppCompatActivity {
     private boolean clickedFabAddItem = false;
 
     private FileManager fileManager;
-    private HashMap<String, ArrayList<String>> dataset = new HashMap<>(); // This hashmap will store the dataset.
+    private final HashMap<String, ArrayList<String>> dataset = new HashMap<>(); // This hashmap will store the dataset.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,9 +90,12 @@ public class CreateMLModelActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true); // Display the navigation view.
 
         menuManager = new MenuManager(CreateMLModelActivity.this, TAG, navigationView);
-        menuManager.switchActivity();
+
         accountManager = new AccountManager(CreateMLModelActivity.this);
         firebaseDatabaseHelper = new FirebaseDatabaseHelper(CreateMLModelActivity.this);
+        sqLiteDatabaseHelper = new SQLiteDatabaseHelper(CreateMLModelActivity.this);
+
+        menuManager.switchActivity(firebaseDatabaseHelper);
 
         fromButtonAnim = AnimationUtils.loadAnimation(CreateMLModelActivity.this, R.anim.from_bottom_anim);
         rotateCloseAnim = AnimationUtils.loadAnimation(CreateMLModelActivity.this, R.anim.rotate_close_anim);
@@ -114,41 +113,43 @@ public class CreateMLModelActivity extends AppCompatActivity {
         btnLoadFile = findViewById(R.id.btnLoadFile);
         btnUndo = findViewById(R.id.btnUndo);
         btnFinish = findViewById(R.id.btnFinish);
-        // TODO - load the file from the documents folder or from a url.
 
         fileManager = new FileManager(dataset);
 
-        selectMLModelDialog = new SelectMLModelDialog(CreateMLModelActivity.this, scrollView, linearLayout, fabAddDataAnalysisBlock);
-        selectDADialog = new SelectDADialog(CreateMLModelActivity.this, scrollView, linearLayout, fileManager);
+        selectMLModelDialog = new SelectMLModelDialog(CreateMLModelActivity.this, linearLayout, fabAddDataAnalysisBlock);
+        selectDADialog = new SelectDADialog(CreateMLModelActivity.this, linearLayout, fileManager);
 
-        if (checkSelfPermission(Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED)
+        if (checkSelfPermission(Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) // Request Permission to send SMS.
             requestPermissions(new String[]{Manifest.permission.SEND_SMS}, 1);
-        if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
-            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
-        if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
-            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
 
-
-        fabAddBlock.setOnClickListener(view -> {
-            onAddItemClicked();
-        });
+        fabAddBlock.setOnClickListener(view -> onAddItemClicked());
 
         fabAddMLModelBlock.setOnClickListener(view -> {
-            selectMLModelDialog.createSelectMlModelDialog(this.dataset.keySet());
+            User user = sqLiteDatabaseHelper.getUser();
+
+            if (user == null) {
+                Toast.makeText(CreateMLModelActivity.this, "You must be logged in to use the app.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            selectMLModelDialog.createSelectMlModelTypeDialog(this.dataset.keySet());
         });
 
         fabAddDataAnalysisBlock.setOnClickListener(view -> {
+            User user = sqLiteDatabaseHelper.getUser();
             if (dataset.equals(new HashMap<>())) {
                 Toast.makeText(CreateMLModelActivity.this, "Please make sure you have inserted a valid url.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (user == null) {
+                Toast.makeText(CreateMLModelActivity.this, "You must be logged in to use the app.", Toast.LENGTH_SHORT).show();
                 return;
             }
             selectDADialog.createSelectDADialog();
         });
 
-        Log.e("HERE", isNetworkAvailable() + "");
-
         btnLoadFile.setOnClickListener(view -> {
-            User user = firebaseDatabaseHelper.getUser();
+            User user = sqLiteDatabaseHelper.getUser();
 
             if (user == null) {
                 Toast.makeText(CreateMLModelActivity.this, "You must be logged in to use the app.", Toast.LENGTH_SHORT).show();
@@ -162,11 +163,13 @@ public class CreateMLModelActivity extends AppCompatActivity {
             }
             boolean isURL = URLUtil.isValidUrl(filename);
 
-            if (isURL) {
+            if (isURL && this.isNetworkAvailable()) { // If the url that was inserted is valid and there is internet connection the process can proceed.
                 fileManager.execute(filename);
                 etFilename.setVisibility(View.GONE);
                 btnLoadFile.setVisibility(View.GONE);
             }
+            else
+                Toast.makeText(CreateMLModelActivity.this, "Please make sure that you have inserted a valid url and that you have an internet connection", Toast.LENGTH_SHORT).show();
         });
 
         btnUndo.setOnClickListener(v -> { // If the user wants to undo an action.
@@ -182,29 +185,21 @@ public class CreateMLModelActivity extends AppCompatActivity {
             ArrayList<Block> blocks = selectDADialog.getBlocks();
             MLModel mlModel = selectMLModelDialog.getMlModel();
 
-            if (blocks.size() == 0 || mlModel == null) { // If the user has not completed all the required steps.
+            if (mlModel == null) { // If the user has not completed all the required steps.
                 Toast.makeText(CreateMLModelActivity.this, "You must first create a pipeline", Toast.LENGTH_LONG).show();
                 return;
             }
 
-            if (blocks.isEmpty() || mlModel == null) {
-                Toast.makeText(CreateMLModelActivity.this, "Please Make Sure That You Have Completed the ML Model Pipeline", Toast.LENGTH_LONG).show();
-                return;
-            }
+            Intent intent = new Intent(CreateMLModelActivity.this, MLPipelineService.class);
 
-            if (!Python.isStarted())
-                Python.start(new AndroidPlatform(CreateMLModelActivity.this));
+            intent.putExtra("fileManager", fileManager);
+            intent.putExtra("blocks", blocks);
+            intent.putExtra("mlModel", mlModel);
+            intent.putExtra("yColumn", selectMLModelDialog.getYColumn());
+            System.out.println(firebaseDatabaseHelper.getModels());
+            intent.putExtra("models", firebaseDatabaseHelper.getModels());
 
-            Python py = Python.getInstance();
-            PyObject pyFile = py.getModule("main");
-            PyObject result = pyFile.callAttr("pipeline", fileManager.getColumns(), fileManager.getData(), selectDADialog.getBlocks(),
-                    selectMLModelDialog.getMlModel().getType(),
-                    selectMLModelDialog.getMlModel().getAttributes(), selectMLModelDialog.getyColumn()); // TODO - check if this works.
-            String score = result.toString();
-
-            Toast.makeText(CreateMLModelActivity.this, "The score of the model is: " + score, Toast.LENGTH_LONG).show();
-
-            firebaseDatabaseHelper.addMLModel(firebaseDatabaseHelper.getUser().getUsername(), selectMLModelDialog.getMlModel()); // TODO - make email more efficient.
+            startService(intent);
         });
     }
 
@@ -217,7 +212,7 @@ public class CreateMLModelActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.itemMyAccount)
-            accountManager.openAccountManagerDialog(firebaseDatabaseHelper.getUser());
+            accountManager.openAccountManagerDialog();
 
         if (drawerToggle.onOptionsItemSelected(item))
             return true;
