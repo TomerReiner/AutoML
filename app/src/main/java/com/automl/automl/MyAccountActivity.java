@@ -79,8 +79,10 @@ public class MyAccountActivity extends AppCompatActivity {
 
             if (insertedCurrentPassword.equals(user.getPassword()) && newPassword.equals(newPasswordRetype) && newPassword.length() > 0) { // If all the information is correct.
                 User updatedUser = new User(user.getUsername(), user.getPhoneNum(), newPassword);
+                user = updatedUser;
                 firebaseDatabaseHelper.changePassword(updatedUser);
                 dialog.dismiss();
+                Toast.makeText(MyAccountActivity.this, "Password Successfully Changed!", Toast.LENGTH_SHORT).show();
             }
             else
                 Toast.makeText(this, "One of the fields has incorrect information.", Toast.LENGTH_SHORT).show();
@@ -111,9 +113,12 @@ public class MyAccountActivity extends AppCompatActivity {
                 return;
             }
 
-            if (action.equals(DELETE_ML_MODELS)) // If the user wants to delete their ML Models
+            if (action.equals(DELETE_ML_MODELS)) { // If the user wants to delete their ML Models
                 firebaseDatabaseHelper.deleteData(user.getUsername());
-            else { // If the user wants to delete their account.
+                dialog.dismiss();
+                Toast.makeText(MyAccountActivity.this, "Data Successfully Deleted.", Toast.LENGTH_SHORT).show();
+            }
+            else if (action.equals(DELETE_ACCOUNT)){ // If the user wants to delete their account.
                 firebaseDatabaseHelper.deleteUser(user.getUsername());
 
                 String activityName = intent.getStringExtra("context"); // Get the original activity to return the user there.
@@ -129,6 +134,7 @@ public class MyAccountActivity extends AppCompatActivity {
                     intent = new Intent(MyAccountActivity.this, AboutActivity.class);
 
                 dialog.dismiss();
+                Toast.makeText(MyAccountActivity.this, "Account Deleted ):", Toast.LENGTH_SHORT).show();
                 startActivity(intent); // Since the user was deleted, the user will be sent back to the original activity.
             }
             dialog.dismiss();
