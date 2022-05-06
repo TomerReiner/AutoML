@@ -19,7 +19,7 @@
     <string name="multinomial_nb">Multinomial NB</string>
     <string name="complement_nb">Complement NB</string>
     <string name="bernoulli_nb">Bernoulli NB</string>
-    <string name="n_estimators">N Estimators:</string>
+    <string name="n_estimators">N Estimators: 10</string>
 
     <!--    Regression ML Models-->
     <string name="decision_tree_regressor">Decision Tree Regressor</string>
@@ -47,12 +47,11 @@
     <string name="degree">Degree:</string>
     <string name="ml_model">ML Model</string>
 
-    <string name="about">![CDATA[
-        This is an application designed to help Data Scientists create ML pipelines without writing a single line of code.
-        You can use this app for with all its features for me.
-        Creator: Tomer Reiner
-        Version: 0.9.0
-        ]]<a href="https://github.com/TomerReiner/AutoML">ML For All</a>
+    <string name="about"><br>This is an application designed to help Data Scientists create ML pipelines without writing a single line of code.\n\n</br>
+        <br>You can use this app for with all its features for.\n\n</br>
+        <br>Creator: Tomer Reiner\n\n</br>
+        <br>Version: 1.0.0\n\n</br>
+        <br><a href="https://github.com/TomerReiner/AutoML">AutoML</a></br>
     </string>
 
     <!--    Tutorial-->
@@ -67,18 +66,15 @@
     <string name="signin_tutorial">If you want to sign into your account, click on the home icon at the top right of the screen and then click Sign In. Enter your username and password and click Sign In. If your credentials are correct, you will recieve a SMS with an authentication code to verify that it is actually you that is trying to sign in.</string>
     <string name="load_file">First, paste the link to your CSV file from GitHub raw view and click Download File. If the download succeeds, the screen will become empty.</string>
     <string name="how_to_add_data_analysis">To create a Data Analysis block, click the + button at the right button corner of the screen and then click the button with the graph icon.
-        Then select the desired Data Analysis action and apply it on the desired column.</string>
-    <string name="how_to_add_ml_model">![CDATA[
+        Then select the desired Data Analysis action and the desired column.</string>
+    <string name="how_to_add_ml_model">
         After adding all the Data Analysis blocks, add your ML Model.
         To add an ML Model, click the + at the right button corner of the screen and then click the button with the lamp icon.
         In the dialog that will be opened you will be asked to choose a Classification Model or a Regression Model, and the y column.
         After choosing the class of your ML Model, you will be asked to choose the specific type of the ML Model and other configuration parameters(if needed).
-        After selection the ML Model click finish, and your data will be processed. While the ML Model is being built, you have two options:\n
-        1) Stay in the app and wait for the ML Model to be built. When the process is done, a new screen will be opened where you can test the ML Model.
+        <br>After selection the ML Model click finish, and your data will be processed. While the ML Model is being built, you have two options:\n</br>
+        <br>1) Stay in the app and wait for the ML Model to be built. When the process is done, a new screen will be opened where you can test the ML Model.\n</br>
         2) Quit the app and wait for the process to be completed. When the process is done, you will receive a notification.
         When you click the notification, a new screen will be opened. In this screen you can test your ML Model.
-        ]]
     </string>
-    <string name="how_to_build_ml_model" />
-
 </resources>

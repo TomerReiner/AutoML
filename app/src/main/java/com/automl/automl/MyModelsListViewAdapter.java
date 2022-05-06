@@ -43,10 +43,12 @@ public class MyModelsListViewAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         View v = LayoutInflater.from(context).inflate(R.layout.ml_model_item_list_view, viewGroup, false);
 
-        TextView tvMLModel = v.findViewById(R.id.tvMLModel);
+        TextView tvMLModelName = v.findViewById(R.id.tvMLModelName);
 
+        TextView tvMLModel = v.findViewById(R.id.tvMLModel);
         MLModelDisplay model = this.models.get(i);
 
+        tvMLModelName.setText(model.getType());
         tvMLModel.setText(model.toString());
 
         return v;

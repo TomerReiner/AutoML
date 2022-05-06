@@ -82,6 +82,7 @@ public class FirebaseDatabaseHelper {
      * @return <code>true</code> if the user was successfully created <code>false</code> otherwise.
      */
     public boolean signUp(String username, String phone, String password, String retypePassword) {
+        System.out.println(password +" "+ retypePassword);
         if (!password.equals(retypePassword))
             return false;
 
@@ -292,10 +293,15 @@ public class FirebaseDatabaseHelper {
                 if (snapshot.getValue() instanceof String) // If the value is an instance of string then the user has no ML Models.
                     models = new ArrayList<>();
                 else {
-                    ArrayList<HashMap<String, Object>> modelsData = (ArrayList<HashMap<String, Object>>) snapshot.getValue();
-                    for (int i = 0; i < Objects.requireNonNull(modelsData).size(); i++) {
-                        MLModelDisplay model = MLModelDisplay.fromMap(modelsData.get(i));
-                        models.add(model);
+                    try {
+                        ArrayList<HashMap<String, Object>> modelsData = (ArrayList<HashMap<String, Object>>) snapshot.getValue();
+                        for (int i = 0; i < Objects.requireNonNull(modelsData).size(); i++) {
+                            MLModelDisplay model = MLModelDisplay.fromMap(modelsData.get(i));
+                            models.add(model);
+                        }
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }

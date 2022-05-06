@@ -76,12 +76,6 @@ public class MLModelDisplay implements Serializable {
     @NonNull
     @Override
     public String toString() {
-        return "MLModelDisplay{" +
-                "type='" + type + '\'' +
-                ", attributes=" + attributes +
-                ", columns='" + columns + '\'' +
-                ", rows='" + rows + '\'' +
-                ", score='" + score + '\'' +
-                '}';
+        return "attributes= " + attributes + "\ncolumns= " + columns + '\n' + "rows= " + rows + '\n' + "score= " + score;
     }
 }

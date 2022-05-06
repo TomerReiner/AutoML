@@ -32,15 +32,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:fontFamily="@font/shadows_into_light_two"
                     android:text="@string/app_explanation"
-                    android:textSize="15sp"  />
+                    android:textSize="20sp" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="@string/tutorial"
-                    android:textSize="15sp" />
+                    android:textSize="20sp" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -56,13 +57,13 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="@string/signup_tutorial"
-                    android:textSize="15sp"/>
+                    android:textSize="20sp"/>
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp" />
-<!--                Sign up image-->
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/sign_up"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -74,20 +75,21 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp" />
-<!--                Sign in image-->
+                    android:layout_marginTop="10dp"
+                    android:contentDescription="TODO"
+                    android:src="@drawable/sign_in" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp" />
-<!--                Sign in authentication-->
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/authentication"/>
 
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="Create ML Model"
+                    android:text="Create ML Models"
                     android:textAlignment="center"
                     android:textSize="25sp"
                     android:layout_marginTop="10dp"
@@ -96,21 +98,71 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/mystery_quest"
                     android:text="@string/load_file"
-                    android:textSize="15sp"/>
+                    android:textSize="20sp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:src="@drawable/download_file"
                     android:layout_marginTop="10dp" />
-<!--                How to download a file-->
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
+                    android:textSize="20sp"
+                    android:text="@string/how_to_add_data_analysis" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/add_blocks"
+                    android:layout_marginTop="10dp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/data_analysis_blocks"
+                    android:layout_marginTop="10dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
                     android:text="@string/how_to_add_ml_model"
                     android:layout_marginTop="10dp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/add_blocks_ml"
+                    android:layout_marginTop="10dp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/select_ml_model_type"
+                    android:layout_marginTop="10dp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/select_ml_models"
+                    android:layout_marginTop="10dp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/select_ml_model"
+                    android:layout_marginTop="10dp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ml_pipeline"
+                    android:layout_marginTop="10dp" />
+                <!--Add ML-->
 
             </LinearLayout>
         </ScrollView>

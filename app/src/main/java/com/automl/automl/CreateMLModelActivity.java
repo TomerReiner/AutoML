@@ -30,6 +30,14 @@ import com.google.android.material.navigation.NavigationView;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * TODO:
+ * resize images in tutorial.
+ * create dataset on my github for tutorial
+ * make sure sign up passwords work smoothly.
+ * select font for tutorial
+ */
+
 @SuppressWarnings("FieldCanBeLocal")
 public class CreateMLModelActivity extends AppCompatActivity {
 
@@ -127,11 +135,14 @@ public class CreateMLModelActivity extends AppCompatActivity {
         fabAddMLModelBlock.setOnClickListener(view -> {
             User user = sqLiteDatabaseHelper.getUser();
 
+            if (dataset.equals(new HashMap<>())) {
+                Toast.makeText(CreateMLModelActivity.this, "Please make sure you have inserted a valid url.", Toast.LENGTH_SHORT).show();
+                return;
+            }
             if (user == null) {
                 Toast.makeText(CreateMLModelActivity.this, "You must be logged in to use the app.", Toast.LENGTH_SHORT).show();
                 return;
             }
-
             selectMLModelDialog.createSelectMlModelTypeDialog(this.dataset.keySet());
         });
 
@@ -161,9 +172,9 @@ public class CreateMLModelActivity extends AppCompatActivity {
                 Toast.makeText(CreateMLModelActivity.this, "Please enter a filename.", Toast.LENGTH_SHORT).show();
                 return;
             }
-            boolean isURL = URLUtil.isValidUrl(filename);
+            boolean isValidURL = URLUtil.isValidUrl(filename) && filename.endsWith(".csv") && filename.startsWith("https://raw.githubusercontent.com/"); // A valid url can only be a csv file from github raw view.
 
-            if (isURL && this.isNetworkAvailable()) { // If the url that was inserted is valid and there is internet connection the process can proceed.
+            if (isValidURL && this.isNetworkAvailable()) { // If the url that was inserted is valid and there is internet connection the process can proceed.
                 fileManager.execute(filename);
                 etFilename.setVisibility(View.GONE);
                 btnLoadFile.setVisibility(View.GONE);
@@ -196,10 +207,14 @@ public class CreateMLModelActivity extends AppCompatActivity {
             intent.putExtra("blocks", blocks);
             intent.putExtra("mlModel", mlModel);
             intent.putExtra("yColumn", selectMLModelDialog.getYColumn());
-            System.out.println(firebaseDatabaseHelper.getModels());
             intent.putExtra("models", firebaseDatabaseHelper.getModels());
 
-            startService(intent);
+            try {
+                startService(intent);
+            }
+            catch (Exception e) {
+                Toast.makeText(CreateMLModelActivity.this, "Your file is too large. Please try using another file.", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 

@@ -26,7 +26,6 @@ public class MyModelsActivity extends AppCompatActivity {
     private ActionBar actionBar;
 
     private MenuManager menuManager;
-    private AccountManager accountManager;
     private FirebaseDatabaseHelper firebaseDatabaseHelper;
     private SQLiteDatabaseHelper sqLiteDatabaseHelper;
     private ListView lvMyModels;
@@ -48,14 +47,9 @@ public class MyModelsActivity extends AppCompatActivity {
 
         menuManager = new MenuManager(MyModelsActivity.this, TAG, navigationView);
 
-
-        accountManager = new AccountManager(MyModelsActivity.this);
-
         firebaseDatabaseHelper = new FirebaseDatabaseHelper(MyModelsActivity.this);
         menuManager.switchActivity(firebaseDatabaseHelper);
         ArrayList<MLModelDisplay> models = (ArrayList<MLModelDisplay>) getIntent().getSerializableExtra("models");
-
-        System.out.println(models);
 
         sqLiteDatabaseHelper = new SQLiteDatabaseHelper(MyModelsActivity.this);
         lvMyModels = findViewById(R.id.lvMyModels);
@@ -71,16 +65,7 @@ public class MyModelsActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.account_menu_action_bar, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.itemMyAccount)
-            accountManager.openAccountManagerDialog();
-
         if (drawerToggle.onOptionsItemSelected(item))
             return true;
 

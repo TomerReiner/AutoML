@@ -76,8 +76,6 @@ public class SelectMLModelDialog {
 
         setSpinnerItems(spinnerSelectYColumn, columns.toArray(new String[0]));
 
-
-
         btnSelect.setOnClickListener(v -> {
 
             this.yColumn = (String) spinnerSelectYColumn.getItemAtPosition(spinnerSelectYColumn.getSelectedItemPosition());
@@ -115,7 +113,7 @@ public class SelectMLModelDialog {
 
             this.mlModel = new MLModel(context.getString(R.string.decision_tree_classifier), attributes);
             Block block = new Block(context.getString(R.string.ml) + ": " + this.mlModel.getType(), this.mlModel.getAttributes());
-            this.blockView.addBlock(block); // Add the ML Model to the graph on the screen.
+            this.blockView.addBlock(block, this.yColumn); // Add the ML Model to the graph on the screen.
             this.fabAddDA.setClickable(false);
             dialog.dismiss();
         });
@@ -160,7 +158,7 @@ public class SelectMLModelDialog {
         btnDecisionTreeRegressor.setOnClickListener(view -> {
             this.mlModel = new MLModel(context.getString(R.string.decision_tree_regressor), attributes);
             Block block = new Block(context.getString(R.string.ml) + ": " + this.mlModel.getType(), this.mlModel.getAttributes());
-            this.blockView.addBlock(block); // Add the ML Model to the graph on the screen.
+            this.blockView.addBlock(block, this.yColumn); // Add the ML Model to the graph on the screen.
             this.fabAddDA.setClickable(false);
             dialog.dismiss();
         });
@@ -174,7 +172,7 @@ public class SelectMLModelDialog {
         btnLinearRegression.setOnClickListener(view -> {
             this.mlModel = new MLModel(context.getString(R.string.linear_regression), attributes);
             Block block = new Block(context.getString(R.string.ml) + ": " + this.mlModel.getType(), this.mlModel.getAttributes());
-            this.blockView.addBlock(block); // Add the ML Model to the graph on the screen.
+            this.blockView.addBlock(block, this.yColumn); // Add the ML Model to the graph on the screen.
             this.fabAddDA.setClickable(false);
             dialog.dismiss();
         });
@@ -187,7 +185,7 @@ public class SelectMLModelDialog {
         btnElasticNetCV.setOnClickListener(view -> {
             this.mlModel = new MLModel(context.getString(R.string.elastic_net_cv), attributes);
             Block block = new Block(context.getString(R.string.ml) + ": " + this.mlModel.getType(), this.mlModel.getAttributes());
-            this.blockView.addBlock(block); // Add the ML Model to the graph on the screen.
+            this.blockView.addBlock(block, this.yColumn); // Add the ML Model to the graph on the screen.
             this.fabAddDA.setClickable(false);
             dialog.dismiss();
         });
@@ -222,7 +220,7 @@ public class SelectMLModelDialog {
 
             this.mlModel = new MLModel(context.getString(R.string.k_nearest_neighbors_classifier), attributes);
             Block block = new Block(context.getString(R.string.ml) + ": " + this.mlModel.getType(), this.mlModel.getAttributes());
-            this.blockView.addBlock(block); // Add the ML Model to the graph on the screen.
+            this.blockView.addBlock(block, this.yColumn); // Add the ML Model to the graph on the screen.
 
             this.fabAddDA.setClickable(false);
             dialog.dismiss();
@@ -253,7 +251,7 @@ public class SelectMLModelDialog {
 
                 this.mlModel = new MLModel(rb.getText().toString(), attributes);
                 Block block = new Block(context.getString(R.string.ml) + ": " + this.mlModel.getType(), this.mlModel.getAttributes());
-                this.blockView.addBlock(block); // Add the ML Model to the graph on the screen.
+                this.blockView.addBlock(block, this.yColumn); // Add the ML Model to the graph on the screen.
             }
             this.fabAddDA.setClickable(false);
             dialog.dismiss();
@@ -319,7 +317,7 @@ public class SelectMLModelDialog {
                 this.mlModel = new MLModel(context.getString(R.string.random_forest_regressor), attributes);
 
             Block block = new Block(context.getString(R.string.ml) + ": " + this.mlModel.getType(), this.mlModel.getAttributes());
-            this.blockView.addBlock(block); // Add the ML Model to the graph on the screen.
+            this.blockView.addBlock(block, this.yColumn); // Add the ML Model to the graph on the screen.
 
             this.fabAddDA.setClickable(false);
             dialog.dismiss();
@@ -375,7 +373,7 @@ public class SelectMLModelDialog {
                 this.mlModel = new MLModel(context.getString(R.string.svr), attributes);
 
             Block block = new Block(context.getString(R.string.ml) + ": " + this.mlModel.getType(), this.mlModel.getAttributes());
-            this.blockView.addBlock(block); // Add the ML Model to the graph on the screen.
+            this.blockView.addBlock(block, this.yColumn); // Add the ML Model to the graph on the screen.
 
             this.fabAddDA.setClickable(false);
             dialog.dismiss();

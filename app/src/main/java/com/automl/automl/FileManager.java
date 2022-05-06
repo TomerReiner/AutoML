@@ -7,12 +7,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Serializable;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.Set;
+
+import javax.net.ssl.HttpsURLConnection;
 
 /**
  * This class manages the reading of the file.
@@ -75,7 +78,7 @@ public class FileManager extends AsyncTask<String, Void, Void> implements Serial
     protected Void doInBackground(String... strings) {
         try {
             URL url = new URL(strings[0]);
-            URLConnection connection = url.openConnection();
+            HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
             connection.connect();
             InputStream is = url.openStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(is));
@@ -134,5 +137,4 @@ public class FileManager extends AsyncTask<String, Void, Void> implements Serial
             values[i] = Objects.requireNonNull(this.dataset.get(columns[i])).toArray();
         return values;
     }
-
 }

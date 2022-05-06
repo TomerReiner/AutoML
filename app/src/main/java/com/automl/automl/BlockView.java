@@ -30,9 +30,10 @@ public class BlockView {
      * This function will create a block with <code>attributes.size()</code> text views. In addition,
      * the block will also have a title to indicate whether it's a DA block or ML block.
      * @param block A block with attributes.
+     * @param yColumn optional, the y column name.
      * @see Block
      */
-    private void createBlock(Block block) {
+    private void createBlock(Block block, String ... yColumn) {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         TextView tvTitle = new TextView(context);
@@ -46,13 +47,17 @@ public class BlockView {
         TextView tv = new TextView(context);
         tv.setLayoutParams(params);
 
+        if (yColumn.length == 1) { // If its an ML Model block.
+            setAttributesForTextView(tv, "y Column: " + yColumn[0] + "\n" + tv.getText().toString(), 16);
+        }
+
         for (String k : attributes.keySet()) {// Add all the attributes to the container.
             if (attributes.get(k) instanceof String[])
                 setAttributesForTextView(tv, k + ": " + Arrays.toString((String[]) attributes.get(k)) + "\n" + tv.getText().toString(), 16);
             else
                 setAttributesForTextView(tv, k + ": " + attributes.get(k) + "\n" + tv.getText().toString(), 16);
-
         }
+
         linearLayout.addView(tv); // Add the text view to the layout
         count += 2;
     }
@@ -60,9 +65,11 @@ public class BlockView {
     /**
      * This function add a block to the activity.
      * @param block A block with attributes.
+     * @param yColumn optional, the y column name.
      */
-    public void addBlock(Block block) {
-        createBlock(block);
+    public void addBlock(Block block, String ... yColumn) {
+        System.out.println(yColumn.length);
+        createBlock(block, yColumn);
     }
 
     /**

@@ -75,7 +75,7 @@
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.8"
+            app:layout_constraintVertical_bias="0.78"
             app:srcCompat="@drawable/ic_data_analysis" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -124,6 +124,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/fabAddBlock"
             app:layout_constraintHorizontal_bias="1.0"
+            android:layout_marginBottom="3dp"
             app:layout_constraintStart_toEndOf="@+id/btnUndo"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -133,6 +134,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/button_shape"
             android:text="Undo"
+            android:layout_marginBottom="3dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 

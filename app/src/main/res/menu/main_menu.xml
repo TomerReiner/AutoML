@@ -7,7 +7,7 @@
 
     <item
         android:id="@+id/itemCreateMLModel"
-        android:icon="@drawable/ic_tutorial"
+        android:icon="@drawable/ic_ml_model"
         android:title="Create ML Model"/>
 
     <item
