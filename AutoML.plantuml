@@ -2,6 +2,23 @@
 
 title __AUTOML's Component Diagram__\n
 
+  component "AutoML.app.unitTest" {
+        [AutoML.app.main]
+    component "AutoML.app.main" {
+          [AutoML.app.androidTest]
+      component "AutoML.app.androidTest" {
+            [AutoML.app]
+      }
+
+
+    }
+
+
+  }
+
+
+  [AutoML.app.androidTest] --> [AutoML.app.main]
+  [AutoML.app.unitTest] --> [AutoML.app.main]
 
 
 right footer

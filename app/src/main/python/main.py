@@ -97,15 +97,14 @@ class MLModel:
 
         if not valid:  # If the data is not valid, then it means the dataset has NaN values/text values.
             return message  # The error message.
-        print(self.preprocessor.df)
-        print(self.preprocessor.df.columns, self.preprocessor.df.iloc[0])
+
         self.ml = MyML(self.preprocessor.df, self.y_column)
 
         self.ml.build_ml_model(self.ml_model_name, self.ml_model_config)  # Build the ML Model.
         return self.ml.score(), len(self.preprocessor.df.columns), len(self.preprocessor.df), self.y_column_encoding, self.ml.ml_model, self.preprocessor.normalization_info, self.preprocessor.df.columns.values
 
 
-def test_ml(data, ml_model, y_column_encoding): # TODO - add normalization info.
+def test_ml(data, ml_model, y_column_encoding):
     """
     This function tests the ml model on new data that the user has inserted.
     :param data: a double array with the data.
@@ -113,8 +112,8 @@ def test_ml(data, ml_model, y_column_encoding): # TODO - add normalization info.
     :param y_column_encoding: The encoding of the y column.
     """
     if y_column_encoding == {}: # If this is a regression task.
-        return ml_model.predict([np.array(data)])
-    return y_column_encoding[ml_model.predict([np.array(data)])[0]]
+        return ml_model.predict([np.array(data, dtype=np.float)])
+    return y_column_encoding[ml_model.predict([np.array(data, dtype=np.float)])[0]]
 
 
 def main(columns, data, blocks, ml_model_name, ml_model_config, y_column):

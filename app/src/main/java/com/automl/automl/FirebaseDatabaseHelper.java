@@ -3,7 +3,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.telephony.SmsManager;
 import android.widget.Toast;
 

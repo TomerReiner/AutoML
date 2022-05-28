@@ -6,10 +6,13 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
@@ -28,6 +31,8 @@ public class MyModelsActivity extends AppCompatActivity {
     private MenuManager menuManager;
     private FirebaseDatabaseHelper firebaseDatabaseHelper;
     private SQLiteDatabaseHelper sqLiteDatabaseHelper;
+
+    private TextView tvLoginAlert;
     private ListView lvMyModels;
 
     @Override
@@ -52,12 +57,19 @@ public class MyModelsActivity extends AppCompatActivity {
         ArrayList<MLModelDisplay> models = (ArrayList<MLModelDisplay>) getIntent().getSerializableExtra("models");
 
         sqLiteDatabaseHelper = new SQLiteDatabaseHelper(MyModelsActivity.this);
+
+        tvLoginAlert = findViewById(R.id.tvLoginAlert);
         lvMyModels = findViewById(R.id.lvMyModels);
 
         User user = sqLiteDatabaseHelper.getUser();
 
-        if (user == null) // If the user is null, there is no data to display.
-            Toast.makeText(MyModelsActivity.this, "You must be logged in to view your ML Models. Please sign in.", Toast.LENGTH_LONG).show();
+        if (checkSelfPermission(Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) // Request Permission to send SMS.
+            requestPermissions(new String[]{Manifest.permission.SEND_SMS}, 1);
+
+        if (user == null) { // If the user is null, there is no data to display.
+            tvLoginAlert.setVisibility(View.VISIBLE);
+            lvMyModels.setVisibility(View.GONE);
+        }
         else { // Display the data.
             MyModelsListViewAdapter adapter = new MyModelsListViewAdapter(MyModelsActivity.this, models);
             lvMyModels.setAdapter(adapter);

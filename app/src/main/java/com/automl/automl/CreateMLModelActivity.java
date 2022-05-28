@@ -21,7 +21,6 @@ import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -29,14 +28,6 @@ import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
-/**
- * TODO:
- * resize images in tutorial.
- * create dataset on my github for tutorial
- * make sure sign up passwords work smoothly.
- * select font for tutorial
- */
 
 @SuppressWarnings("FieldCanBeLocal")
 public class CreateMLModelActivity extends AppCompatActivity {

@@ -1,6 +1,5 @@
 package com.automl.automl;
-// https://raw.githubusercontent.com/codebasics/py/master/pandas/11_melt/weather.csv https://raw.githubusercontent.com/codebasics/py/master/pandas/2_dataframe_basics/weather_data.csv
-// https://raw.githubusercontent.com/codebasics/py/master/ML/9_decision_tree/salaries.csv
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -14,19 +13,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
-
-/**
- * TODO - tasks
- * 1) Make signup work - DONE.
- * 2) Account Settings - change password, delete data, delete user, block notifications. block security breach - finish by 25.2
- * 3) DA blocks - DONE.
- * 4) Download file and read it - DONE.
- * 5) ML Models configuration dialogs - DONE.
- * 6) Add service to build ML Model and vibration when done - finish by 10.3
- * 7) My models activity. finish by 8.2
- * 8) Add MyModels for each user - partially done. finish by 28.2
- * 9) Add python connection - DONE.
- */
 
 public class MainActivity extends AppCompatActivity {
 

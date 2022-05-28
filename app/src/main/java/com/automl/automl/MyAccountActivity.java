@@ -3,8 +3,10 @@ package com.automl.automl;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -55,6 +57,9 @@ public class MyAccountActivity extends AppCompatActivity {
         btnDeleteData.setOnClickListener(v -> createDeleteDataOrUserDialog(DELETE_ML_MODELS));
 
         btnDeleteAccount.setOnClickListener(view -> createDeleteDataOrUserDialog(DELETE_ACCOUNT));
+
+        if (checkSelfPermission(Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) // Request Permission to send SMS.
+            requestPermissions(new String[]{Manifest.permission.SEND_SMS}, 1);
     }
 
     /**

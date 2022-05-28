@@ -50,7 +50,7 @@
     <string name="about"><br>This is an application designed to help Data Scientists create ML pipelines without writing a single line of code.\n\n</br>
         <br>You can use this app and all its features for free.\n\n</br>
         <br>Creator: Tomer Reiner\n\n</br>
-        <br>Version: 1.0.4\n\n</br>
+        <br>Version: 1.0.6\n\n</br>
         <br>Source Code: <a href="https://github.com/TomerReiner/AutoML">AutoML</a></br>
     </string>
 
@@ -66,7 +66,7 @@
     <string name="signin_tutorial">If you want to sign into your account, click on the home icon at the top right of the screen and then click Sign In. Enter your username and password and click Sign In. If your credentials are correct, you will recieve a SMS with an authentication code to verify that it is actually you that is trying to sign in.</string>
     <string name="load_file">First, paste the link to your CSV file from GitHub raw view and click Download File. If the download succeeds, the screen will become empty.</string>
     <string name="how_to_add_data_analysis">To create a Data Analysis block, click the + button at the right bottom corner of the screen and then click the button with the graph icon.
-        Then select the desired Data Analysis action and the desired column.</string>
+        Then select the desired Data Analysis action and the desired column. If there are problems with the data, the system will know how to handle them.</string>
     <string name="how_to_add_ml_model">
         After adding all the Data Analysis blocks, add your ML Model.
         To add an ML Model, click the + at the right button corner of the screen and then click the button with the lamp icon.

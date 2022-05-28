@@ -1,5 +1,5 @@
 package com.automl.automl;
-// TODO - make sure that the user didn't block notifications.
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,9 +58,19 @@ public class TestMLModelActivity extends AppCompatActivity {
                 Python.start(new AndroidPlatform(this));
 
             Python py = Python.getInstance();
-            PyObject result = py.getModule("main").callAttr("test_ml", testingData, mlTest.getMlModel(), mlTest.getyColumnEncoding());
 
-            tvResult.setText("Result: " + result.toString());
+            try { // Prevent errors.
+                PyObject result = py.getModule("main").callAttr("test_ml", testingData, mlTest.getMlModel(), mlTest.getyColumnEncoding());
+
+                if (result != null)
+                    tvResult.setText("Result: " + result.toString());
+                else // There might be some edge cases that the ML cannot handle.
+                    tvResult.setText("Result: None");
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(TestMLModelActivity.this, "Something went wrong.", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
@@ -99,13 +108,12 @@ public class TestMLModelActivity extends AppCompatActivity {
             tvTitle.setText("Column: " + column);
             tvTitle.setTextSize(20);
 
-
             TextView tvMinMaxInfo = new TextView(this);
             tvMinMaxInfo.setLayoutParams(params);
             tvMinMaxInfo.setText("Min Value: " + arr[0] + "\nMax Value: " + arr[1]);
 
             EditText et = new EditText(this);
-            et.setInputType(InputType.TYPE_CLASS_NUMBER);
+            et.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
             et.setHint("Enter " + column);
             et.setId((EDIT_TEXT_PREFIX + column).hashCode());
 

@@ -17,7 +17,7 @@ public class ScreenStateReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
 
-        if (action.equals(Intent.ACTION_SCREEN_ON))
+        if (action.equals(Intent.ACTION_SCREEN_ON)) // If the screen is on.
             this.isOn = true;
         else if (action.equals(Intent.ACTION_SCREEN_OFF))
             this.isOn = false;

@@ -28,6 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/button_shape"
+            android:fontFamily="@font/happy_monkey"
             android:text="Download File"
             android:textAllCaps="false"
             app:layout_constraintEnd_toEndOf="parent"
@@ -119,12 +120,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="20dp"
+            android:layout_marginBottom="3dp"
             android:background="@drawable/button_shape"
+            android:fontFamily="@font/happy_monkey"
             android:text="Finish"
+            android:textAllCaps="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/fabAddBlock"
             app:layout_constraintHorizontal_bias="1.0"
-            android:layout_marginBottom="3dp"
             app:layout_constraintStart_toEndOf="@+id/btnUndo"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -132,9 +135,11 @@
             android:id="@+id/btnUndo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/button_shape"
-            android:text="Undo"
             android:layout_marginBottom="3dp"
+            android:background="@drawable/button_shape"
+            android:fontFamily="@font/happy_monkey"
+            android:text="Undo"
+            android:textAllCaps="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 

@@ -3,6 +3,21 @@
 title __AUTOML's Class Diagram__\n
 
   namespace com.automl.automl {
+    class com.automl.automl.AboutActivity {
+        {static} + TAG : String
+        - actionBar : ActionBar
+        - drawerLayout : DrawerLayout
+        - drawerToggle : ActionBarDrawerToggle
+        - navigationView : NavigationView
+        - tvAboutDescription : TextView
+        + onCreateOptionsMenu()
+        + onOptionsItemSelected()
+        # onCreate()
+    }
+  }
+  
+
+  namespace com.automl.automl {
     class com.automl.automl.AccountManager {
         - context : Context
         + AccountManager()
@@ -62,7 +77,6 @@ title __AUTOML's Class Diagram__\n
         - navigationView : NavigationView
         - rotateCloseAnim : Animation
         - rotateOpenAnim : Animation
-        - scrollView : ScrollView
         - toButtonAnim : Animation
         + onCreateOptionsMenu()
         + onOptionsItemSelected()
@@ -82,6 +96,7 @@ title __AUTOML's Class Diagram__\n
         + getColumns()
         + getData()
         + getDataset()
+        + isDatasetEmpty()
         + removeColumn()
         + restoreColumn()
         # doInBackground()
@@ -92,13 +107,11 @@ title __AUTOML's Class Diagram__\n
 
   namespace com.automl.automl {
     class com.automl.automl.FirebaseDatabaseHelper {
-        {static} + LOGGED_IN_USERS : String
         {static} + ML_MODELS : String
         {static} + PASSWORD : String
         {static} + PHONE_NUM : String
         {static} + USERNAME : String
         {static} + USERS : String
-        - deviceId : String
         - map : Map<Object, Object>
         - models : ArrayList<MLModelDisplay>
         - user : User[]
@@ -233,11 +246,12 @@ title __AUTOML's Class Diagram__\n
         - btnDeleteAccount : Button
         - btnDeleteData : Button
         - intent : Intent
-        - switchBlockNotifications : Switch
         - tvUsername : TextView
+        + onCreateOptionsMenu()
+        + onOptionsItemSelected()
         # onCreate()
         - createChangePasswordDialog()
-        - createDeleteDataDialog()
+        - createDeleteDataOrUserDialog()
     }
   }
   
@@ -250,7 +264,6 @@ title __AUTOML's Class Diagram__\n
         - drawerToggle : ActionBarDrawerToggle
         - lvMyModels : ListView
         - navigationView : NavigationView
-        + onCreateOptionsMenu()
         + onOptionsItemSelected()
         # onCreate()
     }
@@ -289,9 +302,9 @@ title __AUTOML's Class Diagram__\n
 
   namespace com.automl.automl {
     class com.automl.automl.ScreenStateReceiver {
-        - isOff : boolean
+        - isOn : boolean
         + ScreenStateReceiver()
-        + isOff()
+        + isOn()
         + onReceive()
     }
   }
@@ -341,10 +354,9 @@ title __AUTOML's Class Diagram__\n
 
   namespace com.automl.automl {
     class com.automl.automl.TestMLModelActivity {
-        - btnClear : Button
+        {static} + EDIT_TEXT_PREFIX : String
         - btnTest : Button
         - llTestMLModel : LinearLayout
-        - scrollViewTestMLModel : ScrollView
         - tvMLModelScore : TextView
         - tvResult : TextView
         + onCreateOptionsMenu()
@@ -372,6 +384,10 @@ title __AUTOML's Class Diagram__\n
   }
   
 
+  com.automl.automl.AboutActivity -up-|> androidx.appcompat.app.AppCompatActivity
+  com.automl.automl.AboutActivity o-- com.automl.automl.AccountManager : accountManager
+  com.automl.automl.AboutActivity o-- com.automl.automl.FirebaseDatabaseHelper : firebaseDatabaseHelper
+  com.automl.automl.AboutActivity o-- com.automl.automl.MenuManager : menuManager
   com.automl.automl.AccountManager o-- com.automl.automl.FirebaseDatabaseHelper : firebaseDatabaseHelper
   com.automl.automl.AccountManager o-- com.automl.automl.SQLiteDatabaseHelper : sqLiteDatabaseHelper
   com.automl.automl.AccountManager o-- com.automl.automl.User : user
@@ -403,7 +419,6 @@ title __AUTOML's Class Diagram__\n
   com.automl.automl.MyAccountActivity o-- com.automl.automl.SQLiteDatabaseHelper : sqLiteDatabaseHelper
   com.automl.automl.MyAccountActivity o-- com.automl.automl.User : user
   com.automl.automl.MyModelsActivity -up-|> androidx.appcompat.app.AppCompatActivity
-  com.automl.automl.MyModelsActivity o-- com.automl.automl.AccountManager : accountManager
   com.automl.automl.MyModelsActivity o-- com.automl.automl.FirebaseDatabaseHelper : firebaseDatabaseHelper
   com.automl.automl.MyModelsActivity o-- com.automl.automl.MenuManager : menuManager
   com.automl.automl.MyModelsActivity o-- com.automl.automl.SQLiteDatabaseHelper : sqLiteDatabaseHelper
