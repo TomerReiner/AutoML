@@ -57,7 +57,7 @@ public class MyModelsActivity extends AppCompatActivity {
         User user = sqLiteDatabaseHelper.getUser();
 
         if (user == null) // If the user is null, there is no data to display.
-            Toast.makeText(MyModelsActivity.this, "You must be logged in to view your ML Models. Please sign in using the button at the top of the screen.", Toast.LENGTH_LONG).show();
+            Toast.makeText(MyModelsActivity.this, "You must be logged in to view your ML Models. Please sign in.", Toast.LENGTH_LONG).show();
         else { // Display the data.
             MyModelsListViewAdapter adapter = new MyModelsListViewAdapter(MyModelsActivity.this, models);
             lvMyModels.setAdapter(adapter);

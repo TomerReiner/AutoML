@@ -3,7 +3,6 @@ from ml import MyML
 import pandas as pd
 import numpy as np
 
-
 class MLModel:
 
     """
@@ -98,7 +97,8 @@ class MLModel:
 
         if not valid:  # If the data is not valid, then it means the dataset has NaN values/text values.
             return message  # The error message.
-
+        print(self.preprocessor.df)
+        print(self.preprocessor.df.columns, self.preprocessor.df.iloc[0])
         self.ml = MyML(self.preprocessor.df, self.y_column)
 
         self.ml.build_ml_model(self.ml_model_name, self.ml_model_config)  # Build the ML Model.

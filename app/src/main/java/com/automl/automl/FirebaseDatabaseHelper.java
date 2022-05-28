@@ -28,7 +28,6 @@ import java.util.Objects;
  */
 public class FirebaseDatabaseHelper {
 
-    public static final String LOGGED_IN_USERS = "logged_in_users";
     public static final String ML_MODELS = "ml_models";
     public static final String USERS = "users";
     public static final String USERNAME = "username";
@@ -36,13 +35,11 @@ public class FirebaseDatabaseHelper {
     public static final String PASSWORD = "password";
 
     private final User[] user = {null}; // The current user that is logged in to the app.
-    private final String deviceId;
     private Map<Object, Object> map;
     private final SQLiteDatabaseHelper sqLiteDatabaseHelper;
     private ArrayList<MLModelDisplay> models = new ArrayList<>();
 
     public FirebaseDatabaseHelper(Context context) {
-        this.deviceId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
         sqLiteDatabaseHelper = new SQLiteDatabaseHelper(context);
         this.user[0] = this.sqLiteDatabaseHelper.getUser();
         if (this.user[0] != null)
@@ -104,7 +101,6 @@ public class FirebaseDatabaseHelper {
         this.user[0] = new User(username, phone, "" + password.hashCode());
         this.sqLiteDatabaseHelper.fastLogin(this.user[0]);
 
-        ref.child(LOGGED_IN_USERS).child(this.deviceId).setValue(this.user[0]); // Chane the logged in user in this device to the new user.
         ref.child(USERS).child(username).setValue(this.user[0]); // Save the user.
         ref.child(ML_MODELS).child(username).setValue(""); // Create place for the ML Models.
         ref.push();
@@ -124,9 +120,6 @@ public class FirebaseDatabaseHelper {
         if (username.length() == 0 || password.length() == 0)
             return false;
 
-        FirebaseDatabase db = FirebaseDatabase.getInstance("https://myml-4f150-default-rtdb.europe-west1.firebasedatabase.app");
-        DatabaseReference ref = db.getReference();
-
         try {
             HashMap<String, String> userData = (HashMap<String, String>) map.get(username); // Trying to get the user's data.
             String realPassword = userData.get(PASSWORD); // Extract the user's password from the dataset.
@@ -134,8 +127,6 @@ public class FirebaseDatabaseHelper {
 
             if (insertedPassword.equals(realPassword)) { // The login was successful.
                 user[0] = new User(userData.get(USERNAME), userData.get(PHONE_NUM), userData.get(PASSWORD));
-                ref.child(LOGGED_IN_USERS).child(deviceId).setValue(userData); // Chane the logged in user in this device to the new user.
-                ref.push();
                 sqLiteDatabaseHelper.fastLogin(user[0]); // To login the user fast when re-opening the app.
                 return true;
             }
@@ -153,10 +144,6 @@ public class FirebaseDatabaseHelper {
      * This function signs the user out of the app. Signing out is done by setting the currently logged in user in the device id to an empty string.
      */
     public void signOut() {
-        FirebaseDatabase db = FirebaseDatabase.getInstance("https://myml-4f150-default-rtdb.europe-west1.firebasedatabase.app");
-        DatabaseReference ref = db.getReference().child(LOGGED_IN_USERS).child(this.deviceId);
-        ref.setValue("");
-        ref.push();
         this.models = new ArrayList<>();
         this.sqLiteDatabaseHelper.signOut();
         this.user[0] = null;
@@ -174,11 +161,7 @@ public class FirebaseDatabaseHelper {
 
         ref.child(USERS).child(user.getUsername()).setValue("");
         ref.push();
-        ref.child(LOGGED_IN_USERS).child(this.deviceId).setValue("");
-        ref.push();
         ref.child(USERS).child(user.getUsername()).setValue(this.user[0]);
-        ref.push();
-        ref.child(LOGGED_IN_USERS).child(this.deviceId).setValue(this.user[0]);
         ref.push(); // Update the date in firebase.
 
         this.sqLiteDatabaseHelper.fastLogin(this.user[0]);
@@ -204,7 +187,6 @@ public class FirebaseDatabaseHelper {
         DatabaseReference ref = db.getReference();
         ref.child(USERS).child(username).removeValue();
         ref.child(ML_MODELS).child(username).removeValue();
-        ref.child(LOGGED_IN_USERS).child(this.deviceId).setValue("");
         ref.push(); // Delete the user from the registered devices.
 
         this.sqLiteDatabaseHelper.signOut();

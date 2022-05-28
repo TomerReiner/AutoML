@@ -6,11 +6,11 @@ import android.content.Intent;
 
 public class ScreenStateReceiver extends BroadcastReceiver {
 
-    private boolean isOff; // Whether the screen is on/off.
+    private boolean isOn; // Whether the screen is on/off.
 
     public ScreenStateReceiver() {
         super();
-        this.isOff = true;
+        this.isOn = true;
     }
 
     @Override
@@ -18,12 +18,12 @@ public class ScreenStateReceiver extends BroadcastReceiver {
         String action = intent.getAction();
 
         if (action.equals(Intent.ACTION_SCREEN_ON))
-            this.isOff = false;
+            this.isOn = true;
         else if (action.equals(Intent.ACTION_SCREEN_OFF))
-            this.isOff = true;
+            this.isOn = false;
     }
 
     public boolean isOn() {
-        return this.isOff;
+        return this.isOn;
     }
 }

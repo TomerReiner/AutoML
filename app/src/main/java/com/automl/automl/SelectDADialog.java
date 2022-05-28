@@ -25,7 +25,7 @@ public class SelectDADialog {
     private final BlockView blockView;
     private final ArrayList<Block> blocks = new ArrayList<>(); // This array list will store all the blocksa for further usage by the python code.
 
-    public static final String[] FILL_NA_ACTIONS = {"Max Value", "Min Value", "Average Value", "Default Value"};
+    public static final String[] FILL_NA_ACTIONS = {"Max Value", "Min Value", "Average Value"};
 
     public SelectDADialog(Context context, LinearLayout linearLayout, FileManager fileManager) {
         this.context = context;
@@ -107,6 +107,10 @@ public class SelectDADialog {
             return;
         }
 
+        TextView tvDAActionTitle = dialog.findViewById(R.id.tvDAActionTitle);
+
+        tvDAActionTitle.setText(tvDAActionTitle.getText().toString() + daAction);
+
         Spinner spinnerSelectColumn = dialog.findViewById(R.id.spinnerSelectColumn);
         Spinner spinnerSelectFillNAOptions = dialog.findViewById(R.id.spinnerSelectFillNAOptions);
         TextView tvFillNAInstructions = dialog.findViewById(R.id.tvFillNAInstructions);
@@ -130,15 +134,8 @@ public class SelectDADialog {
                 attributes.put(context.getString(R.string.fill_na_method), selectedFillNAAction);
             }
 
-            if (daAction.equals(context.getString(R.string.remove_column))) { // If the user wants to remove a column.
-                block = new Block(context.getString(R.string.data_analysis), attributes);
-                this.blockView.addBlock(block); // Add the block to the screen. The block will not be added to the list because we will remove the column.
-
+            if (daAction.equals(context.getString(R.string.remove_column))) // If the user wants to remove a column.
                 fileManager.removeColumn(selectedColumn); // Remove the column from the dataset.
-                selectDADialog.dismiss();
-                dialog.dismiss(); // Dismiss the two dialogs.
-                return;
-            }
 
             // If the user has selected another block.
             block = new Block(context.getString(R.string.data_analysis), attributes);
@@ -182,11 +179,10 @@ public class SelectDADialog {
         Block last = this.blocks.get(this.blocks.size() - 1);
         HashMap<String, Object> attributes = last.getAttributes();
 
-        if (Objects.requireNonNull(attributes.get(context.getString(R.string.column))).equals(context.getString(R.string.remove_column))) { // If the last Data Analysis action was removing a column.
-            this.fileManager.restoreColumn();
-        }
+        if (attributes.get("action").equals(context.getString(R.string.remove_column))) // If the last Data Analysis action was removing a column.
+            this.fileManager.restoreColumn((String) attributes.get(context.getString(R.string.column)));
+
         this.blocks.remove(this.blocks.size() - 1);
         this.blockView.removeBlock();
     }
-
 }

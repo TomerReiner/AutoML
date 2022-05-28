@@ -24,6 +24,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/marvel_bold_italic"
                     android:text="Welcome!"
                     android:textAlignment="center"
                     android:textSize="40sp" />
@@ -32,7 +33,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:fontFamily="@font/shadows_into_light_two"
+                    android:fontFamily="@font/marvel_bold_italic"
                     android:text="@string/app_explanation"
                     android:textSize="20sp" />
 
@@ -40,6 +41,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:fontFamily="@font/marvel_bold_italic"
                     android:text="@string/tutorial"
                     android:textSize="20sp" />
 
@@ -47,6 +49,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
+                    android:fontFamily="@font/marvel_bold_italic"
                     android:text="@string/create_an_account"
                     android:textAlignment="center"
                     android:textSize="25sp"
@@ -56,8 +59,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:fontFamily="@font/marvel_bold_italic"
                     android:text="@string/signup_tutorial"
-                    android:textSize="20sp"/>
+                    android:textSize="20sp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -69,8 +73,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:textSize="15sp"
-                    android:text="@string/signin_tutorial"/>
+                    android:fontFamily="@font/marvel_bold_italic"
+                    android:text="@string/signin_tutorial"
+                    android:textSize="20sp"/>
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -89,80 +94,88 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/marvel_bold_italic"
                     android:text="Create ML Models"
                     android:textAlignment="center"
                     android:textSize="25sp"
-                    android:layout_marginTop="10dp"
                     android:textStyle="italic|bold" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/mystery_quest"
+                    android:fontFamily="@font/marvel_bold_italic"
                     android:text="@string/load_file"
                     android:textSize="20sp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/download_file"
-                    android:layout_marginTop="10dp" />
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/download_file" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp"
-                    android:text="@string/how_to_add_data_analysis" />
+                    android:fontFamily="@font/marvel_bold_italic"
+                    android:text="@string/how_to_add_data_analysis"
+                    android:textSize="20sp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/add_blocks"
-                    android:layout_marginTop="10dp" />
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/add_blocks" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/data_analysis_blocks"
-                    android:layout_marginTop="10dp" />
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/data_analysis_blocks" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/da_action" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/marvel_bold_italic"
                     android:text="@string/how_to_add_ml_model"
-                    android:layout_marginTop="10dp" />
+                    android:textSize="20sp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/add_blocks_ml"
-                    android:layout_marginTop="10dp" />
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/add_blocks_ml" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/select_ml_model_type"
-                    android:layout_marginTop="10dp" />
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/select_ml_model_type" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/select_ml_models"
-                    android:layout_marginTop="10dp" />
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/select_ml_models" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/select_ml_model"
-                    android:layout_marginTop="10dp" />
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/select_ml_model" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ml_pipeline"
-                    android:layout_marginTop="10dp" />
-                <!--Add ML-->
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/ml_pipeline" />
 
             </LinearLayout>
         </ScrollView>

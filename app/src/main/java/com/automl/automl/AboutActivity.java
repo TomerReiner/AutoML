@@ -7,8 +7,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.os.Bundle;
+import android.text.method.LinkMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -25,6 +27,8 @@ public class AboutActivity extends AppCompatActivity {
     private AccountManager accountManager;
     private FirebaseDatabaseHelper firebaseDatabaseHelper;
 
+    private TextView tvAboutDescription;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +38,8 @@ public class AboutActivity extends AppCompatActivity {
         navigationView = findViewById(R.id.nvAboutActivity);
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
         actionBar = getSupportActionBar();
+
+        tvAboutDescription = findViewById(R.id.tvAboutDescription);
 
         drawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
@@ -45,6 +51,9 @@ public class AboutActivity extends AppCompatActivity {
         firebaseDatabaseHelper = new FirebaseDatabaseHelper(AboutActivity.this);
 
         menuManager.switchActivity(firebaseDatabaseHelper);
+
+        tvAboutDescription.setLinksClickable(true);
+        tvAboutDescription.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     @Override

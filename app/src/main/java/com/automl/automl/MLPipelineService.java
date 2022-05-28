@@ -50,7 +50,6 @@ public class MLPipelineService extends Service {
 
         if (!Python.isStarted())
             Python.start(new AndroidPlatform(this));
-
     }
 
     @Override

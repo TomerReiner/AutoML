@@ -29,8 +29,8 @@ public class SelectMLModelDialog {
     public static final String[] KNN_ALGORITHMS = {"auto", "ball_tree", "kd_tree", "brute"};
     public static final String[] RANDOM_FOREST_MAX_FEATURES = {"auto", "sqrt", "log2"};
     public static final String[] RANDOM_FOREST_CLASSIFIER_CRITERIA = {"gini", "entropy"};
-    public static final String[] RANDOM_FOREST_REGRESSOR_CRITERIA = {"auto", "sqrt", "log2"};
-    public static final String[] SVM_KERNEL = {"linear", "poly", "rbf", "sigmoid", "precomputed"};
+    public static final String[] RANDOM_FOREST_REGRESSOR_CRITERIA = {"mse", "mae", "poisson"};
+    public static final String[] SVM_KERNEL = {"linear", "poly", "rbf", "sigmoid"};
 
     private final Context context; // The context of the activity.
     private final BlockView blockView; // A block view where the user will see the ML Model building pipeline.
@@ -165,7 +165,6 @@ public class SelectMLModelDialog {
 
         btnRandomForestRegressor.setOnClickListener(view -> {
             createRandomForestConfigDialog(false);
-
             dialog.dismiss();
         });
 
@@ -282,7 +281,7 @@ public class SelectMLModelDialog {
         skBarRFNEstimators.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                tvDisplayRFNEstimators.setText(context.getString(R.string.n_estimators) + " " + progress);
+                tvDisplayRFNEstimators.setText("N Estimators: " + progress);
             }
 
             @Override

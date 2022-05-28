@@ -24,10 +24,11 @@ class DataPreprocessor:
         If the type of the column is `object`, the column will not be altered.
         """
 
-        if self.df[column].dtype != "object":
-            self.normalization_info[column] = [self.df[column].min(), self.df[column].max()]
-            scaler = MinMaxScaler()
-            self.df[column] = scaler.fit_transform(self.df[column].values.reshape(-1, 1))  # Normalize the values in the column.
+        if column in self.df.columns: # If the column was not removed.
+            if self.df[column].dtype != "object":
+                self.normalization_info[column] = [self.df[column].min(), self.df[column].max()]
+                scaler = MinMaxScaler()
+                self.df[column] = scaler.fit_transform(self.df[column].values.reshape(-1, 1))  # Normalize the values in the column.
 
     def encode(self, column: str):
         """
@@ -57,13 +58,16 @@ class DataPreprocessor:
         """
 
         try:  # Check if the column can be a numerical column.
-            self.df[column] = self.df[column].astype(float)
-            self.normalization_info[column] = [self.df[column].min(), self.df[column].max()]
+            if column in self.df.columns: # If the column was not removed.
+                self.df[column] = self.df[column].astype(float)
+                self.normalization_info[column] = [self.df[column].min(), self.df[column].max()]
 
         except:  # The conversion has failed, therefore the column should be encoded.
             encoder = LabelEncoder()
-            self.df[column] = encoder.fit_transform(self.df[column].values.reshape(-1, 1))
-            self.normalization_info[column] = [self.df[column].min(), self.df[column].max()]
+
+            if column in self.df.columns: # If the column was not removed.
+                self.df[column] = encoder.fit_transform(self.df[column].values.reshape(-1, 1))
+                self.normalization_info[column] = [self.df[column].min(), self.df[column].max()]
 
     def drop_na(self):
         """
@@ -81,16 +85,16 @@ class DataPreprocessor:
          `Min Value` : The NA values in the column will be filled with the min value in it.
          `Average Value` : The NA values in the column will be filled with the average value in it.
         """
-
-        if self.df[column].dtype == "object":
-            self.df[column] = self.df[column].fillna(UNKNOWN)
-        else:
-            if method == "Max Value":
-                self.df[column] = self.df[column].fillna(self.df[column].max())
-            elif method == "Min Value":
-                self.df[column] = self.df[column].fillna(self.df[column].min())
+        if column in self.df.columns: # If the column was not removed.
+            if self.df[column].dtype == "object":
+                self.df[column] = self.df[column].fillna(UNKNOWN)
             else:
-                self.df[column] = self.df[column].fillna(self.df[column].mean())
+                if method == "Max Value":
+                    self.df[column] = self.df[column].fillna(self.df[column].max())
+                elif method == "Min Value":
+                    self.df[column] = self.df[column].fillna(self.df[column].min())
+                else:
+                    self.df[column] = self.df[column].fillna(self.df[column].mean())
 
     def check_valid(self):
         """

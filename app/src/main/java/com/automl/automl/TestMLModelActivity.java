@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.chaquo.python.PyObject;
 import com.chaquo.python.Python;
@@ -23,18 +24,18 @@ import java.util.HashMap;
 
 public class TestMLModelActivity extends AppCompatActivity {
 
-    private TextView tvMLModelScore;
-    private ScrollView scrollViewTestMLModel;
-    private Button btnTest;
+    private TextView tvMLModelScore;private Button btnTest;
     private LinearLayout llTestMLModel;
     private TextView tvResult;
+
+    public static final String EDIT_TEXT_PREFIX = "etTestMLModel"; // The prefix for the test ml model edit texts.
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_mlmodel);
 
         tvMLModelScore = findViewById(R.id.tvMLModelScore);
-        scrollViewTestMLModel = findViewById(R.id.scrollViewTestMLModel);
         btnTest = findViewById(R.id.btnTest);
         llTestMLModel = findViewById(R.id.llTestMLModel);
         tvResult = findViewById(R.id.tvResult);
@@ -50,6 +51,9 @@ public class TestMLModelActivity extends AppCompatActivity {
 
         btnTest.setOnClickListener(v -> {
             double[] testingData = getTestingData(mlTest);
+
+            if (testingData == null) // If the testing data is empty.
+                return;
 
             if (!Python.isStarted())
                 Python.start(new AndroidPlatform(this));
@@ -90,16 +94,23 @@ public class TestMLModelActivity extends AppCompatActivity {
         for (String column : columns) {
             double[] arr = normalizationInfo.get(column); // The normalization info of this column.
 
-            TextView tv = new TextView(this);
-            tv.setLayoutParams(params);
-            tv.setText(column + "\n" + "Min Value: " + arr[0] + "\nMax Value: " + arr[1]);
+            TextView tvTitle = new TextView(this);
+            tvTitle.setLayoutParams(params);
+            tvTitle.setText("Column: " + column);
+            tvTitle.setTextSize(20);
+
+
+            TextView tvMinMaxInfo = new TextView(this);
+            tvMinMaxInfo.setLayoutParams(params);
+            tvMinMaxInfo.setText("Min Value: " + arr[0] + "\nMax Value: " + arr[1]);
 
             EditText et = new EditText(this);
             et.setInputType(InputType.TYPE_CLASS_NUMBER);
             et.setHint("Enter " + column);
-            et.setId(("et" + column).hashCode());
+            et.setId((EDIT_TEXT_PREFIX + column).hashCode());
 
-            llTestMLModel.addView(tv);
+            llTestMLModel.addView(tvTitle);
+            llTestMLModel.addView(tvMinMaxInfo);
             llTestMLModel.addView(et);
         }
     }
@@ -110,7 +121,7 @@ public class TestMLModelActivity extends AppCompatActivity {
      */
     private void clearAllFields(String[] columns) {
         for (String column : columns) {
-            EditText et = findViewById(("et" + column).hashCode());
+            EditText et = findViewById((EDIT_TEXT_PREFIX + column).hashCode());
             et.setText("");
         }
     }
@@ -136,12 +147,14 @@ public class TestMLModelActivity extends AppCompatActivity {
             double min = arr[0];
             double max = arr[1];
 
-            EditText et = findViewById(("et" + columns[i]).hashCode());
+            EditText et = findViewById((EDIT_TEXT_PREFIX + columns[i]).hashCode());
 
             String s = et.getText().toString(); // The value for this column.
 
-            if (s.length() == 0)
-                values[i] = 0;
+            if (s.length() == 0) { // If the string is empty then the user hasn't inserted any value. Therefore the
+                Toast.makeText(TestMLModelActivity.this, "One or more of the fields are empty. Please fill them.", Toast.LENGTH_SHORT).show();
+                return null;
+            }
             else { // Normalizing the value
                 double d = Double.parseDouble(s);
                 d = (d - min) / (max - min);

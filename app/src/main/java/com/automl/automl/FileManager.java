@@ -50,28 +50,33 @@ public class FileManager extends AsyncTask<String, Void, Void> implements Serial
                 this.dataset.put(columnNames[i], new ArrayList<>());
         }
 
+        ArrayList<ArrayList<String>> data = new ArrayList<>();
+
+        for (int i = 0; i < columnNames.length; i++)
+            data.add(new ArrayList<>());
+
+
         while ((line = reader.readLine()) != null) { // Append all the values to the HashMap.
             String[] values = line.split(SPLIT);
 
             if (values.length < columnNames.length) { // If there are less values in the line than the number of columns we will fill the values with null.
                 for (int i = 0; i < values.length; i++)
-                    Objects.requireNonNull(this.dataset.get(columnNames[i])).add(values[i]);
+                    Objects.requireNonNull(data.get(i).add(values[i]));
 
                 for (int i = values.length; i < columnNames.length; i++) {
-                    Objects.requireNonNull(this.dataset.get(columnNames[i])).add(null);
+                    Objects.requireNonNull(data.get(i)).add(null);
                 }
             }
-
-            else if (values.length > columnNames.length) { // If there are more values in the line than the number of columns we will only add the first n (number of columns) values to the dataset.
-                for (int i = 0; i < columnNames.length; i++)
-                    Objects.requireNonNull(this.dataset.get(columnNames[i])).add(values[i]);
-            }
-
-            else { // There are exactly n values in the line.
+            else if (values.length == columnNames.length) { // There are exactly n values in the line.
                 for (int i = 0; i < values.length; i++)
-                    Objects.requireNonNull(this.dataset.get(columnNames[i])).add(values[i]);
-            }
+                    Objects.requireNonNull(data.get(i)).add(values[i]);
+
+            } // If there are more values in the line we will not read it to prevent losing values.
         }
+
+        for (int i = 0; i < columnNames.length; i++) // Add all the data.
+            this.dataset.put(columnNames[i], data.get(i));
+        return;
     }
 
     @Override
@@ -105,15 +110,11 @@ public class FileManager extends AsyncTask<String, Void, Void> implements Serial
 
     /**
      * This function restores a removed column in the dataset.
+     * @param columnName The name of the column that we want to remove.
      */
-    public void restoreColumn() {
-        Set<String> removedColumns = this.removedColumns.keySet();
-        String[] arr = removedColumns.toArray(new String[0]);
-
-        String lastColumnRemoved = arr[arr.length - 1];
-
-        this.dataset.put(lastColumnRemoved, this.removedColumns.get(lastColumnRemoved));
-        this.removedColumns.remove(lastColumnRemoved);
+    public void restoreColumn(String columnName) {
+        this.dataset.put(columnName, this.removedColumns.get(columnName));
+        this.removedColumns.remove(columnName);
     }
 
     /**
@@ -136,5 +137,13 @@ public class FileManager extends AsyncTask<String, Void, Void> implements Serial
         for (int i = 0; i < columns.length; i++)
             values[i] = Objects.requireNonNull(this.dataset.get(columns[i])).toArray();
         return values;
+    }
+
+    /**
+     * This function checks if the dataset is empty.
+     * @return <code>true</code> if the dataset is empty, <code>false</code> otherwise.
+     */
+    public boolean isDatasetEmpty() {
+        return this.dataset.get(getColumns()[0]).size() == 0; // If one or more of the columns are empty then the dataset is empty.
     }
 }

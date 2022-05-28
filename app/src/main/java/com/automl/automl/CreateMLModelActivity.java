@@ -69,7 +69,6 @@ public class CreateMLModelActivity extends AppCompatActivity {
     private FloatingActionButton fabAddMLModelBlock;
     private FloatingActionButton fabAddDataAnalysisBlock;
 
-    private ScrollView scrollView;
     private LinearLayout linearLayout;
 
     private EditText etFilename;
@@ -110,7 +109,6 @@ public class CreateMLModelActivity extends AppCompatActivity {
         rotateOpenAnim = AnimationUtils.loadAnimation(CreateMLModelActivity.this, R.anim.rotate_open_anim);
         toButtonAnim = AnimationUtils.loadAnimation(CreateMLModelActivity.this, R.anim.to_bottom_anim);
 
-        scrollView = findViewById(R.id.scrollView);
         linearLayout = findViewById(R.id.linearLayout);
 
         fabAddBlock = findViewById(R.id.fabAddBlock);
@@ -139,6 +137,10 @@ public class CreateMLModelActivity extends AppCompatActivity {
                 Toast.makeText(CreateMLModelActivity.this, "Please make sure you have inserted a valid url.", Toast.LENGTH_SHORT).show();
                 return;
             }
+            if (fileManager.isDatasetEmpty()) {
+                Toast.makeText(CreateMLModelActivity.this, "Your file is empty. Please choose another one.", Toast.LENGTH_SHORT).show();
+                return;
+            }
             if (user == null) {
                 Toast.makeText(CreateMLModelActivity.this, "You must be logged in to use the app.", Toast.LENGTH_SHORT).show();
                 return;
@@ -150,6 +152,10 @@ public class CreateMLModelActivity extends AppCompatActivity {
             User user = sqLiteDatabaseHelper.getUser();
             if (dataset.equals(new HashMap<>())) {
                 Toast.makeText(CreateMLModelActivity.this, "Please make sure you have inserted a valid url.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (fileManager.isDatasetEmpty()) {
+                Toast.makeText(CreateMLModelActivity.this, "Your file is empty. Please choose another one.", Toast.LENGTH_SHORT).show();
                 return;
             }
             if (user == null) {
@@ -175,12 +181,17 @@ public class CreateMLModelActivity extends AppCompatActivity {
             boolean isValidURL = URLUtil.isValidUrl(filename) && filename.endsWith(".csv") && filename.startsWith("https://raw.githubusercontent.com/"); // A valid url can only be a csv file from github raw view.
 
             if (isValidURL && this.isNetworkAvailable()) { // If the url that was inserted is valid and there is internet connection the process can proceed.
-                fileManager.execute(filename);
-                etFilename.setVisibility(View.GONE);
-                btnLoadFile.setVisibility(View.GONE);
+                try {
+                    fileManager.execute(filename);
+                    etFilename.setVisibility(View.GONE);
+                    btnLoadFile.setVisibility(View.GONE);
+                }
+                catch (Exception e) {
+                    Toast.makeText(CreateMLModelActivity.this, "Can't read the file.", Toast.LENGTH_SHORT).show();
+                }
             }
             else
-                Toast.makeText(CreateMLModelActivity.this, "Please make sure that you have inserted a valid url and that you have an internet connection", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CreateMLModelActivity.this, "Please make sure you have internet connection & url valid.", Toast.LENGTH_SHORT).show();
         });
 
         btnUndo.setOnClickListener(v -> { // If the user wants to undo an action.

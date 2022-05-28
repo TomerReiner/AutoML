@@ -58,6 +58,7 @@ public class AccountManager {
 
             intent.putExtra("context", context.getClass().getSimpleName()); // Send the activity name to MyAccountActivity so it will return the user to the original activity.
             context.startActivity(intent);
+            dialog.dismiss();
         });
 
         btnSignInSignOut.setOnClickListener(view -> {
