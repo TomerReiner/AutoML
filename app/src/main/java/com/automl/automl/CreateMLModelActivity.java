@@ -202,6 +202,12 @@ public class CreateMLModelActivity extends AppCompatActivity {
                 Toast.makeText(CreateMLModelActivity.this, "You must first create a pipeline", Toast.LENGTH_LONG).show();
                 return;
             }
+            User user = sqLiteDatabaseHelper.getUser();
+
+            if (user == null) {
+                Toast.makeText(CreateMLModelActivity.this, "You must be logged in to use the app.", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
             Intent intent = new Intent(CreateMLModelActivity.this, MLPipelineService.class);
 
