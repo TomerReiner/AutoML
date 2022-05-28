@@ -50,7 +50,7 @@
     <string name="about"><br>This is an application designed to help Data Scientists create ML pipelines without writing a single line of code.\n\n</br>
         <br>You can use this app and all its features for free.\n\n</br>
         <br>Creator: Tomer Reiner\n\n</br>
-        <br>Version: 1.0.6\n\n</br>
+        <br>Version: 1.0.7\n\n</br>
         <br>Source Code: <a href="https://github.com/TomerReiner/AutoML">AutoML</a></br>
     </string>
 
@@ -76,5 +76,6 @@
         <br>1) Stay in the app and wait for the ML Model to be built. When the process is done, a new screen will be opened where you can test the ML Model.\n</br>
         2) Quit the app and wait for the process to be completed. When the process is done, you will receive a notification.
         When you click the notification, a new screen will be opened. In this screen you can test your ML Model.
+        <br>You can view your models in My Models screen. Note that it takes some time to load the models. If your models are not loaded when you enter this screen, try entering it another time.</br>
     </string>
 </resources>

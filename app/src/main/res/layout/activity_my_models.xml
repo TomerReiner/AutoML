@@ -16,6 +16,7 @@
             android:id="@+id/tvLoginAlert"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="250dp"
             android:fontFamily="@font/marvel_bold_italic"
             android:text="You must be logged in to view your models. Please sign in from another screen."
             android:textAlignment="center"
