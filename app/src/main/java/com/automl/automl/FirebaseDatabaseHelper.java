@@ -79,8 +79,7 @@ public class FirebaseDatabaseHelper {
      * @return <code>true</code> if the user was successfully created <code>false</code> otherwise.
      */
     public boolean signUp(String username, String phone, String password, String retypePassword) {
-        System.out.println(password +" "+ retypePassword);
-        if (!password.equals(retypePassword))
+        if (!password.equals(retypePassword)) // If the passwords are not equal
             return false;
 
         if (username.length() == 0 || password.length() == 0)
@@ -92,7 +91,7 @@ public class FirebaseDatabaseHelper {
         if (isUserExists(username)) // A new user cannot be created with an existing username.
             return false;
 
-        if (!isUsernameValid(username)) // If the username is invalid/
+        if (!isUsernameValid(username)) // If the username is invalid.
             return false;
 
         FirebaseDatabase db = FirebaseDatabase.getInstance("https://myml-4f150-default-rtdb.europe-west1.firebasedatabase.app");
