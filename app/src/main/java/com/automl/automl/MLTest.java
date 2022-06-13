@@ -1,9 +1,12 @@
 package com.automl.automl;
 
+import android.net.Uri;
+
 import com.chaquo.python.PyObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +42,7 @@ public class MLTest implements Serializable {
     private String[] columns; // The columns in the dataset.
 
     public MLTest(String yColumn, String score, PyObject yColumnEncoding, PyObject mlModel, PyObject normalizationInfo, List<PyObject> columns) {
-        this.score = score;
+        this.score = "" + (Double.parseDouble(score) * 100) + "%";
         MLTest.yColumnEncoding = yColumnEncoding;
         MLTest.mlModel = mlModel;
         Map<PyObject, PyObject> map = normalizationInfo.asMap();
@@ -98,5 +101,14 @@ public class MLTest implements Serializable {
 
     public void setColumns(String[] columns) {
         this.columns = columns;
+    }
+
+    @Override
+    public String toString() {
+        return "MLTest{" +
+                "score='" + score + '\'' +
+                ", normalizationInfo=" + normalizationInfo +
+                ", columns=" + Arrays.toString(columns) +
+                '}';
     }
 }

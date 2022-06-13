@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.SmsManager;
+import android.util.Log;
 import android.widget.Toast;
 
 
@@ -222,7 +223,7 @@ public class FirebaseDatabaseHelper {
      */
     public String generateVerificationCode() {
         int x = (int) (Math.random() * (999999 - 100000 + 1)) + 100000;
-        System.out.println(x);
+        Log.d("Verification Code", "" + x);
         return "" + x;
     }
 

@@ -50,7 +50,7 @@
     <string name="about"><br>This is an application designed to help Data Scientists create ML pipelines without writing a single line of code.\n\n</br>
         <br>You can use this app and all its features for free.\n\n</br>
         <br>Creator: Tomer Reiner\n\n</br>
-        <br>Version: 1.0.8\n\n</br>
+        <br>Version: 1.0.9\n\n</br>
         <br>Source Code: <a href="https://github.com/TomerReiner/AutoML">AutoML</a></br>
     </string>
 

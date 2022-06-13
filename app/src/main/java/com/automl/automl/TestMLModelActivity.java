@@ -19,6 +19,7 @@ import com.chaquo.python.PyObject;
 import com.chaquo.python.Python;
 import com.chaquo.python.android.AndroidPlatform;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class TestMLModelActivity extends AppCompatActivity {
@@ -40,6 +41,7 @@ public class TestMLModelActivity extends AppCompatActivity {
         tvResult = findViewById(R.id.tvResult);
 
         Intent intent = getIntent();
+
         MLTest mlTest = (MLTest) intent.getSerializableExtra(MLPipelineService.ML_TEST);
 
         String score = mlTest.getScore();

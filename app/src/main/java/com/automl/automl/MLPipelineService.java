@@ -5,9 +5,11 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.widget.Toast;
@@ -21,7 +23,9 @@ import com.chaquo.python.Python;
 import com.chaquo.python.android.AndroidPlatform;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 /**
  * This service will create the ML Model pipeline
@@ -85,53 +89,60 @@ public class MLPipelineService extends Service {
             return super.onStartCommand(intent, flags, startId);
         }
 
-        MLTest mlTest = null; // All the information needed to test the ML Model.
+        try {
+            Python py = Python.getInstance();
+            PyObject pyFile = py.getModule("main");
 
-        Python py = Python.getInstance();
-        PyObject pyFile = py.getModule("main");
-        PyObject result = pyFile.callAttr("main", this.columns, this.data, this.blocks,
-                this.mlModel.getType(),
-                this.mlModel.getAttributes(), this.yColumnName); // Starting the ML pipeline.
+             PyObject result = pyFile.callAttr("main", this.columns, this.data, this.blocks,
+                    this.mlModel.getType(),
+                    this.mlModel.getAttributes(), this.yColumnName); // Starting the ML pipeline.
 
-        List<PyObject> lst = result.asList();
+            List<PyObject> lst = result.asList();
 
-        if (lst.size() == 1) { // If the size is one then something went wrong and we should notify the user about that.
-            String errorMessage = lst.get(0).toString();
+            if (lst.size() == 1) { // If the size is one then something went wrong and we should notify the user about that.
+                String errorMessage = lst.get(0).toString();
 
-            if (!screenStateReceiver.isOn() || isAppInBackground()) // If the screen is off or the app is not in foreground.
-                createMLModelFailedNotification(errorMessage);
-            else
-                Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
+                if (!screenStateReceiver.isOn() || isAppInBackground()) // If the screen is off or the app is not in foreground.
+                    createMLModelFailedNotification(errorMessage);
+                else
+                    Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
+            }
+
+            else { // The task was successful.
+                String score = lst.get(0).toString();
+                String numColumns = lst.get(1).toString();
+                String numRows = lst.get(2).toString();
+                PyObject yColumnEncoding = lst.get(3);
+                PyObject ml = lst.get(4);
+                PyObject normalizationInfo = lst.get(5);
+                List<PyObject> columns = lst.get(6).asList();
+
+                MLModelDisplay display = new MLModelDisplay(this.mlModel, numColumns, numRows, score);
+
+                this.firebaseDatabaseHelper.addMLModel(this.sqLiteDatabaseHelper.getUser().getUsername(), display); // Add the ML Model to the database.
+
+                MLTest mlTest = new MLTest(this.yColumnName,score, yColumnEncoding, ml, normalizationInfo, columns);
+
+                if (!screenStateReceiver.isOn() || isAppInBackground()) { // If the screen is off or the app is not in foreground.
+                    createMLReadyNotification(mlTest);
+                }
+                else { // If the user is still in the app.
+                    Intent intentMoveToTestMLModelActivity = new Intent(this, TestMLModelActivity.class);
+                    intentMoveToTestMLModelActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intentMoveToTestMLModelActivity.putExtra("FromNotification", false);
+                    intentMoveToTestMLModelActivity.putExtra(ML_TEST, mlTest);
+                    startActivity(intentMoveToTestMLModelActivity);
+                }
+            }
         }
 
-        else { // The task was successful.
-            String score = lst.get(0).toString();
-            String numColumns = lst.get(1).toString();
-            String numRows = lst.get(2).toString();
-            PyObject yColumnEncoding = lst.get(3);
-            PyObject ml = lst.get(4);
-            PyObject normalizationInfo = lst.get(5);
-            List<PyObject> columns = lst.get(6).asList();
-
-            MLModelDisplay display = new MLModelDisplay(this.mlModel, numColumns, numRows, score);
-
-            this.firebaseDatabaseHelper.addMLModel(this.sqLiteDatabaseHelper.getUser().getUsername(), display); // Add the ML Model to the database.
-
-            mlTest = new MLTest(this.yColumnName,score, yColumnEncoding, ml, normalizationInfo, columns);
+        catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Your ML Model Doesn't Suit the Task.", Toast.LENGTH_SHORT).show();
+            stopSelf();
         }
-
-        if (!screenStateReceiver.isOn() || isAppInBackground()) // If the screen is off or the app is not in foreground.
-            createMLReadyNotification(mlTest);
-        else { // If the user is still in the app.
-            Intent intentMoveToTestMLModelActivity = new Intent(this, TestMLModelActivity.class);
-            intentMoveToTestMLModelActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intentMoveToTestMLModelActivity.putExtra(ML_TEST, mlTest);
-            startActivity(intentMoveToTestMLModelActivity);
-        }
-
-        stopSelf();
         unregisterReceiver(screenStateReceiver);
-
+        stopSelf();
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -139,6 +150,21 @@ public class MLPipelineService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+    @Override
+    public boolean onUnbind(Intent intent) {
+        return super.onUnbind(intent);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
+    public void onTaskRemoved(Intent rootIntent) {
+        super.onTaskRemoved(rootIntent);
     }
 
     /**
@@ -158,25 +184,26 @@ public class MLPipelineService extends Service {
      * @param mlTest All the information needed to test the ML Model.
      */
     private void createMLReadyNotification(MLTest mlTest) {
-        System.out.println("here");
         Intent intent = new Intent(this, TestMLModelActivity.class);
-        intent.putExtra("mlTest", mlTest);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_MUTABLE);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra(ML_TEST, mlTest);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, new Random().nextInt(), intent, PendingIntent.FLAG_IMMUTABLE);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "notify_001")
                 .setContentIntent(pendingIntent)
                 .setSmallIcon(R.drawable.ic_notification)
-                .setContentTitle("My ML")
+                .setContentTitle("AutoML")
                 .setContentText("Your ML Model is Ready. \nClick Here to Test it!")
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setAutoCancel(true);
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-        NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, "My ML", NotificationManager.IMPORTANCE_HIGH);
+        NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, "AutoML", NotificationManager.IMPORTANCE_HIGH);
         notificationManager.createNotificationChannel(notificationChannel);
         builder.setChannelId(CHANNEL_ID);
         notificationManager.notify(0, builder.build());
+
         stopSelf();
     }
 

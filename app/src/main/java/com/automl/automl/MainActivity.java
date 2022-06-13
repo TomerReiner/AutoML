@@ -1,5 +1,12 @@
 package com.automl.automl;
 
+// https://raw.githubusercontent.com/codebasics/py/master/pandas/16_ts_holidays/aapl_no_dates.csv
+// https://raw.githubusercontent.com/codebasics/py/master/pandas/5_handling_missing_data_fillna_dropna_interpolate/weather_data.csv
+// https://raw.githubusercontent.com/codebasics/py/master/ML/14_naive_bayes/titanic.csv
+// https://raw.githubusercontent.com/codebasics/py/master/ML/9_decision_tree/salaries.csv
+// https://raw.githubusercontent.com/TomerReiner/CSV-Files-Examples/main/car_sales.csv
+// https://raw.githubusercontent.com/TomerReiner/CSV-Files-Examples/main/sales.csv
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
